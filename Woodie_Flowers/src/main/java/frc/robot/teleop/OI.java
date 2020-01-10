@@ -5,16 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.teleop;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
- * declared globally (i.e. public static).  Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * Add your docs here.
  */
-public final class Constants {
-    
+public class OI {
+    static Joystick pad = new Joystick(0);
+
+    private static final int leftYAxis = 1;
+    private static final int leftXAxis =  2;
+    private static final int rightYAxis = 3;
+    private static final int rightXAxis = 4;
+
+  public static Joystick getJoysick(){
+    return pad;
+  }   
 }
