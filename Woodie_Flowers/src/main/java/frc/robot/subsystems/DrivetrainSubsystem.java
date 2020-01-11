@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.teleop.OI;
 
@@ -42,5 +43,8 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   public void drive(){
     m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(1), OI.getJoystick().getRawAxis(2));
 
+  }
+  public void drive(double speed , double rotation){
+    m_drivetrain.arcadeDrive(speed, rotation);
   }
 }
