@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * Add your docs here.
@@ -23,7 +24,7 @@ public class OI {
     private static final int rightYAxis = 3;
     private static final int rightXAxis = 4;
 
-  public static Joystick getJoysick(){
+  public static Joystick getJoystick(){
     return pad;
   }   
 }
