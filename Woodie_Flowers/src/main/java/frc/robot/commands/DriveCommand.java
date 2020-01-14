@@ -38,7 +38,7 @@ public class DriveCommand extends CommandBase {
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
     if (!running || (3000 <= SinceHowLongRunning)){
      
-      Drivetrainsubsystem.drive(0,0);
+      drivetrainSubsystem.drive(0,0);
       running = false;
 
     }else{
@@ -53,11 +53,12 @@ public class DriveCommand extends CommandBase {
 
     }
     
-  }
+  
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    running = false;
 
   }
 
@@ -65,6 +66,7 @@ public class DriveCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return !running;
+
   }
 }
