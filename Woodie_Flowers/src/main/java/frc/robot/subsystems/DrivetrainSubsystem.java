@@ -48,6 +48,8 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
     m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(1), OI.getJoystick().getRawAxis(2));
   }
 
+  //code after this is just an idea
+  
   public void steering() {
   
     float kP = -0.1f;
