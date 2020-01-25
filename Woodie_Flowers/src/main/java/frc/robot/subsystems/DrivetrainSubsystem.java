@@ -26,10 +26,10 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
    *
    * Creates a new DrivetrainSubsystem.
    */
-  CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightFront = new CANSparkMax(3, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightBack = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax leftFront = new CANSparkMax(10, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax leftBack = new CANSparkMax(20, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightFront = new CANSparkMax(30, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightBack = new CANSparkMax(40, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
   DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
@@ -37,8 +37,8 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   //private final DifferentialDriveOdometry m_odometry;
   //private final Gyro m_gyro = new ADXRS450_Gyro();
 
-  private final Encoder m_leftEncoder = new Encoder(1, 2);
-  private final Encoder m_rightEncoder = new Encoder(3, 4);
+  private final Encoder m_leftEncoder = new Encoder(10, 20);
+  private final Encoder m_rightEncoder = new Encoder(30, 40);
   /*public void DriveSubsystem() {
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(Constants.kEncoderDistancePerPulse);
