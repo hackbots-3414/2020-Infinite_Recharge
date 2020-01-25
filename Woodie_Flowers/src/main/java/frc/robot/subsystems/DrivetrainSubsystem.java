@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -25,11 +24,11 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
    */
   CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightFront = new CANSparkMax(3, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightBack = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightFront = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightBack = new CANSparkMax(5, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
-  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
+  public DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
   
   
 
@@ -41,10 +40,11 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   }
 
   public void drive(){
-    m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(1), OI.getJoystick().getRawAxis(2));
+    m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(0), OI.getJoystick().getRawAxis(1));
 
   }
   public void drive(double speed , double rotation){
     m_drivetrain.arcadeDrive(speed, rotation);
+
   }
 }
