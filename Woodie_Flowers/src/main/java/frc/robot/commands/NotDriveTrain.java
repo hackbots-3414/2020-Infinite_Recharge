@@ -16,6 +16,9 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class NotDriveTrain extends CommandBase {
   public static final String RobotMap = null;
+  public static final long DURATION_IN_MILLISECONDS = 1000;
+  public static final double SPEED = 0.25;
+  public static final double ROTATION = 0;
   /**
    * Creates a new DriveCommand.
    */
@@ -45,8 +48,6 @@ public class NotDriveTrain extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-
     if(leftJoy.getRawButtonPressed(2)){
       startTime = System.currentTimeMillis();
       running = true;
@@ -54,16 +55,16 @@ public class NotDriveTrain extends CommandBase {
 
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
 
-    if (!running || (1000 <= SinceHowLongRunning)){
-  
-     
-      drivetrainSubsystem.drive(0,0);
-      running = false;
-      drivetrainSubsystem.m_drivetrain.setSafetyEnabled(false);
+    if (!running || (DURATION_IN_MILLISECONDS <= SinceHowLongRunning)){
+      shutDownInAuton(); 
+    } else {
+      drivetrainSubsystem.drive(SPEED,ROTATION);
     }
-    else{
-      drivetrainSubsystem.drive(0.25,0);
-    }
+  }
+  private void shutDownInAuton(){
+    drivetrainSubsystem.drive(0,0);
+    running = false;
+    drivetrainSubsystem.m_drivetrain.setSafetyEnabled(false);
   }
 
 
@@ -72,7 +73,6 @@ public class NotDriveTrain extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     running = false;
-
   }
 
 
@@ -80,6 +80,5 @@ public class NotDriveTrain extends CommandBase {
   @Override
   public boolean isFinished() {
     return !running;
-
   }
 }
