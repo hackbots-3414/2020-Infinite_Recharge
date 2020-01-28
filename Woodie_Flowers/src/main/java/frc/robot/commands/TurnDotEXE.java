@@ -9,13 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PIDNavXDrive;
-import frc.robot.subsystems.Constants;
+import frc.robot.subsystems.Utilities;;
 
 
 public class TurnDotEXE extends CommandBase {
   PIDNavXDrive navXDrive = null; 
   double vibeCheck;
-  Constants coolCat = new Constants();
+  Utilities coolCat = new Utilities();
   double tolerbo;
   public TurnDotEXE (final PIDNavXDrive pidNavXDrive,double angularBruhMoment,double tolerboi) {
     addRequirements(pidNavXDrive);
