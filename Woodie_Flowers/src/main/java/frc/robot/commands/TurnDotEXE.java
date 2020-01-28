@@ -15,7 +15,7 @@ import frc.robot.subsystems.Utilities;;
 public class TurnDotEXE extends CommandBase {
   PIDNavXDrive navXDrive = null; 
   double vibeCheck;
-  Utilities coolCat = new Utilities();
+  public Utilities coolCat = new Utilities();
   double tolerbo;
   public TurnDotEXE (final PIDNavXDrive pidNavXDrive,double angularBruhMoment,double tolerboi) {
     addRequirements(pidNavXDrive);
@@ -53,6 +53,9 @@ public class TurnDotEXE extends CommandBase {
     if(vibeCheck>0){
       coolCat.toler = tolerbo;
     }
+    else{
+      System.out.println("please use a nonzero");
+    }
     
 
        
@@ -78,9 +81,10 @@ public class TurnDotEXE extends CommandBase {
       System.out.println("Misa finished");
       return coolCat.atSetPoint;
     }
+    else{
+      return coolCat.atSetPoint;
+    }
     
-
-    return coolCat.atSetPoint;
    
   }
 
