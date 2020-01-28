@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LimelightAlignCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -47,8 +49,9 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    System.out.println("inside configureButtonBindings()");
     JoystickButton limelightAlignButton = new JoystickButton(OI.getXboxController(), 2);
-    limelightAlignButton.whenPressed(new LimelightAlignCommand());
+    limelightAlignButton.whenPressed(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem));
   }
 
 

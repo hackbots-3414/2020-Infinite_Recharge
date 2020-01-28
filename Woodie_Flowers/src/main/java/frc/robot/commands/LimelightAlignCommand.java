@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class LimelightAlignCommand extends CommandBase{
 
@@ -11,6 +12,7 @@ public class LimelightAlignCommand extends CommandBase{
 
     public LimelightAlignCommand(LimelightSubsystem limelight, DrivetrainSubsystem drivetrain) {
         super();
+        System.out.println("inside LimelightAlignCommand");
         addRequirements(limelight);
         addRequirements(drivetrain);
         this.limelight = limelight;
@@ -18,25 +20,32 @@ public class LimelightAlignCommand extends CommandBase{
     }
 
     public void execute() {
-       
-        
+       System.out.println("inside execute()");
 
     }
 
     public boolean isFinished() {
         double tx = limelight.getHorizontalOffset();
         double ta = limelight.getTargetArea();
+        System.out.println("this is tx: " + tx);
         
         if(tx > -0.3 && tx < 0.3) {
+            System.out.println("The bot is stopped!");
             drivetrain.tankDrive(0, 0);
             return true;
         }else {
-            float kp = -0.1f;
-            float heading_error = tx;
-            steering_adjust = kp * tx;
+            System.out.println("not aligned inside else block");
+            double kp = -0.025f;
+            double heading_error = tx;
+            double steering_adjust = kp * heading_error;
+            System.out.println("this is steering_adjust " + steering_adjust);
+            steering_adjust = Math.copySign(Math.max(steering_adjust,.20), steering_adjust);
+            System.out.println("this is steering_adjust " + steering_adjust);
     
-            left += steering_adjust;
-            right -= steering_adjust;
+            double left = 0.0;
+            left -= steering_adjust;
+            double right = 0.0;
+            right +=  steering_adjust;
     
             drivetrain.tankDrive(left, right);
             return false;
