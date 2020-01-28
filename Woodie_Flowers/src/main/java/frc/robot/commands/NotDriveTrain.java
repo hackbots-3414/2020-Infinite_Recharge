@@ -16,8 +16,8 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class NotDriveTrain extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURATION_IN_MILLISECONDS = 1000;
-  public static final double SPEED = 0.25;
+  public static final long DURATION_IN_MILLISECONDS = 2000;
+  public static final double SPEED = 0.50;
   public static final double ROTATION = 0;
   /**
    * Creates a new DriveCommand.
@@ -26,8 +26,8 @@ public class NotDriveTrain extends CommandBase {
   private long startTime = 0;
   private boolean running= false;
 
-  Joystick leftJoy  = new Joystick(0);
-  JoystickButton toggleButton = new JoystickButton(leftJoy, 2);
+  Joystick rightJoy  = new Joystick(0);
+  JoystickButton toggleButton = new JoystickButton(rightJoy, 2);
 
 
   public NotDriveTrain(DrivetrainSubsystem subsystem) {
@@ -48,7 +48,7 @@ public class NotDriveTrain extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(leftJoy.getRawButtonPressed(2)){
+    if(rightJoy.getRawButtonPressed(2)){
       startTime = System.currentTimeMillis();
       running = true;
     }

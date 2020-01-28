@@ -7,10 +7,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
@@ -22,17 +24,21 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
    *
    * Creates a new DrivetrainSubsystem.
    */
-  CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  /*CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax rightFront = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightBack = new CANSparkMax(5, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightBack = new CANSparkMax(5, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);*/
+  /*WPI_TalonSRX leftFront = new WPI_TalonSRX(1);
+  WPI_TalonSRX leftBack = new WPI_TalonSRX (2);
+  WPI_TalonSRX rightFront = new WPI_TalonSRX(5);
+  WPI_TalonSRX rightBack = new WPI_TalonSRX(4);*/
+  Talon leftFront = new Talon(2);
+  Talon leftBack = new Talon (3);
+  Talon rightFront = new Talon(4);
+  Talon rightBack = new Talon(5);
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
   public DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
-  
-  
-
-  
   
   @Override
   public void periodic() {
