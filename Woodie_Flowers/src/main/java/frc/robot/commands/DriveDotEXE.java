@@ -10,9 +10,12 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.PIDNavXDrive;
 import frc.robot.subsystems.Utilities;
+import frc.robot.commands.TurnDotEXE;;
+
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,6 +25,7 @@ public class DriveDotEXE extends PIDCommand {
    * Creates a new DriveDotEXE.
    */
   int distan;
+  
   PIDNavXDrive drivetrain;
   Utilities values;
   public DriveDotEXE(int distance) {
@@ -54,6 +58,7 @@ public class DriveDotEXE extends PIDCommand {
   public void initialize() {
     drivetrain.enable();
     super.initialize();
+    CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
   }
   @Override
   public void execute() {
@@ -68,6 +73,7 @@ public class DriveDotEXE extends PIDCommand {
       drivetrain.disable();
       drivetrain.robotDrive(0.0, 0.0);
       System.out.println("isFinished = true");
+      values.atSetPoint = true;
       return true;
     }
     else{

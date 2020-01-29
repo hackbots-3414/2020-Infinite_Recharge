@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.subsystems.Utilities;
-
+import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -30,10 +30,10 @@ public class PIDNavXDrive extends PIDSubsystem {
   WPI_TalonSRX leftBack = new WPI_TalonSRX (2);
   WPI_TalonSRX rightFront = new WPI_TalonSRX(5);
   WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
+  OI axis = new OI();
   SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFront, rightBack);
   private DifferentialDrive robotDrive = new DifferentialDrive(leftGroup, rightGroup);
-  public XboxController xboxController = new XboxController(2);
   public PIDNavXDrive() {
     // Intert a subsystem name and PID values here
     super(new PIDController(0,0,0));
@@ -70,7 +70,7 @@ public class PIDNavXDrive extends PIDSubsystem {
     return rightBack.getSelectedSensorPosition();
   }
   public void drive(){
-    robotDrive.arcadeDrive(xboxController.getRawAxis(1), xboxController.getRawAxis(5));
+    robotDrive.arcadeDrive(OI.getXboxController().getRawAxis(1), OI.getXboxController().getRawAxis(4));
   }
   @Override
   public double getMeasurement() {
