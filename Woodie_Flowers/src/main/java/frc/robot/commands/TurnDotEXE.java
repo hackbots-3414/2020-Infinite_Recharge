@@ -9,19 +9,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PIDNavXDrive;
-import frc.robot.subsystems.Constants;
+import frc.robot.subsystems.Utilities;;
 
 
 public class TurnDotEXE extends CommandBase {
   PIDNavXDrive navXDrive = null; 
-  double vibeCheck;
-  Constants coolCat = new Constants();
-  double tolerbo;
-  public TurnDotEXE (final PIDNavXDrive pidNavXDrive,double angularBruhMoment,double tolerboi) {
+  double m_angle;
+  public Utilities util = new Utilities();
+  double m_tolerance;
+  public TurnDotEXE (final PIDNavXDrive pidNavXDrive,double angularBruhMoment,double m_tolerancei) {
     addRequirements(pidNavXDrive);
     navXDrive = pidNavXDrive;
-    vibeCheck = angularBruhMoment;
-    tolerbo = tolerboi;
+    m_angle = angularBruhMoment;
+    m_tolerance = m_tolerancei;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     
@@ -32,8 +32,8 @@ public class TurnDotEXE extends CommandBase {
   public void initialize() {
     System.out.println("initialize");
     navXDrive.enable();
-    navXDrive.setSetpoint(vibeCheck);
-    coolCat.setAtSetpoint(false);
+    navXDrive.setSetpoint(m_angle);
+    util.setAtSetpoint(false);
  
   }
 
@@ -41,46 +41,44 @@ public class TurnDotEXE extends CommandBase {
   @Override
   public void execute() {
     System.out.println("execute");
-    navXDrive.setSetpoint(vibeCheck);
+    navXDrive.setSetpoint(m_angle);
     System.out.println("setSetpoint "+ navXDrive.getController().getSetpoint());
     navXDrive.getMeasurement();
-    if (vibeCheck<0){
-      coolCat.toler = -tolerbo;
-      System.out.println("tolerance; " + tolerbo);
-      System.out.println("tolerance; " + coolCat.toler);
+    if (m_angle<0){
+      util.toler = -m_tolerance;
+      System.out.println("tolerance; " + m_tolerance);
+      System.out.println("tolerance; " + util.toler);
     }
 
-    if(vibeCheck>0){
-      coolCat.toler = tolerbo;
-    }
-    
-
-       
+    if(m_angle>0){
+      util.toler = m_tolerance;
+    }  
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
     System.out.println("isFinished: " + navXDrive.atSetPoint());
-    System.out.println("tolerance: "+ coolCat.toler);
-    System.out.println("tolerance: "+ tolerbo);
-      if( navXDrive.getController().getPositionError() > coolCat.toler && coolCat.toler<0)  {
+    System.out.println("tolerance: "+ util.toler);
+    System.out.println("tolerance: "+ m_tolerance);
+      if( navXDrive.getController().getPositionError() > util.toler && util.toler<0)  {
       navXDrive.disable();
-      coolCat.setAtSetpoint(true);
+      util.setAtSetpoint(true);
       System.out.println("isFinished: " + true);
       System.out.println("Misa finished");
-      return coolCat.atSetPoint;
+      return util.atSetPoint;
       }
-    if(navXDrive.getController().getPositionError() < coolCat.toler && coolCat.toler > 0)  {
+    if(navXDrive.getController().getPositionError() < util.toler && util.toler > 0)  {
       navXDrive.disable();
-      coolCat.setAtSetpoint(true);
+      util.setAtSetpoint(true);
       System.out.println("isFinished: " + true);
       System.out.println("Misa finished");
-      return coolCat.atSetPoint;
+      return util.atSetPoint;
+    }
+    else{
+      return util.atSetPoint;
     }
     
-
-    return coolCat.atSetPoint;
    
   }
 

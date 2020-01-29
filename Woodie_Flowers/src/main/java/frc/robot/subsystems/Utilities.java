@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * Add your docs here.
  */
-public class Constants extends SubsystemBase {
+public class Utilities extends SubsystemBase {
   /**
    * Add your docs here.
    */
-  public Constants() {
+  public Utilities() {
     // Intert a subsystem name and PID values here
     super();
     
@@ -26,9 +26,12 @@ public class Constants extends SubsystemBase {
     // to
     // enable() - Enables the PID controller.
   }
-  double k_P = 0.015;
-  double k_I = 0.00361446;
-  double k_D = 0.0155625;
+  public double k_PTurn = 0.015;
+  public double k_ITurn = 0.00361446;
+  public double k_DTurn = 0.0155625;
+  public double k_PDrive = 0.015;
+  public double k_IDrive = 0.00361446;
+  public double k_DDrive = 0.0155625;
   public boolean atSetPoint = false;
   public double toler;
   //0.015, 0.00361446, 0.0155625
