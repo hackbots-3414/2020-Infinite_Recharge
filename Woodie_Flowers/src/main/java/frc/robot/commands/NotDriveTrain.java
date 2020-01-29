@@ -48,6 +48,7 @@ public class NotDriveTrain extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Enter Execute...............");
     if(rightJoy.getRawButtonPressed(2)){
       startTime = System.currentTimeMillis();
       running = true;
@@ -56,8 +57,10 @@ public class NotDriveTrain extends CommandBase {
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
 
     if (!running || (DURATION_IN_MILLISECONDS <= SinceHowLongRunning)){
+      System.out.println("Shutting Down................");
       shutDownInAuton(); 
     } else {
+      System.out.println("Running......................");
       drivetrainSubsystem.drive(SPEED,ROTATION);
     }
   }
