@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
     if(counter == true){
       counter = false;
       //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
-      CommandScheduler.getInstance().schedule(new DriveDotEXE(10000));
+      CommandScheduler.getInstance().schedule(new DriveDotEXE(10000,0.5));
       System.out.println("worked");
     }
    counter = true;
@@ -107,7 +107,7 @@ public class Robot extends TimedRobot {
     if (counter == true) {
     counter = false;
     //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
-    CommandScheduler.getInstance().schedule(new DriveDotEXE(10000));
+    CommandScheduler.getInstance().schedule(new DriveDotEXE(10000,0.5));
     System.out.println("worked");
   }
   }
