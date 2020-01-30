@@ -28,7 +28,7 @@ public class DriveDotEXE extends PIDCommand {
   
   PIDNavXDrive drivetrain;
   Utilities values;
-  public DriveDotEXE(int distance) {
+  public DriveDotEXE(int distance,PIDNavXDrive subsystem) {
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
@@ -42,7 +42,7 @@ public class DriveDotEXE extends PIDCommand {
           
 
         });
-        drivetrain = new PIDNavXDrive();
+        drivetrain = subsystem;
         values = new Utilities();
         distan = distance;
         getController().setD(values.k_DDrive);
