@@ -28,7 +28,8 @@ public class DriveDotEXE extends PIDCommand {
   
   PIDNavXDrive drivetrain;
   Utilities values;
-  public DriveDotEXE(int distance,PIDNavXDrive subsystem) {
+  double acceleration;
+  public DriveDotEXE(int distance,PIDNavXDrive subsystem,double speed) {
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
@@ -42,6 +43,7 @@ public class DriveDotEXE extends PIDCommand {
           
 
         });
+        acceleration = speed;
         drivetrain = subsystem;
         values = new Utilities();
         distan = distance;
@@ -62,7 +64,7 @@ public class DriveDotEXE extends PIDCommand {
   }
   @Override
   public void execute() {
-    drivetrain.robotDrive(0.5, 0);
+    drivetrain.robotDrive(acceleration, 0);
     System.out.println("right encoder values : " + drivetrain.getEncoderRight());
     System.out.println("left encoder values : " + drivetrain.getEncoderLeft());
     super.execute();
