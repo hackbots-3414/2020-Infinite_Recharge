@@ -59,17 +59,17 @@ public class DriveDotEXE extends PIDCommand {
   public void initialize() {
     drivetrain.enable();
     super.initialize();
-    if(distan<0){
-      
-    }
     CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
   }
   @Override
   public void execute() {
-    drivetrain.robotDrive(0.5, 0);
+    drivetrain.robotDrive(okBoomer, 0);
     System.out.println("right encoder values : " + drivetrain.getEncoderRight());
     System.out.println("left encoder values : " + -drivetrain.getEncoderLeft());
     super.execute();
+    CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
+    //10,000 = 17 inches
+    //20,000 = 16 inches
   }
   @Override
   public boolean isFinished() {
