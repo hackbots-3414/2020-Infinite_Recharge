@@ -32,10 +32,10 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   WPI_TalonSRX leftBack = new WPI_TalonSRX (2);
   WPI_TalonSRX rightFront = new WPI_TalonSRX(5);
   WPI_TalonSRX rightBack = new WPI_TalonSRX(4);*/
-  Talon leftFront = new Talon(2);
-  Talon leftBack = new Talon (3);
-  Talon rightFront = new Talon(4);
-  Talon rightBack = new Talon(5);
+  Talon leftFront = new Talon(4);
+  Talon leftBack = new Talon (5);
+  Talon rightFront = new Talon(2);
+  Talon rightBack = new Talon(3);
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
   public DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
@@ -43,10 +43,11 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    //left.setInverted(true);
   }
 
   public void drive(){
-    m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(0), OI.getJoystick().getRawAxis(1));
+    m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(1), OI.getJoystick().getRawAxis(0));
 
   }
   public void drive(double speed , double rotation){

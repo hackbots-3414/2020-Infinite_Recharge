@@ -17,7 +17,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class NotDriveTrain extends CommandBase {
   public static final String RobotMap = null;
   public static final long DURATION_IN_MILLISECONDS = 2000;
-  public static final double SPEED = 0.50;
+  public static final double SPEED = .5;
   public static final double ROTATION = 0;
   /**
    * Creates a new DriveCommand.
@@ -52,6 +52,7 @@ public class NotDriveTrain extends CommandBase {
     if(rightJoy.getRawButtonPressed(2)){
       startTime = System.currentTimeMillis();
       running = true;
+    
     }
 
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
