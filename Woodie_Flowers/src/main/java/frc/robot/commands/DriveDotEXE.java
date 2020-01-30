@@ -25,10 +25,10 @@ public class DriveDotEXE extends PIDCommand {
    * Creates a new DriveDotEXE.
    */
   int distan;
-  
+  double okBoomer;
   PIDNavXDrive drivetrain;
   Utilities values;
-  public DriveDotEXE(int distance) {
+  public DriveDotEXE(int distance,double speed) {
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
@@ -42,6 +42,7 @@ public class DriveDotEXE extends PIDCommand {
           
 
         });
+        okBoomer = speed;
         drivetrain = new PIDNavXDrive();
         values = new Utilities();
         distan = distance;
@@ -58,18 +59,28 @@ public class DriveDotEXE extends PIDCommand {
   public void initialize() {
     drivetrain.enable();
     super.initialize();
+    if(distan<0){
+      
+    }
     CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
   }
   @Override
   public void execute() {
     drivetrain.robotDrive(0.5, 0);
     System.out.println("right encoder values : " + drivetrain.getEncoderRight());
-    System.out.println("left encoder values : " + drivetrain.getEncoderLeft());
+    System.out.println("left encoder values : " + -drivetrain.getEncoderLeft());
     super.execute();
   }
   @Override
   public boolean isFinished() {
-    if(drivetrain.getEncoderLeft()> distan && drivetrain.getEncoderRight() > distan){
+    if(-drivetrain.getEncoderLeft()> distan && drivetrain.getEncoderRight() > distan && distan>0){
+      drivetrain.disable();
+      drivetrain.robotDrive(0.0, 0.0);
+      System.out.println("isFinished = true");
+      values.atSetPoint = true;
+      return true;
+    }
+    if(-drivetrain.getEncoderLeft()< distan && drivetrain.getEncoderRight() < distan && distan<0){
       drivetrain.disable();
       drivetrain.robotDrive(0.0, 0.0);
       System.out.println("isFinished = true");

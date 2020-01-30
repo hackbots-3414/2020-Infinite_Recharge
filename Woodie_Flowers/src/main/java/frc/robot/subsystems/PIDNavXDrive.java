@@ -85,6 +85,8 @@ public class PIDNavXDrive extends PIDSubsystem {
   @Override
   public void enable() {
     System.out.println("enable");
+    leftFront.setSelectedSensorPosition(0);
+    rightBack.setSelectedSensorPosition(0);
     navX.reset();
     super.enable();
   }
