@@ -31,6 +31,9 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     drivetrainSubsystem.drive();
+    int leftEncoder = drivetrainSubsystem.getLeftEncoder();
+    int rightEncoder =drivetrainSubsystem.getRightEncoder();
+    
   }
 
   // Called once the command ends or is interrupted.
