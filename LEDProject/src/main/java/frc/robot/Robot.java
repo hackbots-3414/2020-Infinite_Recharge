@@ -89,9 +89,7 @@ public class Robot extends TimedRobot {
 //     } else if (joy.getRawButtonPressed(8)) {
 //       colorPulse();
 //     }
-  //lightChase();
-    // Set the LEDs
-    m_led.setData(m_ledBuffer);
+  //rainbow();
 
     /**
      * The method GetColor() returns a normalized color value from the sensor and can be
@@ -127,6 +125,8 @@ public class Robot extends TimedRobot {
       colorString = "Unknown";
     }
 
+    // Set the LEDs
+    m_led.setData(m_ledBuffer);
     /**
      * Open Smart Dashboard or Shuffleboard to see the color detected by the 
      * sensor.
@@ -140,25 +140,25 @@ public class Robot extends TimedRobot {
 
   private void solidColorYellow() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setHSV(i, 35, 94, 85);
+      m_ledBuffer.setHSV(i, 43, 255, 255 );
  }
   }
 
   private void solidColorGreen() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setHSV(i, 119, 100, 100);
+      m_ledBuffer.setHSV(i, 61, 255, 255);
  }
   }
 
   private void solidColorRed() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setHSV(i, 0, 100, 50);
+      m_ledBuffer.setHSV(i, 0, 255, 255);
  }
   }
 
   private void solidColorBlue() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-         m_ledBuffer.setHSV(i, 119, 75, 50);
+         m_ledBuffer.setHSV(i, 120, 255, 255);
     }
   }
   private static final int MAX_NO_OF_LEDS = 150;
