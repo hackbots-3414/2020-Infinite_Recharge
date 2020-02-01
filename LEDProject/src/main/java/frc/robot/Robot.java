@@ -11,12 +11,14 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Robot extends TimedRobot {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
   // Store what the last hue of the first pixel is
   private int m_rainbowFirstPixelHue;
+  private int m_chaseLightIndex=0;
   private Joystick joy = new Joystick(0);
   private int m_lastValue=0;
   private boolean m_isDecreasing=false;
@@ -40,23 +42,44 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // Fill the buffer with a rainbow
-    if (joy.getRawButtonPressed(10)) {
-    rainbow();
-    } else if (joy.getRawButtonPressed(6)) {
-solidColor();
-    } else if (joy.getRawButtonPressed(8)) {
-      colorPulse();
-    }
-
+//     // Fill the buffer with a rainbow
+//     if (joy.getRawButtonPressed(10)) {
+//       rainbow();
+//     } else if (joy.getRawButtonPressed(6)) {
+// solidColor();
+//     } else if (joy.getRawButtonPressed(8)) {
+//       colorPulse();
+//     }
+  lightChase();
     // Set the LEDs
     m_led.setData(m_ledBuffer);
   }
 
+  private static final int MAX_NO_OF_LEDS = 150;
+
+  private void lightChaseV2(int currentIndex) {
+    boolean forwadDirection = true;
+    if(currentIndex >= MAX_NO_OF_LEDS) {
+
+    }
+  }
+  private void lightChase() {
+    //Turn the current light off
+    m_ledBuffer.setHSV(m_chaseLightIndex, 270, 100, 0);
+    //Now increase of decrase the index for the next light to turn on 
+    if (!m_isDecreasing && (m_chaseLightIndex < m_ledBuffer.getLength()-1)) { 
+      m_chaseLightIndex ++;
+    } else if (m_isDecreasing && m_chaseLightIndex > 0){
+      m_chaseLightIndex --;
+    }
+    m_ledBuffer.setHSV(m_chaseLightIndex, 200, 100, 100);
+    if (m_chaseLightIndex==(m_ledBuffer.getLength() -1)) { m_isDecreasing=true;}
+    if (m_chaseLightIndex==0) { m_isDecreasing=false;}
+  }
   private void solidColor() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       // Sets the specified LED to the HSV values for purple
-      m_ledBuffer.setHSV(i, 278, 100, 100);
+      m_ledBuffer.setHSV(i, 270, 100, 100);
     }
  
    m_led.setData(m_ledBuffer);
@@ -78,7 +101,7 @@ private void colorPulse() {
   
   for (var i = 0; i < m_ledBuffer.getLength(); i++) {
     // Sets the specified LED to the HSV values for dark purple
-    m_ledBuffer.setHSV(i, 278, 100, m_lastValue);
+    m_ledBuffer.setHSV(i, 200, 100, m_lastValue);
   }
 }
   private void rainbow() {
