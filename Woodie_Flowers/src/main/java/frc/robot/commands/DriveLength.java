@@ -26,7 +26,7 @@ public class DriveLength extends CommandBase {
 
     addRequirements(drivetrainSubsystem);
   } 
-  } 
+
 
   // Called when the command is initially scheduled.
   @Override

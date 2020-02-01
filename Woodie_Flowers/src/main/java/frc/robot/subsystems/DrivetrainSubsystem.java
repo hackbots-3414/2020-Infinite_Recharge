@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+//import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -26,19 +26,31 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
    *
    * Creates a new DrivetrainSubsystem.
    */
-  CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightFront = new CANSparkMax(3, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightBack = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  /*WPI_TalonSRX leftFront = new WPI_TalonSRX(1);
+  WPI_TalonSRX leftBack = new WPI_TalonSRX(2);
+  WPI_TalonSRX rightFront = new WPI_TalonSRX(3);
+  WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
-  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
+  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);*/
+  
+  //make 3 new classes getleftencoder getrightencoder and getaverage encoder
+
+  public int getLeftenCoder(){
+    //return leftFront.get
+    return 1;
+  } 
+
+
   // Odometry class for tracking robot pose
   //private final DifferentialDriveOdometry m_odometry;
   //private final Gyro m_gyro = new ADXRS450_Gyro();
 
   private final Encoder m_leftEncoder = new Encoder(1, 2);
   private final Encoder m_rightEncoder = new Encoder(3, 4);
+
+  
+  
   /*public void DriveSubsystem() {
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(Constants.kEncoderDistancePerPulse);
@@ -60,7 +72,7 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   }
   */
   public void drive(){
-    m_drivetrain.arcadeDrive(-OI.getXboxController().getY(Hand.kLeft), OI.getXboxController().getX(Hand.kRight));
+    //m_drivetrain.arcadeDrive(-OI.getXboxController().getY(Hand.kLeft), OI.getXboxController().getX(Hand.kRight));
 
   }
 }
