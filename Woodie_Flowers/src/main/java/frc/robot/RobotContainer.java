@@ -9,15 +9,19 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LimelightAlignCommand;
+import frc.robot.commands.SpinUpCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -32,6 +36,9 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
+  private final PIDController controller = new PIDController(0.025, 0, 0.02);
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(controller);
+  
 
 
   /**
@@ -40,6 +47,7 @@ public class RobotContainer {
   public RobotContainer() {
     CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
     configureButtonBindings();
+
   }
 
   /**
@@ -50,8 +58,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     System.out.println("inside configureButtonBindings()");
+    
     JoystickButton limelightAlignButton = new JoystickButton(OI.getXboxController(), 2);
     limelightAlignButton.whileHeld(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem));
+
+    JoystickButton spinUpShooterButton = new JoystickButton(OI.getXboxController(), 4);
+    spinUpShooterButton.whileHeld(new SpinUpCommand(m_ShooterSubsystem));
   }
 
 

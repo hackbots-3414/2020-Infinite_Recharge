@@ -35,7 +35,7 @@ public class LimelightAlignCommand extends CommandBase{
             return true;
         }else {
             System.out.println("not aligned inside else block");
-            double kp = -0.025f;
+            //double kp = -0.025f;
             double heading_error = tx;
             double base = 0.25;
             double throttleFloor = 0.175;
