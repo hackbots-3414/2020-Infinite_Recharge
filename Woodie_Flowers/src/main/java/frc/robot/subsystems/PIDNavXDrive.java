@@ -30,6 +30,7 @@ public class PIDNavXDrive extends PIDSubsystem {
   WPI_TalonSRX rightFront = new WPI_TalonSRX(5);
   WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
   OI axis = new OI();
+  
   SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFront, rightBack);
   private DifferentialDrive robotDrive = new DifferentialDrive(leftGroup, rightGroup);
@@ -73,7 +74,7 @@ public class PIDNavXDrive extends PIDSubsystem {
   }
   @Override
   public double getMeasurement() {
-    System.out.println("getMeasurement is working, navx angle is: " + navX.getAngle()+ ", Position error == " + getController().getPositionError());
+    //System.out.println("getMeasurement is working, navx angle is: " + navX.getAngle()+ ", Position error == " + getController().getPositionError());
     getController().getPositionError();
     return navX.getAngle();
     

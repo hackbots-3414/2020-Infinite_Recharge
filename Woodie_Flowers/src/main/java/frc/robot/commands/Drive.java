@@ -7,15 +7,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.PIDNavXDrive;
+import frc.robot.subsystems.Utilities;
 
-public class Drive extends CommandGroupBase {
+public class Drive extends ParallelCommandGroup {
   /**
    * Add your docs here.
    */
   int dist;
+  Utilities finished = new Utilities();
   double speeder;
   PIDNavXDrive lumbago;
   public Drive(int distance, double speed, PIDNavXDrive drivetrain) {
@@ -38,9 +39,7 @@ public class Drive extends CommandGroupBase {
     dist=distance;
     speeder =speed;
     lumbago = drivetrain;
-    addCommands(new DriveDotEXE(dist, speeder), new TurnDotEXE(lumbago, 0, 0));
+    addCommands(new DriveDotEXE(dist, speeder,lumbago), new TurnDotEXE(lumbago, 0, 0));
+    parallel(new DriveDotEXE(dist, speeder,lumbago), new TurnDotEXE(lumbago, 0, 5));
   }
-  public void addCommands(Command... commands) {
-	
-}
 }

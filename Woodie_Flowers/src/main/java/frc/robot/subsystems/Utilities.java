@@ -34,6 +34,7 @@ public class Utilities extends SubsystemBase {
   public double k_DDrive = 0.0155625;
   public boolean atSetPoint = false;
   public double toler;
+  public boolean abruptStop=false;
   //0.015, 0.00361446, 0.0155625
 
 
