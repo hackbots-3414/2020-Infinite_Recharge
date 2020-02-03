@@ -7,32 +7,27 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+
 //import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.teleop.OI;
 
 public class DrivetrainSubsystem extends SubsystemBase {  /**
    *
    * Creates a new DrivetrainSubsystem.
    */
-  /*WPI_TalonSRX leftFront = new WPI_TalonSRX(1);
-  WPI_TalonSRX leftBack = new WPI_TalonSRX(2);
-  WPI_TalonSRX rightFront = new WPI_TalonSRX(3);
-  WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
+  CANSparkMax leftFront = new CANSparkMax(10, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax leftBack = new CANSparkMax(20, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightFront = new CANSparkMax(30, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightBack = new CANSparkMax(40, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
-  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);*/
+  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
   
   //make 3 new classes getleftencoder getrightencoder and getaverage encoder
 
@@ -46,11 +41,8 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   //private final DifferentialDriveOdometry m_odometry;
   //private final Gyro m_gyro = new ADXRS450_Gyro();
 
-  private final Encoder m_leftEncoder = new Encoder(1, 2);
-  private final Encoder m_rightEncoder = new Encoder(3, 4);
-
-  
-  
+  private final Encoder m_leftEncoder = new Encoder(10, 20);
+  private final Encoder m_rightEncoder = new Encoder(30, 40);
   /*public void DriveSubsystem() {
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(Constants.kEncoderDistancePerPulse);

@@ -7,15 +7,11 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.TurnDotEXE;
+import frc.robot.subsystems.PIDNavXDrive;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -28,6 +24,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+  public PIDNavXDrive pidNavX = new PIDNavXDrive();
+  private static final String kDefaultAuto = "Default";
+  private static final String kCustomAuto = "My Auto";
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private String m_autoSelected;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -38,6 +39,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.addOption("My Auto", kCustomAuto);
+    SmartDashboard.putData("Auto choices", m_chooser);
+    CommandScheduler.getInstance().registerSubsystem(pidNavX);
   }
 
   /**
@@ -66,16 +71,28 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
   }
-
+  boolean counter;
   /**
    * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
    */
   @Override
   public void autonomousInit() {
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    m_autoSelected = m_chooser.getSelected();
+    switch (m_autoSelected) {
+      case kCustomAuto:
+        // Put custom auto code here
+        break;
+      case kDefaultAuto:
+      default:
+        // Put default auto code here
+        break;
     }
+    if(counter == true){
+      counter = false;
+      CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
+      System.out.println("worked");
+    }
+   counter = true;
   }
 
   /**
@@ -83,6 +100,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+  
+    
+    if (counter == true) {
+    counter = false;
+    CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
+    System.out.println("worked");
+  }
   }
 
   @Override
