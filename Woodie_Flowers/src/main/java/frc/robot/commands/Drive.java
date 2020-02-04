@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.PIDNavXDrive;
 import frc.robot.subsystems.Utilities;
@@ -19,7 +18,8 @@ public class Drive extends ParallelCommandGroup {
   Utilities finished = new Utilities();
   double speeder;
   PIDNavXDrive lumbago;
-  public Drive(int distance, double speed, PIDNavXDrive drivetrain) {
+  double m_tolerance;
+  public Drive(int distance, double speed, PIDNavXDrive drivetrain, double tolerance) {
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
@@ -39,7 +39,8 @@ public class Drive extends ParallelCommandGroup {
     dist=distance;
     speeder =speed;
     lumbago = drivetrain;
-    addCommands(new DriveDotEXE(dist, speeder,lumbago), new TurnDotEXE(lumbago, 0, 0));
-    parallel(new DriveDotEXE(dist, speeder,lumbago), new TurnDotEXE(lumbago, 0, 5));
+    lumbago.setDriveActive(true);
+    m_tolerance = tolerance;
+    addCommands(new DriveDotEXE(dist, speeder,m_tolerance), new TurnDotEXE(lumbago, 0, 0));
   }
 }

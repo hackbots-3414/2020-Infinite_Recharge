@@ -30,10 +30,13 @@ public class PIDNavXDrive extends PIDSubsystem {
   WPI_TalonSRX rightFront = new WPI_TalonSRX(5);
   WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
   OI axis = new OI();
-  
+  boolean interupted =  false;
+  double previousAngle = 0;
+  int previousDistance = 0;
   SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFront, rightBack);
   private DifferentialDrive robotDrive = new DifferentialDrive(leftGroup, rightGroup);
+  boolean driveIsActive;
   public PIDNavXDrive() {
     // Intert a subsystem name and PID values here
     super(new PIDController(0,0,0));
@@ -41,6 +44,7 @@ public class PIDNavXDrive extends PIDSubsystem {
     getController().enableContinuousInput(-180, 180);
     //getController().setTolerance(5);
     robotDrive.setSafetyEnabled(false);
+    
     //LiveWindow.enableTelemetry(getController());
   }
   
@@ -53,7 +57,30 @@ public class PIDNavXDrive extends PIDSubsystem {
   public void robotDrive (double speed, double turn){
     robotDrive.arcadeDrive(speed , turn);
   }
-
+  public boolean getDriveActive(){
+    return driveIsActive;
+  }
+  public void setDriveActive(boolean statement){
+    driveIsActive = statement;
+  }
+  public boolean getInterupted(){
+    return interupted;
+  }
+  public void setInterupted(boolean statement){
+    interupted= statement;
+  }
+  public int getPreviousDistance() {
+    return previousDistance;
+  }
+  public void setPreviousDistance(int distance){
+    previousDistance = distance;
+  }
+  public double getPreviousAngle() {
+    return previousAngle;
+  }
+  public void setPreviousAngle(double angle){
+    previousAngle = angle;
+  }
   @Override
   protected void useOutput(double output, double setpoint) {
     robotDrive.arcadeDrive(0 , output);
