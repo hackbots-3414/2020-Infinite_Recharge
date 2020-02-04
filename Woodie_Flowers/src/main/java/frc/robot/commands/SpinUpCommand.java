@@ -34,13 +34,15 @@ static{
   // Called repeatedly when this Command is scheduled to run
   public void execute() {
     super.execute();
+    shooterSubsystem.enable();
+    System.out.println("inside SpinUpCommand execute()");
   }
 
   // Make this return true when this Command no longer needs to run execute()
   
   public boolean isFinished() {
      shooterSubsystem.atSetpoint();
-     System.out.println("current velocity: " + shooterSubsystem.getShooterVelocity());
+     System.out.println("current velocity: " + shooterSubsystem.getAverageShooterVelocity());
      System.out.println("current setpoint: " + shooterSubsystem.getSetpoint());
      if(shooterSubsystem.atSetpoint() == true){
        System.out.println("at setpoint");
@@ -52,6 +54,7 @@ static{
 
   // Called once after isFinished returns true
   public void end() {
+    shooterSubsystem.disable();
     shooterSubsystem.stop();
   }
 

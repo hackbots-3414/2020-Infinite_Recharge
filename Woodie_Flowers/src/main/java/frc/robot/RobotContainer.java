@@ -57,7 +57,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    System.out.println("inside configureButtonBindings()");
+    System.out.println("---------------inside configureButtonBindings()");
     
     JoystickButton limelightAlignButton = new JoystickButton(OI.getXboxController(), 2);
     limelightAlignButton.whileHeld(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem));
