@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.Drive;
 import frc.robot.commands.DriveDotEXE;
 import frc.robot.commands.TurnDotEXE;
 import frc.robot.subsystems.PIDNavXDrive;
@@ -91,7 +92,7 @@ public class Robot extends TimedRobot {
     if(counter == true){
       counter = false;
       //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
-      CommandScheduler.getInstance().schedule(new DriveDotEXE(10000,pidNavX,0.5));
+      CommandScheduler.getInstance().schedule(new Drive(20000000,0.5,pidNavX,5));
       System.out.println("worked");
     }
    counter = true;
@@ -107,9 +108,13 @@ public class Robot extends TimedRobot {
     if (counter == true) {
     counter = false;
     //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
-    CommandScheduler.getInstance().schedule(new DriveDotEXE(10000,pidNavX,0.5));
+    //CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
+    CommandScheduler.getInstance().schedule(new Drive(200000,0.5,pidNavX,5));
     System.out.println("worked");
   }
+   if(pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false){
+    CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-pidNavX.getPreviousAngle(),5));
+   }
   }
 
   @Override

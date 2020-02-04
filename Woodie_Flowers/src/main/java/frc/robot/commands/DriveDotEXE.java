@@ -25,11 +25,12 @@ public class DriveDotEXE extends PIDCommand {
    * Creates a new DriveDotEXE.
    */
   int distan;
-  
+  double okBoomer;
   PIDNavXDrive drivetrain;
   Utilities values;
-  double acceleration;
-  public DriveDotEXE(int distance,PIDNavXDrive subsystem,double speed) {
+  double m_tolerance;
+  public DriveDotEXE(int distance,double speed,double tolerance) {
+
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
@@ -43,10 +44,11 @@ public class DriveDotEXE extends PIDCommand {
           
 
         });
-        acceleration = speed;
-        drivetrain = subsystem;
+        okBoomer = speed;
+        drivetrain = new PIDNavXDrive();
         values = new Utilities();
         distan = distance;
+        m_tolerance = tolerance;
         getController().setD(values.k_DDrive);
         getController().setI(values.k_IDrive);
         getController().setP(values.k_PDrive);
@@ -64,14 +66,39 @@ public class DriveDotEXE extends PIDCommand {
   }
   @Override
   public void execute() {
-    drivetrain.robotDrive(acceleration, 0);
+
+    drivetrain.robotDrive(okBoomer, 0);
+
     System.out.println("right encoder values : " + drivetrain.getEncoderRight());
-    System.out.println("left encoder values : " + drivetrain.getEncoderLeft());
+    System.out.println("left encoder values : " + -drivetrain.getEncoderLeft());
     super.execute();
+    CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
+    //10,000 = 17 inches
+    //20,000 = 16 inches
   }
   @Override
   public boolean isFinished() {
-    if(drivetrain.getEncoderLeft()> distan && drivetrain.getEncoderRight() > distan){
+    if(drivetrain.getMeasurement()>m_tolerance && drivetrain.getDriveActive() == true){
+      drivetrain.setInterupted(true);
+      drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
+      drivetrain.setPreviousAngle(drivetrain.getMeasurement());
+      return true;
+    }
+    if(drivetrain.getMeasurement()<-m_tolerance && drivetrain.getDriveActive() == true){
+      drivetrain.setInterupted(true);
+      drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
+      drivetrain.setPreviousAngle(drivetrain.getMeasurement());
+      return true;
+    }
+
+    if(-drivetrain.getEncoderLeft()> distan && drivetrain.getEncoderRight() > distan && distan>0){
+      drivetrain.disable();
+      drivetrain.robotDrive(0.0, 0.0);
+      System.out.println("isFinished = true");
+      values.atSetPoint = true;
+      return true;
+    }
+    if(-drivetrain.getEncoderLeft()< distan && drivetrain.getEncoderRight() < distan && distan<0){
       drivetrain.disable();
       drivetrain.robotDrive(0.0, 0.0);
       System.out.println("isFinished = true");
