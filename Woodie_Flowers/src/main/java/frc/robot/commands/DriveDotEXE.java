@@ -25,12 +25,11 @@ public class DriveDotEXE extends PIDCommand {
    * Creates a new DriveDotEXE.
    */
   int distan;
-  double okBoomer;
+  public double okBoomer;
   PIDNavXDrive drivetrain;
   Utilities values;
   double m_tolerance;
   public DriveDotEXE(int distance,double speed,double tolerance) {
-
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
@@ -45,10 +44,12 @@ public class DriveDotEXE extends PIDCommand {
 
         });
         okBoomer = speed;
-        drivetrain = new PIDNavXDrive();
+        drivetrain = driver;
         values = new Utilities();
         distan = distance;
         m_tolerance = tolerance;
+
+
         getController().setD(values.k_DDrive);
         getController().setI(values.k_IDrive);
         getController().setP(values.k_PDrive);
@@ -62,7 +63,8 @@ public class DriveDotEXE extends PIDCommand {
   public void initialize() {
     drivetrain.enable();
     super.initialize();
-    CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
+    values.abruptStop =false;
+    //CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
   }
   @Override
   public void execute() {
@@ -72,7 +74,7 @@ public class DriveDotEXE extends PIDCommand {
     System.out.println("right encoder values : " + drivetrain.getEncoderRight());
     System.out.println("left encoder values : " + -drivetrain.getEncoderLeft());
     super.execute();
-    CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
+    //CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
     //10,000 = 17 inches
     //20,000 = 16 inches
   }
@@ -96,6 +98,16 @@ public class DriveDotEXE extends PIDCommand {
       drivetrain.robotDrive(0.0, 0.0);
       System.out.println("isFinished = true");
       values.atSetPoint = true;
+      return true;
+    }
+    if(drivetrain.getMeasurement()-values.toler>0 && drivetrain.getMeasurement()<0){
+      values.abruptStop = true;
+      drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
+      return true;
+    }
+    if(drivetrain.getMeasurement()+values.toler<values.toler*2 && drivetrain.getMeasurement()>0){
+      values.abruptStop = true;
+      values.previousDistanceTravled = drivetrain.getEncoderRight() + values.previousDistanceTravled;
       return true;
     }
     if(-drivetrain.getEncoderLeft()< distan && drivetrain.getEncoderRight() < distan && distan<0){

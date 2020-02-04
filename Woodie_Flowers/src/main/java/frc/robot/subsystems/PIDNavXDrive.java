@@ -101,7 +101,7 @@ public class PIDNavXDrive extends PIDSubsystem {
   }
   @Override
   public double getMeasurement() {
-    System.out.println("getMeasurement is working, navx angle is: " + navX.getAngle()+ ", Position error == " + getController().getPositionError());
+    //System.out.println("getMeasurement is working, navx angle is: " + navX.getAngle()+ ", Position error == " + getController().getPositionError());
     getController().getPositionError();
     return navX.getAngle();
     

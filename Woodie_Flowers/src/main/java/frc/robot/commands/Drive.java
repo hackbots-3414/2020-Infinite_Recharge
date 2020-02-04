@@ -8,12 +8,14 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.PIDNavXDrive;
+import frc.robot.subsystems.Utilities;
 
 public class Drive extends ParallelCommandGroup {
   /**
    * Add your docs here.
    */
   int dist;
+  Utilities finished = new Utilities();
   double speeder;
   PIDNavXDrive lumbago;
   double m_tolerance;

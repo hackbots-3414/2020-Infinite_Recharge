@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -26,10 +26,10 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
    *
    * Creates a new DrivetrainSubsystem.
    */
-  CANSparkMax leftFront = new CANSparkMax(10, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax leftBack = new CANSparkMax(20, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightFront = new CANSparkMax(30, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightBack = new CANSparkMax(40, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  WPI_TalonSRX leftFront = new WPI_TalonSRX(10);
+  WPI_TalonSRX leftBack = new WPI_TalonSRX(20);
+  WPI_TalonSRX rightFront = new WPI_TalonSRX(30);
+  WPI_TalonSRX rightBack = new WPI_TalonSRX(40);
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
   DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
@@ -48,6 +48,12 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   
   */
+  public int getLeftEncoder(){
+    return leftFront.getSelectedSensorPosition();
+  }
+  public int getRightEncoder(){
+    return rightBack.getSelectedSensorPosition();
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
