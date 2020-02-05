@@ -54,10 +54,11 @@ public class Robot extends TimedRobot {
    * Note: Any example colors should be calibrated as the user needs, these
    * are here as a basic example.
    */
-  private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  private static final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+  private static final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+  private static final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+  private static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  
 
   @Override
   public void robotInit() {
@@ -77,6 +78,7 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kGreenTarget);
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);
+
   }
 
   @Override
@@ -89,7 +91,7 @@ public class Robot extends TimedRobot {
 //     } else if (joy.getRawButtonPressed(8)) {
 //       colorPulse();
 //     }
-  //rainbow();
+  //solidColor();
 
     /**
      * The method GetColor() returns a normalized color value from the sensor and can be
@@ -123,6 +125,7 @@ public class Robot extends TimedRobot {
       solidColorYellow();
     } else {
       colorString = "Unknown";
+      solidColorPurple();
     }
 
     // Set the LEDs
@@ -136,6 +139,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Blue", detectedColor.blue);
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
+  }
+
+  private void solidColorPurple() {
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setRGB(i, 106, 13, 173);
+ }
   }
 
   private void solidColorYellow() {
@@ -184,13 +193,13 @@ public class Robot extends TimedRobot {
   }
 
   public void solidColor(String coloString){
-    m_ledBuffer.setHSV(1, 270, 100, 100);
+    m_ledBuffer.setHSV(1, 170, 255, 255);
 
   }
   private void solidColor() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       // Sets the specified LED to the HSV values for purple
-      m_ledBuffer.setHSV(i, 270, 100, 100);
+      m_ledBuffer.setHSV(i, 170, 255, 255);
     }
  
    m_led.setData(m_ledBuffer);

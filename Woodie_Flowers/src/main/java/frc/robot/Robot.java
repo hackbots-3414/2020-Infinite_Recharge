@@ -7,8 +7,8 @@
 
 package frc.robot;
 
-import frc.robot.commands.TurnDotEXE;
-import frc.robot.subsystems.PIDNavXDrive;
+//import frc.robot.commands.TurnDotEXE;
+//import frc.robot.subsystems.PIDNavXDrive;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
-  public PIDNavXDrive pidNavX = new PIDNavXDrive();
+//  public PIDNavXDrive pidNavX = new PIDNavXDrive();
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    CommandScheduler.getInstance().registerSubsystem(pidNavX);
+  //  CommandScheduler.getInstance().registerSubsystem(pidNavX);
   }
 
   /**
@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
     }
     if(counter == true){
       counter = false;
-      CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
+    //  CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
       System.out.println("worked");
     }
    counter = true;
@@ -104,7 +104,7 @@ public class Robot extends TimedRobot {
     
     if (counter == true) {
     counter = false;
-    CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
+  //  CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
     System.out.println("worked");
   }
   }
