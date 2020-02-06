@@ -46,7 +46,6 @@ public class TurnDotEXE extends CommandBase {
     navXDrive.setSetpoint(m_angle);
     //System.out.println("setSetpoint "+ navXDrive.getController().getSetpoint());
     navXDrive.getMeasurement();
-    System.out.println("Ross's will to live");
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -60,8 +59,7 @@ public class TurnDotEXE extends CommandBase {
          //System.out.println("Misa finished");
          navXDrive.disable();
          navXDrive.setInterupted(false);
-         navXDrive.setResetTime(1);
-         navXDrive.setLevel(true);
+         navXDrive.continueDriving = true;
          util.setAtSetpoint(true);
          return true;
          }

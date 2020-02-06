@@ -30,11 +30,10 @@ public class PIDNavXDrive extends PIDSubsystem {
   WPI_TalonSRX rightFront = new WPI_TalonSRX(5);
   WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
   OI axis = new OI();
-  boolean theNextLevel = false;
-  public boolean interupted =  false;
   double previousAngle = 0;
   int previousDistance = 0;
-  int ammmountOfTimes = 0;
+  boolean interupted;
+  public boolean continueDriving = false;
   public boolean gogoGadget = false;
   public boolean wakawaka = false;
   public long time = 0;
@@ -72,25 +71,13 @@ public class PIDNavXDrive extends PIDSubsystem {
     return interupted;
   }
   public void setInterupted(boolean statement){
-    interupted= statement;
+     interupted = statement;
   }
   public void resetDistance(){
     previousDistance = 0;
   }
   public int getPreviousDistance() {
     return previousDistance;
-  }
-  public void setLevel(boolean statement){
-    theNextLevel= statement;
-  }
-  public boolean getLevel() {
-    return theNextLevel;
-  }
-  public void setResetTime(int time){
-    ammmountOfTimes = time;
-  }
-  public int getResetTimes() {
-    return ammmountOfTimes;
   }
   public void setPreviousDistance(int distance){
     previousDistance = distance;

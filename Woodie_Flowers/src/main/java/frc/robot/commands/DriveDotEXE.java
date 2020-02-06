@@ -84,14 +84,12 @@ public class DriveDotEXE extends PIDCommand {
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
       drivetrain.setPreviousAngle(drivetrain.getMeasurement());
-      drivetrain.setLevel(true);
       return true;
     }
     if(drivetrain.getMeasurement()<-m_tolerance){
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
       drivetrain.setPreviousAngle(drivetrain.getMeasurement());
-      drivetrain.setLevel(true);
       return true;
     }
 

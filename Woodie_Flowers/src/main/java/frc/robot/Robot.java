@@ -17,11 +17,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -35,12 +37,13 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
 
   /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -50,17 +53,22 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+   * This function is called every robot packet, no matter the mode. Use this for
+   * items like diagnostics that you want ran during disabled, autonomous,
+   * teleoperated and test.
    *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
+   * <p>
+   * This runs after the mode specific periodic functions, but before LiveWindow
+   * and SmartDashboard integrated updating.
    */
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
   }
@@ -75,30 +83,32 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
   }
+
   boolean counter;
+
   /**
-   * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
+   * This autonomous runs the autonomous command selected by your
+   * {@link RobotContainer} class.
    */
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    case kCustomAuto:
+      // Put custom auto code here
+      break;
+    case kDefaultAuto:
+    default:
+      // Put default auto code here
+      break;
     }
-    pidNavX.resetDistance();
-    if(counter == true){
+    if (counter == true) {
       counter = false;
-      //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
-      CommandScheduler.getInstance().schedule(new Drive(20000000,0.5,pidNavX,5));
+      // CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
+      CommandScheduler.getInstance().schedule(new Drive(20000000, 0.5, pidNavX, 5));
       System.out.println("worked");
     }
-   counter = true;
+    counter = true;
   }
 
   /**
@@ -106,27 +116,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-  
-    
+
     if (counter == true) {
-    counter = false;
-    //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
-    //CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
-    CommandScheduler.getInstance().schedule(new DriveDotEXE(200000,0.5,1,pidNavX));
-    System.out.println("worked");
-  }
-   if(pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false && pidNavX.gogoGadget == true && pidNavX.time - System.currentTimeMillis() > -1000){
-    CommandScheduler.getInstance().schedule(true, new TurnDotEXE(pidNavX,-pidNavX.getPreviousAngle(),2));
-    System.out.println("pidNavx schedule");
-    pidNavX.setInterupted(false);
-    pidNavX.wakawaka = true;
-    pidNavX.time = System.currentTimeMillis();
-   }
-   if(pidNavX.getLevel() == true && pidNavX.wakawaka == true && pidNavX.time - System.currentTimeMillis() > -1000){
+      pidNavX.resetDistance();
+      counter = false;
+      // CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
+      // CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
+      CommandScheduler.getInstance().schedule(new DriveDotEXE(200000, 0.5, 1, pidNavX));
+      System.out.println("worked");
+    }
+    if (pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false) {
+      CommandScheduler.getInstance().schedule(true, new TurnDotEXE(pidNavX, -pidNavX.getPreviousAngle(), 2));
+      System.out.println("pidNavx schedule");
+      pidNavX.setInterupted(false);
+    }
+    if (pidNavX.continueDriving == true) {
+    CommandScheduler.getInstance().schedule(new WaitCommand(1));
     CommandScheduler.getInstance().schedule( new DriveDotEXE(20000,0.5,1,pidNavX));
     System.out.println("drive scheduled");
-    pidNavX.time = System.currentTimeMillis();
-    pidNavX.gogoGadget = true;
    }
   }
 
