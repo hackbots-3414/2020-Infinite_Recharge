@@ -1,10 +1,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.NotDriveTrain;
+import frc.robot.commands.Right_Turn;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.teleop.OI;
@@ -42,6 +44,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton toggleButton = new JoystickButton(OI.getJoystick(),2);
     toggleButton.whenPressed(new NotDriveTrain(m_drivetrainSubsystem));
+
+    JoystickButton Button_Turn_Right = new JoystickButton(OI.getJoystick(),1);
+    Button_Turn_Right.whenPressed(new Right_Turn(m_drivetrainSubsystem));
+    Timer.delay(1);
   }
 
 

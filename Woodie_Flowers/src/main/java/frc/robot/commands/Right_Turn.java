@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -5,24 +6,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
 package frc.robot.commands;
 
-import java.nio.channels.ShutdownChannelGroupException;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 
 public class Right_Turn extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURRATION_IN_MILLISECONDS = 2000;
-  public static final double SPEED = .5;
+  public static final long DURRATION_IN_MILLISECONDS = 1;
+  public static final double SPEED = .15;
   public static final double ROTATION = 0;
+  public static final double left = 0.0;
+  public static final double right = -.15;
+  //public static final long Angle_Remaining = 90;
 
 
   private final DrivetrainSubsystem drivetrainSubsystem;
   private long startTime = 0;
-  private boolean running= false;
+  private boolean running = false;
 
   public Right_Turn(DrivetrainSubsystem drive) {
     drivetrainSubsystem = drive;
@@ -37,7 +47,8 @@ public class Right_Turn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Turining right ................");
+    System.out.println("Turning right ................");
+    
     startTime = System.currentTimeMillis();
     running = true;
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
@@ -45,10 +56,17 @@ public class Right_Turn extends CommandBase {
     if (!running ||(DURRATION_IN_MILLISECONDS <= SinceHowLongRunning)){
       System.out.println("Shutting Down right_turn...................");
       shutDownInAuton();
-    }else{
-      System.out.println("Running_Righting_turn............");
-      drivetrainSubsystem.drive(SPEED, ROTATION);
+
     }
+    else{
+      System.out.println("Running Right_turn............");
+      drivetrainSubsystem.drive(SPEED, ROTATION);
+      drivetrainSubsystem.drive(.5,.50);
+      Timer.delay(5);
+    }
+    //if else{
+
+   // }
   }
   private void shutDownInAuton(){
     drivetrainSubsystem.drive(0,0);
