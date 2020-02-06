@@ -116,12 +116,20 @@ public class PIDNavXDrive extends PIDSubsystem {
   public boolean atSetPoint(){
     return misterG.atSetPoint;
   }
+   @Override
+  public void disable() {
+    navX.reset();
+    super.disable();
+  }
+  public void enablePIDController(){
+    super.enable();
+  }
   @Override
   public void enable() {
     System.out.println("enable");
     leftFront.setSelectedSensorPosition(0);
     rightBack.setSelectedSensorPosition(0);
     navX.reset();
-    super.enable();
+    //super.enable();
   }
 }

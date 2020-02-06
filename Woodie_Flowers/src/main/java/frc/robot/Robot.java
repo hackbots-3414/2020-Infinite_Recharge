@@ -125,12 +125,14 @@ public class Robot extends TimedRobot {
       CommandScheduler.getInstance().schedule(new DriveDotEXE(200000, 0.5, 1, pidNavX));
       System.out.println("worked");
     }
-    if (pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false) {
+    if (pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false  && pidNavX.continueDriving == false) {
+      pidNavX.enablePIDController();
       CommandScheduler.getInstance().schedule(true, new TurnDotEXE(pidNavX, -pidNavX.getPreviousAngle(), 2));
       System.out.println("pidNavx schedule");
       pidNavX.setInterupted(false);
     }
     if (pidNavX.continueDriving == true) {
+    pidNavX.disable();
     CommandScheduler.getInstance().schedule(new WaitCommand(1));
     CommandScheduler.getInstance().schedule( new DriveDotEXE(20000,0.5,1,pidNavX));
     System.out.println("drive scheduled");
