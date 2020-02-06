@@ -19,7 +19,7 @@ public class TurnDotEXE extends CommandBase {
   public double m_tolerance;
   double initialRefrenceAngle;
   public TurnDotEXE (final PIDNavXDrive pidNavXDrive,double angularBruhMoment,double m_tolerancei) {
-    addRequirements(pidNavXDrive);
+
     navXDrive = pidNavXDrive;
     m_angle = angularBruhMoment;
     m_tolerance = m_tolerancei;
@@ -46,15 +46,7 @@ public class TurnDotEXE extends CommandBase {
     navXDrive.setSetpoint(m_angle);
     //System.out.println("setSetpoint "+ navXDrive.getController().getSetpoint());
     navXDrive.getMeasurement();
-    if (m_angle<0){
-      util.toler = -m_tolerance;
-      //System.out.println("tolerance; " + m_tolerance);
-      //System.out.println("tolerance; " + util.toler);
-    }
-
-    else{
-      util.toler = m_tolerance;
-    }  
+    System.out.println("Ross's will to live");
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -63,20 +55,16 @@ public class TurnDotEXE extends CommandBase {
    // System.out.println("isFinished: " + navXDrive.atSetPoint());
     //System.out.println("tolerance: "+ util.toler);
     //System.out.println("tolerance: "+ m_tolerance);
-      if( navXDrive.getController().getPositionError() > util.toler && util.toler<0)  {
-      navXDrive.disable();
-      util.setAtSetpoint(true);
-     // System.out.println("isFinished: " + true);
-      //System.out.println("Misa finished");
-      return util.atSetPoint;
-      }
-    if(navXDrive.getController().getPositionError() < util.toler && util.toler > 0)  {
-      navXDrive.disable();
-      util.setAtSetpoint(true);
-      //System.out.println("isFinished: " + true);
-      //System.out.println("Misa finished");
-      return util.atSetPoint;
-    }
+      if( Math.abs(navXDrive.getController().getPositionError()) < m_tolerance)  {
+        // System.out.println("isFinished: " + true);
+         //System.out.println("Misa finished");
+         navXDrive.disable();
+         navXDrive.setInterupted(false);
+         navXDrive.setResetTime(1);
+         navXDrive.setLevel(true);
+         util.setAtSetpoint(true);
+         return true;
+         }
     else{
       return util.atSetPoint;
     }

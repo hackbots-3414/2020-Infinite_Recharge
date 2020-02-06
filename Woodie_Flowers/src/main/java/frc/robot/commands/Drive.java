@@ -41,6 +41,7 @@ public class Drive extends ParallelCommandGroup {
     lumbago = drivetrain;
     lumbago.setDriveActive(true);
     m_tolerance = tolerance;
-    addCommands(new DriveDotEXE(dist, speeder,m_tolerance), new TurnDotEXE(lumbago, 0, 0));
+    addCommands(new DriveDotEXE(dist, speeder,m_tolerance,lumbago), new TurnDotEXE(lumbago, 0, 0));
+    parallel(new DriveDotEXE(dist, speeder,m_tolerance,lumbago), new TurnDotEXE(lumbago, 0, 0));
   }
 }
