@@ -29,7 +29,7 @@ public class DriveDotEXE extends PIDCommand {
   PIDNavXDrive drivetrain;
   Utilities values;
   double m_tolerance;
-  public DriveDotEXE(int distance,double speed,double tolerance) {
+  public DriveDotEXE(int distance,double speed,double tolerance,PIDNavXDrive driver) {
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
@@ -80,16 +80,18 @@ public class DriveDotEXE extends PIDCommand {
   }
   @Override
   public boolean isFinished() {
-    if(drivetrain.getMeasurement()>m_tolerance && drivetrain.getDriveActive() == true){
+    if(drivetrain.getMeasurement()>m_tolerance){
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
       drivetrain.setPreviousAngle(drivetrain.getMeasurement());
+      drivetrain.setLevel(true);
       return true;
     }
-    if(drivetrain.getMeasurement()<-m_tolerance && drivetrain.getDriveActive() == true){
+    if(drivetrain.getMeasurement()<-m_tolerance){
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
       drivetrain.setPreviousAngle(drivetrain.getMeasurement());
+      drivetrain.setLevel(true);
       return true;
     }
 
@@ -98,16 +100,6 @@ public class DriveDotEXE extends PIDCommand {
       drivetrain.robotDrive(0.0, 0.0);
       System.out.println("isFinished = true");
       values.atSetPoint = true;
-      return true;
-    }
-    if(drivetrain.getMeasurement()-values.toler>0 && drivetrain.getMeasurement()<0){
-      values.abruptStop = true;
-      drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
-      return true;
-    }
-    if(drivetrain.getMeasurement()+values.toler<values.toler*2 && drivetrain.getMeasurement()>0){
-      values.abruptStop = true;
-      values.previousDistanceTravled = drivetrain.getEncoderRight() + values.previousDistanceTravled;
       return true;
     }
     if(-drivetrain.getEncoderLeft()< distan && drivetrain.getEncoderRight() < distan && distan<0){

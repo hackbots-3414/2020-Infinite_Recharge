@@ -91,6 +91,7 @@ public class Robot extends TimedRobot {
         // Put default auto code here
         break;
     }
+    pidNavX.resetDistance();
     if(counter == true){
       counter = false;
       //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
@@ -111,11 +112,21 @@ public class Robot extends TimedRobot {
     counter = false;
     //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
     //CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
-    CommandScheduler.getInstance().schedule(new Drive(200000,0.5,pidNavX,5));
+    CommandScheduler.getInstance().schedule(new DriveDotEXE(200000,0.5,1,pidNavX));
     System.out.println("worked");
   }
-   if(pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false){
-    CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-pidNavX.getPreviousAngle(),5));
+   if(pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false && pidNavX.gogoGadget == true && pidNavX.time - System.currentTimeMillis() > -1000){
+    CommandScheduler.getInstance().schedule(true, new TurnDotEXE(pidNavX,-pidNavX.getPreviousAngle(),2));
+    System.out.println("pidNavx schedule");
+    pidNavX.setInterupted(false);
+    pidNavX.wakawaka = true;
+    pidNavX.time = System.currentTimeMillis();
+   }
+   if(pidNavX.getLevel() == true && pidNavX.wakawaka == true && pidNavX.time - System.currentTimeMillis() > -1000){
+    CommandScheduler.getInstance().schedule( new DriveDotEXE(20000,0.5,1,pidNavX));
+    System.out.println("drive scheduled");
+    pidNavX.time = System.currentTimeMillis();
+    pidNavX.gogoGadget = true;
    }
   }
 
