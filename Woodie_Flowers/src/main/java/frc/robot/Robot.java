@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,7 +34,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private String m_autoSelected;
-
+  TurnDotEXE stay0degrees = new TurnDotEXE(pidNavX,-pidNavX.getPreviousAngle(),2);
+  DriveDotEXE forward = new DriveDotEXE(200000,0.5,1,pidNavX);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -112,23 +114,24 @@ public class Robot extends TimedRobot {
     counter = false;
     //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
     //CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
-    CommandScheduler.getInstance().schedule(new DriveDotEXE(200000,0.5,1,pidNavX));
+    CommandScheduler.getInstance().schedule(forward);
     System.out.println("worked");
   }
-   if(pidNavX.getInterupted() == true && pidNavX.atSetPoint() == false && pidNavX.gogoGadget == true && pidNavX.time - System.currentTimeMillis() > -1000){
-    CommandScheduler.getInstance().schedule(true, new TurnDotEXE(pidNavX,-pidNavX.getPreviousAngle(),2));
+   if(forward.isFinished() == true&& pidNavX.getInterupted() == true){
+    CommandScheduler.getInstance().schedule(stay0degrees);
     System.out.println("pidNavx schedule");
     pidNavX.setInterupted(false);
-    pidNavX.wakawaka = true;
-    pidNavX.time = System.currentTimeMillis();
    }
-   if(pidNavX.getLevel() == true && pidNavX.wakawaka == true && pidNavX.time - System.currentTimeMillis() > -1000){
-    CommandScheduler.getInstance().schedule( new DriveDotEXE(20000,0.5,1,pidNavX));
+   if(stay0degrees.isFinished() == true){
+
+    pidNavX.robotDrive(-0.1, 0);
+    CommandScheduler.getInstance().schedule( new DriveDotEXE(2000000,0.5,1,pidNavX));
     System.out.println("drive scheduled");
-    pidNavX.time = System.currentTimeMillis();
-    pidNavX.gogoGadget = true;
+   
+
    }
-  }
+    
+}
 
   @Override
   public void teleopInit() {

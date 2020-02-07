@@ -71,8 +71,8 @@ public class DriveDotEXE extends PIDCommand {
 
     drivetrain.robotDrive(okBoomer, 0);
 
-    System.out.println("right encoder values : " + drivetrain.getEncoderRight());
-    System.out.println("left encoder values : " + -drivetrain.getEncoderLeft());
+    //System.out.println("right encoder values : " + drivetrain.getEncoderRight());
+    //System.out.println("left encoder values : " + -drivetrain.getEncoderLeft());
     super.execute();
     //CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
     //10,000 = 17 inches
@@ -84,14 +84,12 @@ public class DriveDotEXE extends PIDCommand {
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
       drivetrain.setPreviousAngle(drivetrain.getMeasurement());
-      drivetrain.setLevel(true);
       return true;
     }
     if(drivetrain.getMeasurement()<-m_tolerance){
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
-      drivetrain.setPreviousAngle(drivetrain.getMeasurement());
-      drivetrain.setLevel(true);
+      drivetrain.setPreviousAngle(drivetrain.getMeasurement()*1.02);
       return true;
     }
 

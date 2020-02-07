@@ -35,8 +35,8 @@ public class PIDNavXDrive extends PIDSubsystem {
   double previousAngle = 0;
   int previousDistance = 0;
   int ammmountOfTimes = 0;
-  public boolean gogoGadget = false;
-  public boolean wakawaka = false;
+  public boolean counterForTurn = false;
+  public boolean counterForDrive = false;
   public long time = 0;
   SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFront, rightBack);
@@ -58,7 +58,9 @@ public class PIDNavXDrive extends PIDSubsystem {
     // to
     // enable() - Enables the PID controller.
   
-
+  public AHRS getNavX(){
+    return navX;
+  }
   public void robotDrive (double speed, double turn){
     robotDrive.arcadeDrive(speed , turn);
   }
@@ -129,6 +131,7 @@ public class PIDNavXDrive extends PIDSubsystem {
   public boolean atSetPoint(){
     return misterG.atSetPoint;
   }
+  
   @Override
   public void enable() {
     System.out.println("enable");
