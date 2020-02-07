@@ -47,7 +47,7 @@ public class RobotContainer {
 
     JoystickButton Button_Turn_Right = new JoystickButton(OI.getJoystick(),1);
     Button_Turn_Right.whenPressed(new Right_Turn(m_drivetrainSubsystem));
-    Timer.delay(1);
+    //Timer.delay(1);
   }
 
 

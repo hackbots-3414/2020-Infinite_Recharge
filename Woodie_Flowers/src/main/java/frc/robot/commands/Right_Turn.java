@@ -10,6 +10,10 @@
 package frc.robot.commands;
 
 
+import java.time.Duration;
+
+import javax.swing.text.Style;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -23,21 +27,27 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class Right_Turn extends CommandBase {
   public static final String RobotMap = null;
   public static final long DURRATION_IN_MILLISECONDS = 1;
-  public static final double SPEED = .15;
-  public static final double ROTATION = 0;
-  public static final double left = 0.0;
-  public static final double right = -.15;
+  public static final double SPEED = 0;
+  public static final double ROTATION = .50;
+  public static final double seconds = 5;
+  //public static final double left = 0.0;
+ // public static final double right = -.15;
   //public static final long Angle_Remaining = 90;
 
 
   private final DrivetrainSubsystem drivetrainSubsystem;
   private long startTime = 0;
   private boolean running = false;
+  DigitalInput limitSwitch;
+  
 
   public Right_Turn(DrivetrainSubsystem drive) {
     drivetrainSubsystem = drive;
     addRequirements(drivetrainSubsystem);
 }
+  public void stop(){
+   
+  }
 
 // Called when the command is initially scheduled.
   @Override
@@ -47,26 +57,24 @@ public class Right_Turn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Turning right ................");
+    System.out.println("Enter Execute...............");
+      startTime = System.currentTimeMillis();
+      running = true;
     
-    startTime = System.currentTimeMillis();
-    running = true;
+
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
 
-    if (!running ||(DURRATION_IN_MILLISECONDS <= SinceHowLongRunning)){
-      System.out.println("Shutting Down right_turn...................");
-      shutDownInAuton();
-
+    if (!running || (DURRATION_IN_MILLISECONDS <= SinceHowLongRunning)){
+      System.out.println("Shutting Down................");
+      shutDownInAuton(); 
+    } else {
+      System.out.println("Running......................");
+      drivetrainSubsystem.drive(ROTATION,SPEED);
+      drivetrainSubsystem.drive(.50,.50);
+      //Timer.delay(5);
+      
     }
-    else{
-      System.out.println("Running Right_turn............");
-      drivetrainSubsystem.drive(SPEED, ROTATION);
-      drivetrainSubsystem.drive(.5,.50);
-      Timer.delay(5);
-    }
-    //if else{
-
-   // }
+    //USE A BREAK; TO BREAK THE LOOP THE PROBLEM IS THAT ITS LOOPING AROUND AGAIN AND AGAIN
   }
   private void shutDownInAuton(){
     drivetrainSubsystem.drive(0,0);

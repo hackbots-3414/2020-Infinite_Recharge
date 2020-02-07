@@ -70,8 +70,6 @@ public class NotDriveTrain extends CommandBase {
     running = false;
     drivetrainSubsystem.m_drivetrain.setSafetyEnabled(false);
   }
-
-
   
     // Called once the command ends or is interrupted.
   @Override
