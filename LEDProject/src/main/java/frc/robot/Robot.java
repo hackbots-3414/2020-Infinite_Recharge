@@ -6,18 +6,20 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
+import com.revrobotics.CANSparkMax;
 
 
 public class Robot extends TimedRobot {
@@ -29,6 +31,8 @@ public class Robot extends TimedRobot {
   private Joystick joy = new Joystick(0);
   private int m_lastValue=0;
   private boolean m_isDecreasing=false;
+  CANSparkMax wheelOfFortune = new CANSparkMax(1, MotorType.kBrushed);
+  
     /**
    * Change the I2C port below to match the connection of your color sensor
    */
@@ -59,6 +63,7 @@ public class Robot extends TimedRobot {
   private static final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   private static final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
   
+ 
 
   @Override
   public void robotInit() {
@@ -78,21 +83,11 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kGreenTarget);
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);
-
+    wheelOfFortune.setIdleMode(IdleMode.kBrake);
   }
 
   @Override
   public void robotPeriodic() {
-//     // Fill the buffer with a rainbow
-//     if (joy.getRawButtonPressed(10)) {
-//       rainbow();
-//     } else if (joy.getRawButtonPressed(6)) {
-// solidColor();
-//     } else if (joy.getRawButtonPressed(8)) {
-//       colorPulse();
-//     }
-  //solidColor();
-
     /**
      * The method GetColor() returns a normalized color value from the sensor and can be
      * useful if outputting the color to an RGB LED or similar. To
@@ -139,8 +134,66 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Blue", detectedColor.blue);
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
-  }
 
+
+String gameData;
+gameData = DriverStation.getInstance().getGameSpecificMessage();
+if(gameData.length() > 0) { 
+    if (joy.getRawButton(4)) {
+    // spinWheel();
+    System.out.println("spinning wheel!");
+    wheelOfFortune.set(0.15);
+System.out.println(gameData);
+    switch (gameData.charAt(0))
+    {
+      case 'B' :
+        if (match.color == kBlueTarget) { //redo confidence later
+          wheelOfFortune.set(0.0);
+        }
+        break;
+      case 'G' :
+        //Green case code
+        if (match.color == kGreenTarget) { //redo confidence later
+          wheelOfFortune.set(0.0);
+        }
+        break;
+      case 'R' :
+      if (match.color == kRedTarget) { //redo confidence later
+        wheelOfFortune.set(0.0);
+      }
+        //Red case code
+        break;
+      case 'Y' :
+      if (match.color == kYellowTarget) { //redo confidence later
+        wheelOfFortune.set(0.0);
+      }
+        //Yellow case code
+        break;
+      default :
+        //This is corrupt data
+        break;
+    }
+  } else {
+    //Code for no data received yet
+  }
+} else {  
+  wheelOfFortune.set(0.0);
+  }
+    
+}
+  
+  
+  public void spinWheel() {
+    Color detectedColor = m_colorSensor.getColor();
+    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+    System.out.println("spinning wheel!");
+    while(match.color == kBlueTarget) { //redo confidence later
+      wheelOfFortune.set(0.1);
+      //uncomment out the non-yellow color matchings... expected to be the issue at hand
+    }
+      wheelOfFortune.set(0);
+  }
+  
   private void solidColorPurple() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setRGB(i, 106, 13, 173);
