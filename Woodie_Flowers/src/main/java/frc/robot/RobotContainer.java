@@ -3,10 +3,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.All_In_One;
+import frc.robot.commands.Backwards;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.NotDriveTrain;
+import frc.robot.commands.Forward;
+import frc.robot.commands.All_In_One;
+import frc.robot.commands.Backwards;
+import frc.robot.commands.Forward;
 import frc.robot.commands.Right_Turn;
+import frc.robot.commands.Left_Turn;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.teleop.OI;
@@ -42,12 +48,26 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton toggleButton = new JoystickButton(OI.getJoystick(),2);
-    toggleButton.whenPressed(new NotDriveTrain(m_drivetrainSubsystem));
-
+  
     JoystickButton Button_Turn_Right = new JoystickButton(OI.getJoystick(),1);
     Button_Turn_Right.whenPressed(new Right_Turn(m_drivetrainSubsystem));
-    //Timer.delay(1);
+    System.out.println("Turning Right for 3 seconds(3000 milliseconds....................) ");
+
+    JoystickButton toggleButton = new JoystickButton(OI.getJoystick(),2);
+    toggleButton.whenPressed(new Forward(m_drivetrainSubsystem));
+    System.out.println("Going Forward for 3 seconds(3000 milliseconds)...................");
+
+   JoystickButton toggleButton3 = new JoystickButton(OI.getJoystick(),3);
+    toggleButton3.whenPressed(new All_In_One(m_drivetrainSubsystem));
+    System.out.println("Going forward for 3 seconds(3000 milliseconds), then turning Right for 3 seconds, then turning Left for 1 seconds(1000 milliseconds), then going Backwards for 3 seconds(3000 milliseconds)..............");
+
+    JoystickButton toggleButton4 = new JoystickButton(OI.getJoystick(),4);
+    toggleButton4.whenPressed(new Backwards(m_drivetrainSubsystem));
+    System.out.println("Going Backwards for 3 seconds(3000 milliseconds)................");
+    
+    JoystickButton toggleButton5 = new JoystickButton(OI.getJoystick(),5);
+    toggleButton5.whenPressed(new Left_Turn(m_drivetrainSubsystem));
+    System.out.println("Turning Left for 1 second(1000 milliseconds......................");
   }
 
 

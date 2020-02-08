@@ -1,12 +1,9 @@
-
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
-
 package frc.robot.commands;
 
 
@@ -24,12 +21,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 
-public class Right_Turn extends CommandBase {
+public class Left_Turn extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURRATION_IN_MILLISECONDS = 3000;
+  public static final long DURRATION_IN_MILLISECONDS = 1000;
   public static final double SPEED = 0;
   public static final double ROTATION = .50;
-  public static final double seconds = 5;
+  //public static final double seconds = 5;
   //public static final double left = 0.0;
  // public static final double right = -.15;
   //public static final long Angle_Remaining = 90;
@@ -41,7 +38,7 @@ public class Right_Turn extends CommandBase {
 
   
 
-  public Right_Turn(DrivetrainSubsystem drive) {
+  public Left_Turn(DrivetrainSubsystem drive) {
     drivetrainSubsystem = drive;
     addRequirements(drivetrainSubsystem);
 }
@@ -70,7 +67,7 @@ public class Right_Turn extends CommandBase {
     } else {
       System.out.println("Running......................");
       drivetrainSubsystem.drive(ROTATION,SPEED);
-      drivetrainSubsystem.drive(.50,.50);
+      drivetrainSubsystem.drive(.50,-.50);
       //Timer.stop(5);
       
     }
@@ -100,3 +97,5 @@ public class Right_Turn extends CommandBase {
     return !running;
   }
 }
+
+

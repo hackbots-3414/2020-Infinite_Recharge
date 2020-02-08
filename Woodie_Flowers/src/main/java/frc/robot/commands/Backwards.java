@@ -24,11 +24,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 
-public class Right_Turn extends CommandBase {
+public class Backwards extends CommandBase {
   public static final String RobotMap = null;
   public static final long DURRATION_IN_MILLISECONDS = 3000;
   public static final double SPEED = 0;
-  public static final double ROTATION = .50;
+  public static final double ROTATION = -0.5;
   public static final double seconds = 5;
   //public static final double left = 0.0;
  // public static final double right = -.15;
@@ -38,10 +38,10 @@ public class Right_Turn extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private long startTime = 0;
   private boolean running = false;
-
+  DigitalInput limitSwitch;
   
 
-  public Right_Turn(DrivetrainSubsystem drive) {
+  public Backwards(DrivetrainSubsystem drive) {
     drivetrainSubsystem = drive;
     addRequirements(drivetrainSubsystem);
 }
@@ -70,7 +70,7 @@ public class Right_Turn extends CommandBase {
     } else {
       System.out.println("Running......................");
       drivetrainSubsystem.drive(ROTATION,SPEED);
-      drivetrainSubsystem.drive(.50,.50);
+      drivetrainSubsystem.drive(-.50,0);
       //Timer.stop(5);
       
     }

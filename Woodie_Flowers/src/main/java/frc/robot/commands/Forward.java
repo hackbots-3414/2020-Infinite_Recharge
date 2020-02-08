@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 
-public class NotDriveTrain extends CommandBase {
+public class Forward extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURATION_IN_MILLISECONDS = 1000;
+  public static final long DURATION_IN_MILLISECONDS = 3000;
   public static final double SPEED = .5;
   public static final double ROTATION = 0;
   /**
@@ -30,7 +30,7 @@ public class NotDriveTrain extends CommandBase {
   JoystickButton toggleButton = new JoystickButton(rightJoy, 2);
 
 
-  public NotDriveTrain(DrivetrainSubsystem subsystem) {
+  public Forward(DrivetrainSubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     drivetrainSubsystem = subsystem;
     addRequirements(drivetrainSubsystem);
