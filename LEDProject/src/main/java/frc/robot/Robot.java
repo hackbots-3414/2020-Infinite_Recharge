@@ -26,6 +26,15 @@ import com.revrobotics.CANSparkMax;
 
 
 public class Robot extends TimedRobot {
+
+  /* Constants */
+
+  public static final int NUMBER_OF_LEDS = 150;
+  public static final int NUMBER_OF_COLOR_DETECTIONS = 7;
+  public static final double MOTOR_SPEED = 0.15;
+  public static final int LED_PORT = 9;
+
+
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
   // Store what the last hue of the first pixel is
@@ -75,11 +84,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // PWM port 9
     // Must be a PWM header, not MXP or DIO
-    m_led = new AddressableLED(9);
+    m_led = new AddressableLED(LED_PORT);
     // Reuse buffer
     // Default to a length of 60, start empty output
     // Length is expensive to set, so only set it once, then just update data
-    m_ledBuffer = new AddressableLEDBuffer(150);
+    m_ledBuffer = new AddressableLEDBuffer(NUMBER_OF_LEDS);
     m_led.setLength(m_ledBuffer.getLength());
     // Set the data
     m_led.setData(m_ledBuffer);
@@ -95,6 +104,27 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+
+    if (Xbox.getBButton()) {
+      // Get the color from the color sensor and change the LEDS
+      colorMatching();
+      // Get the game data fromm the field management system to see if Stage 3 is unlocked
+      gameData = DriverStation.getInstance().getGameSpecificMessage();
+      // Check if we're in Stage 2 or Stage 3
+      if(gameData.length() > 0) { 
+        //Stage 3
+        rotatetoColor ();
+      } else {
+        //Stage 2
+        rotationControl();
+      }
+    } else {
+      colorPulse();
+    }
+    //Reset the color detection counter
+    if (Xbox.getStartButton()) { countRotations = 0; }
+  }
+  public void colorMatching(){
     /**
      * The method GetColor() returns a normalized color value from the sensor and can be
      * useful if outputting the color to an RGB LED or similar. To
@@ -141,24 +171,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Blue", detectedColor.blue);
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
-
-  gameData = DriverStation.getInstance().getGameSpecificMessage();
-  if(gameData.length() > 0) { 
-    rotatetoColor ();
   }
-  if (Xbox.getBButton()) {
-    rotationControl();
-   }
-   if (Xbox.getStartButton()) {
-    countRotations = 0;
-   }
-}
-  
+
   public void rotationControl(){
-    System.out.println("spinning wheel!"); 
-    System.out.println("rotation count " + countRotations);
-    if(countRotations < 8){
-      wheelOfFortune.set(0.15); 
+    
+    SmartDashboard.putNumber("Rotation Count ", countRotations);
+    if(countRotations < NUMBER_OF_COLOR_DETECTIONS){
+      wheelOfFortune.set(MOTOR_SPEED); 
     } else {
       wheelOfFortune.set(0.0);
     }
@@ -170,12 +189,9 @@ public class Robot extends TimedRobot {
   }
 
   public void rotatetoColor() {
-    if (Xbox.getAButton()) {
-      // spinWheel();
-      System.out.println("spinning wheel!");
-      wheelOfFortune.set(0.15);
-      System.out.println(gameData);
-      switch (gameData.charAt(0))
+      wheelOfFortune.set(MOTOR_SPEED);
+      SmartDashboard.putString("Game Data ", gameData);
+      switch (Character.toUpperCase(gameData.charAt(0)))
       {
         case 'B' :
           if (match.color == kBlueTarget) { //redo confidence later
@@ -204,16 +220,12 @@ public class Robot extends TimedRobot {
           //This is corrupt data
           break;
       }
-    } else {
-      // Button 4 not being held
-      wheelOfFortune.set(0.0);
-    }
   }
   
   private void solidColorPurple() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setRGB(i, 106, 13, 173);
- }
+    }
   }
 
   private void solidColorYellow() {
@@ -241,12 +253,6 @@ public class Robot extends TimedRobot {
   }
   private static final int MAX_NO_OF_LEDS = 150;
 
-  private void lightChaseV2(int currentIndex) {
-    boolean forwadDirection = true;
-    if(currentIndex >= MAX_NO_OF_LEDS) {
-
-    }
-  }
   private void lightChase() {
     //Turn the current light off
     m_ledBuffer.setHSV(m_chaseLightIndex, 270, 100, 0);
@@ -292,6 +298,8 @@ private void colorPulse() {
     // Sets the specified LED to the HSV values for dark purple
     m_ledBuffer.setHSV(i, 200, 100, m_lastValue);
   }
+  
+  m_led.setData(m_ledBuffer);
 }
   private void rainbow() {
     // For every pixel
