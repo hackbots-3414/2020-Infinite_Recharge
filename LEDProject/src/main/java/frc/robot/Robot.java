@@ -11,9 +11,11 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import  edu.wpi.first.wpilibj.XboxController;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -22,16 +24,20 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.CANSparkMax;
 
 
+
 public class Robot extends TimedRobot {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
   // Store what the last hue of the first pixel is
   private int m_rainbowFirstPixelHue;
   private int m_chaseLightIndex=0;
-  private Joystick joy = new Joystick(0);
+  private XboxController Xbox = new XboxController(0);
   private int m_lastValue=0;
   private boolean m_isDecreasing=false;
   CANSparkMax wheelOfFortune = new CANSparkMax(1, MotorType.kBrushed);
+  String gameData;
+  ColorMatchResult match; 
+  int countRotations;
   
     /**
    * Change the I2C port below to match the connection of your color sensor
@@ -84,6 +90,7 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);
     wheelOfFortune.setIdleMode(IdleMode.kBrake);
+    countRotations = 0;
   }
 
   @Override
@@ -104,7 +111,7 @@ public class Robot extends TimedRobot {
      * Run the color match algorithm on our detected color
      */
     String colorString;
-    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+    match = m_colorMatcher.matchClosestColor(detectedColor);
 
     if (match.color == kBlueTarget) {
       colorString = "Blue";
@@ -135,63 +142,72 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
 
-
-String gameData;
-gameData = DriverStation.getInstance().getGameSpecificMessage();
-if(gameData.length() > 0) { 
-    if (joy.getRawButton(4)) {
-    // spinWheel();
-    System.out.println("spinning wheel!");
-    wheelOfFortune.set(0.15);
-System.out.println(gameData);
-    switch (gameData.charAt(0))
-    {
-      case 'B' :
-        if (match.color == kBlueTarget) { //redo confidence later
-          wheelOfFortune.set(0.0);
-        }
-        break;
-      case 'G' :
-        //Green case code
-        if (match.color == kGreenTarget) { //redo confidence later
-          wheelOfFortune.set(0.0);
-        }
-        break;
-      case 'R' :
-      if (match.color == kRedTarget) { //redo confidence later
-        wheelOfFortune.set(0.0);
-      }
-        //Red case code
-        break;
-      case 'Y' :
-      if (match.color == kYellowTarget) { //redo confidence later
-        wheelOfFortune.set(0.0);
-      }
-        //Yellow case code
-        break;
-      default :
-        //This is corrupt data
-        break;
-    }
-  } else {
-    //Code for no data received yet
+  gameData = DriverStation.getInstance().getGameSpecificMessage();
+  if(gameData.length() > 0) { 
+    rotatetoColor ();
   }
-} else {  
-  wheelOfFortune.set(0.0);
-  }
-    
+  if (Xbox.getBButton()) {
+    rotationControl();
+   }
+   if (Xbox.getStartButton()) {
+    countRotations = 0;
+   }
 }
   
-  
-  public void spinWheel() {
-    Color detectedColor = m_colorSensor.getColor();
-    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-    System.out.println("spinning wheel!");
-    while(match.color == kBlueTarget) { //redo confidence later
-      wheelOfFortune.set(0.1);
-      //uncomment out the non-yellow color matchings... expected to be the issue at hand
+  public void rotationControl(){
+    System.out.println("spinning wheel!"); 
+    System.out.println("rotation count " + countRotations);
+    if(countRotations < 8){
+      wheelOfFortune.set(0.15); 
+    } else {
+      wheelOfFortune.set(0.0);
     }
-      wheelOfFortune.set(0);
+    if(match.color == kBlueTarget) {
+      countRotations++;
+      // We need to pause the program to avoid overcounting the color detection
+      Timer.delay(.5);
+    }
+  }
+
+  public void rotatetoColor() {
+    if (Xbox.getAButton()) {
+      // spinWheel();
+      System.out.println("spinning wheel!");
+      wheelOfFortune.set(0.15);
+      System.out.println(gameData);
+      switch (gameData.charAt(0))
+      {
+        case 'B' :
+          if (match.color == kBlueTarget) { //redo confidence later
+            wheelOfFortune.set(0.0);
+          }
+          break;
+        case 'G' :
+          //Green case code
+          if (match.color == kGreenTarget) { //redo confidence later
+            wheelOfFortune.set(0.0);
+          }
+          break;
+        case 'R' :
+        if (match.color == kRedTarget) { //redo confidence later
+          wheelOfFortune.set(0.0);
+        }
+          //Red case code
+          break;
+        case 'Y' :
+        if (match.color == kYellowTarget) { //redo confidence later
+          wheelOfFortune.set(0.0);
+        }
+          //Yellow case code
+          break;
+        default :
+          //This is corrupt data
+          break;
+      }
+    } else {
+      // Button 4 not being held
+      wheelOfFortune.set(0.0);
+    }
   }
   
   private void solidColorPurple() {
@@ -202,7 +218,7 @@ System.out.println(gameData);
 
   private void solidColorYellow() {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-      m_ledBuffer.setHSV(i, 43, 255, 255 );
+      m_ledBuffer.setRGB(i, 255, 255, 0 );
  }
   }
 
