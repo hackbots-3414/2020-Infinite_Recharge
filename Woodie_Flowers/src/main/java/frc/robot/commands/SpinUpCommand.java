@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SpinUpCommand extends CommandBase{
 static{
   SmartDashboard.putNumber("shooterVelocity", 0);
+  // System.out.println("shooter velocity: " + SmartDashboard.getData("shooterVelocity"));
 }
   private final ShooterSubsystem shooterSubsystem;
   double velocity;
@@ -27,7 +28,7 @@ static{
   // Called just before this Command runs the first time
 
   public void initialize() {
-    shooterSubsystem.setSetpoint(SmartDashboard.getNumber("shooterVelocity", 0));
+  shooterSubsystem.setSetpoint(SmartDashboard.getNumber("shooterVelocity", 0));
   }
 
 
@@ -36,6 +37,7 @@ static{
     super.execute();
     shooterSubsystem.enable();
     System.out.println("inside SpinUpCommand execute()");
+    SmartDashboard.putNumber("shooterVelocity", 0);
   }
 
   // Make this return true when this Command no longer needs to run execute()

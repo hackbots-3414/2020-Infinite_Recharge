@@ -1,28 +1,40 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXPIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+//import edu.wpi.first.wpilibj.examples.frisbeebot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends PIDSubsystem {
 
     WPI_TalonFX leftMotor = new WPI_TalonFX(12);
     WPI_TalonFX rightMotor = new WPI_TalonFX(11);
+    private final SimpleMotorFeedforward m_shooterFeedForward = new SimpleMotorFeedforward(0, 0);
 
-    public ShooterSubsystem(PIDController controller) {
-        super(controller);
-        controller.setTolerance(Double.POSITIVE_INFINITY, 180);
-        controller.enableContinuousInput(-11000, 11000);
+
+    public ShooterSubsystem() {
+        
+        super(new PIDController(0.8, 0, 0));
+        getController().setTolerance(Double.POSITIVE_INFINITY, 180);
+        rightMotor.setInverted(true);  
+        rightMotor.follow(leftMotor);  
+       //controller.enableContinuousInput(-11000, 11000);
         // TODO Auto-generated constructor stub
     }
 
-    @Override
+
+   @Override
     protected void useOutput(final double output, final double setpoint) {
         // TODO Auto-generated method stub
-        leftMotor.set(output);
-        rightMotor.set(-output);
+        SmartDashboard.putNumber("averageShooterVelocity", output);
+        //leftMotor.set(output);
+       // rightMotor.set(-output);
         System.out.println("this is the output: " + output);
     }
 
@@ -60,10 +72,6 @@ public class ShooterSubsystem extends PIDSubsystem {
     public void stop() {
         leftMotor.set(0.0);
         rightMotor.set(0.0);
-    }
-
-    public void runLeftMotor(){
-        leftMotor.set(ControlMode.PercentOutput, 0.02);
     }
 
 }

@@ -17,6 +17,7 @@ import frc.robot.commands.SpinUpCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,8 +37,8 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
-  private final PIDController controller = new PIDController(0.025, 0, 0.02);
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(controller);
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+  
   
 
 
