@@ -9,10 +9,10 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class RightTurn extends SequentialCommandGroup {
     public RightTurn(DrivetrainSubsystem drive){
-     addCommands(
+     //addCommands();
         // Drive forward the specified distance
-        new NotDriveTrain(drive),
-        new Right_Turn(drive));
+        //new NotDriveTrain(drive),
+        //new Right_Turn(drive));
         //new Right_Turn(drive));
         // Drive backward the specified distance
       
