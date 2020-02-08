@@ -23,7 +23,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Left_Turn extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURRATION_IN_MILLISECONDS = 1000;
+  public static final long DURRATION_IN_MILLISECONDS = 2000;
   public static final double SPEED = 0;
   public static final double ROTATION = .50;
   //public static final double seconds = 5;

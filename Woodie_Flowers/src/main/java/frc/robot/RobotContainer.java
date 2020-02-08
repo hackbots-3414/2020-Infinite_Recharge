@@ -59,15 +59,15 @@ public class RobotContainer {
 
    JoystickButton toggleButton3 = new JoystickButton(OI.getJoystick(),3);
     toggleButton3.whenPressed(new All_In_One(m_drivetrainSubsystem));
-    System.out.println("Going forward for 3 seconds(3000 milliseconds), then turning Right for 3 seconds, then turning Left for 1 seconds(1000 milliseconds), then going Backwards for 3 seconds(3000 milliseconds)..............");
+    System.out.println("Going forward for 3 seconds(3000 milliseconds), then turning Right for 3 seconds, then turning Left for 2 seconds(2000 milliseconds), then going Backwards for 3 seconds(3000 milliseconds)..............");
 
     JoystickButton toggleButton4 = new JoystickButton(OI.getJoystick(),4);
     toggleButton4.whenPressed(new Backwards(m_drivetrainSubsystem));
     System.out.println("Going Backwards for 3 seconds(3000 milliseconds)................");
-    
+
     JoystickButton toggleButton5 = new JoystickButton(OI.getJoystick(),5);
     toggleButton5.whenPressed(new Left_Turn(m_drivetrainSubsystem));
-    System.out.println("Turning Left for 1 second(1000 milliseconds......................");
+    System.out.println("Turning Left for 2 seconds(2000 milliseconds......................");
   }
 
 
