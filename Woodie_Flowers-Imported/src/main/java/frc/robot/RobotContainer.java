@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import static frc.robot.DriveConstants.kMaxAccelerationMetersPerSecondSquared;
+
 import java.util.List;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -22,9 +24,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -37,7 +37,6 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
   DifferentialDriveVoltageConstraint autoVoltageConstraint;
@@ -71,11 +70,11 @@ public class RobotContainer {
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(
-                new Translation2d(0.5, 0.5),
-                new Translation2d(1, -0.5)
+                new Translation2d(0.4, 0),
+                new Translation2d(0.8, 0)
             ),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(1.5, 0, new Rotation2d(0)),
+            new Pose2d(1.2, 0, new Rotation2d(0)),
             // Pass config
             config);
       
