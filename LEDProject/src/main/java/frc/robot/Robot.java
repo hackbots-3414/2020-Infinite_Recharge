@@ -194,24 +194,25 @@ public class Robot extends TimedRobot {
       switch (Character.toUpperCase(gameData.charAt(0)))
       {
         case 'B' :
-          if (match.color == kBlueTarget) { //redo confidence later
+          if (match.color == kRedTarget) { //redo confidence later
             wheelOfFortune.set(0.0);
+            //Sets robot's color sensor opposite of the trench's color sensor
           }
           break;
         case 'G' :
           //Green case code
-          if (match.color == kGreenTarget) { //redo confidence later
+          if (match.color == kYellowTarget) { //redo confidence later
             wheelOfFortune.set(0.0);
           }
           break;
         case 'R' :
-        if (match.color == kRedTarget) { //redo confidence later
+        if (match.color == kBlueTarget) { //redo confidence later
           wheelOfFortune.set(0.0);
         }
           //Red case code
           break;
         case 'Y' :
-        if (match.color == kYellowTarget) { //redo confidence later
+        if (match.color == kGreenTarget) { //redo confidence later
           wheelOfFortune.set(0.0);
         }
           //Yellow case code
