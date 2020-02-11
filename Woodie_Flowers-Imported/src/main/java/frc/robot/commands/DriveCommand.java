@@ -26,13 +26,14 @@ public class DriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
     public void execute() {
-    drivetrainSubsystem.resetEncoders();
-    drivetrainSubsystem.drive();
+      drivetrainSubsystem.resetEncoders();
+      drivetrainSubsystem.drive();
 
   }
 
