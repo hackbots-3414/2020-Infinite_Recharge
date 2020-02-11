@@ -26,7 +26,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Right_Turn extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURRATION_IN_MILLISECONDS = 3000;
+  public static final long DURRATION_IN_MILLISECONDS = 3300;
   public static final double SPEED = 0;
   public static final double ROTATION = .50;
   public static final double seconds = 5;
@@ -59,7 +59,7 @@ public class Right_Turn extends CommandBase {
   @Override
   public void execute() {
     System.out.println("Enter Execute...............");    
-      //running = true;
+   
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
 
     if (!running || (DURRATION_IN_MILLISECONDS <= SinceHowLongRunning)){

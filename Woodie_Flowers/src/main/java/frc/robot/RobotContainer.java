@@ -49,23 +49,23 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
   
-    JoystickButton Button_Turn_Right = new JoystickButton(OI.getJoystick(),1);
+    JoystickButton Button_Turn_Right = new JoystickButton(OI.getJoystick(),5);
     Button_Turn_Right.whenPressed(new Right_Turn(m_drivetrainSubsystem));
     System.out.println("Turning Right for 3 seconds(3000 milliseconds....................) ");
 
-    JoystickButton toggleButton = new JoystickButton(OI.getJoystick(),2);
+    JoystickButton toggleButton = new JoystickButton(OI.getJoystick(),3);
     toggleButton.whenPressed(new Forward(m_drivetrainSubsystem));
     System.out.println("Going Forward for 3 seconds(3000 milliseconds)...................");
 
-   JoystickButton toggleButton3 = new JoystickButton(OI.getJoystick(),3);
+   JoystickButton toggleButton3 = new JoystickButton(OI.getJoystick(),1);
     toggleButton3.whenPressed(new All_In_One(m_drivetrainSubsystem));
     System.out.println("Going forward for 3 seconds(3000 milliseconds), then turning Right for 3 seconds, then turning Left for 2 seconds(2000 milliseconds), then going Backwards for 3 seconds(3000 milliseconds)..............");
 
-    JoystickButton toggleButton4 = new JoystickButton(OI.getJoystick(),4);
+    JoystickButton toggleButton4 = new JoystickButton(OI.getJoystick(),2);
     toggleButton4.whenPressed(new Backwards(m_drivetrainSubsystem));
     System.out.println("Going Backwards for 3 seconds(3000 milliseconds)................");
 
-    JoystickButton toggleButton5 = new JoystickButton(OI.getJoystick(),5);
+    JoystickButton toggleButton5 = new JoystickButton(OI.getJoystick(),4);
     toggleButton5.whenPressed(new Left_Turn(m_drivetrainSubsystem));
     System.out.println("Turning Left for 2 seconds(2000 milliseconds......................");
   }

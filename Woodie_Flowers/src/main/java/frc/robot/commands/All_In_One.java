@@ -11,14 +11,31 @@ public class All_In_One extends SequentialCommandGroup {
     public All_In_One(DrivetrainSubsystem drive){
      addCommands(
         // Drive forward the specified distance
+        //new Backwards(drive),
         new Forward(drive),
-        new Right_Turn(drive),
+        new Forward(drive),
+        new Forward(drive),
         new Left_Turn(drive),
+        new Left_Turn(drive),
+        new Left_Turn(drive),
+        new Left_Turn(drive),
+        new Backwards(drive),
+        new Backwards(drive),
+        new Backwards(drive),
         new Backwards(drive)
-       
+
+        //new Right_Turn(drive),
+        //new Left_Turn(drive)
+        
+    
+        
+        
+
+        
+        
+
+     );  
         // Drive backward the specified distance
-      
-     );
     }
 
 

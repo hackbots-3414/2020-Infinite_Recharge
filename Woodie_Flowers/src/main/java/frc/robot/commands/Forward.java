@@ -27,7 +27,7 @@ public class Forward extends CommandBase {
   private boolean running= false;
 
   Joystick rightJoy  = new Joystick(0);
-  JoystickButton toggleButton = new JoystickButton(rightJoy, 2);
+  JoystickButton toggleButton = new JoystickButton(rightJoy, 3);
 
 
   public Forward(DrivetrainSubsystem subsystem) {
@@ -40,7 +40,10 @@ public class Forward extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("Intializing......Running.........");
     
+    running = true;
+    startTime = System.currentTimeMillis();
     
   }
 
@@ -49,12 +52,7 @@ public class Forward extends CommandBase {
   @Override
   public void execute() {
     System.out.println("Enter Execute...............");
-    if(rightJoy.getRawButtonPressed(2)){
-      startTime = System.currentTimeMillis();
-      running = true;
-    
-    }
-
+    //if(rightJoy.getRawButtonPressed(3)){}
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
 
     if (!running || (DURATION_IN_MILLISECONDS <= SinceHowLongRunning)){
