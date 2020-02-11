@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
+
 public class All_In_One extends SequentialCommandGroup {
     public All_In_One(DrivetrainSubsystem drive){
      addCommands(
@@ -15,14 +16,15 @@ public class All_In_One extends SequentialCommandGroup {
         new Forward(drive),
         new Forward(drive),
         new Forward(drive),
-        new Left_Turn(drive),
-        new Left_Turn(drive),
-        new Left_Turn(drive),
-        new Left_Turn(drive),
-        new Backwards(drive),
-        new Backwards(drive),
-        new Backwards(drive),
-        new Backwards(drive)
+        new Right_Turn(drive),
+        new Right_Turn2(drive),
+        new Forward(drive),
+        new Forward(drive),
+        new Forward(drive)
+        
+        
+        
+       
 
         //new Right_Turn(drive),
         //new Left_Turn(drive)
