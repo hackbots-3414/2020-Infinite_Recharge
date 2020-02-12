@@ -18,6 +18,7 @@ public class TurnDotEXE extends CommandBase {
   public Utilities util = new Utilities();
   public double m_tolerance;
   double initialRefrenceAngle;
+  boolean isFinishedend = false;
   public TurnDotEXE (final PIDNavXDrive pidNavXDrive,double angularBruhMoment,double m_tolerancei) {
 
     navXDrive = pidNavXDrive;
@@ -32,20 +33,31 @@ public class TurnDotEXE extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
+    if(Math.abs(m_angle)>0){
+      navXDrive.setPIDValues(util.k_PTurn, util.k_ITurn, util.k_DTurn);
+      navXDrive.getController().setTolerance(0.01,0.01);
+    }
+    else{
+      navXDrive.setPIDValues(util.k_PDrive, util.k_IDrive, util.k_DDrive);
+    }
     System.out.println("initialize");
-    navXDrive.enable();
     navXDrive.setSetpoint(m_angle);
-    util.setAtSetpoint(false);
+    isFinishedend = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
     //System.out.println("execute");
-    navXDrive.setSetpoint(m_angle);
     //System.out.println("setSetpoint "+ navXDrive.getController().getSetpoint());
-    navXDrive.getMeasurement();
     //System.out.println("Ross's will to live");
+    if(Math.abs(navXDrive.getController().getPositionError()) < m_tolerance)  {
+      // System.out.println("isFinished: " + true);
+       System.out.println("Misa finished");
+       navXDrive.setInterupted(false);
+       util.setAtSetpoint(true);
+       isFinishedend = true;
+       }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -54,19 +66,7 @@ public class TurnDotEXE extends CommandBase {
    // System.out.println("isFinished: " + navXDrive.atSetPoint());
     //System.out.println("tolerance: "+ util.toler);
     //System.out.println("tolerance: "+ m_tolerance);
-      if( Math.abs(navXDrive.getController().getPositionError()) < m_tolerance)  {
-        // System.out.println("isFinished: " + true);
-         //System.out.println("Misa finished");
-         navXDrive.setInterupted(false);
-         navXDrive.setResetTime(1);
-         util.setAtSetpoint(true);
-         return true;
-         }
-    else{
-      return util.atSetPoint;
-    }
-    
-   
+      return isFinishedend;
   }
 
   // Called once after isFinished returns true

@@ -26,16 +26,21 @@ public class Utilities extends SubsystemBase {
     // to
     // enable() - Enables the PID controller.
   }
-  public double k_PTurn = 0.015;
-  public double k_ITurn = 0.00361446;
-  public double k_DTurn = 0.0155625;
-  public double k_PDrive = 0.015;
-  public double k_IDrive = 0.00361446;
-  public double k_DDrive = 0.0155625;
+  //public double k_PTurn = 0.0129; 0.015 is a great number for course correction
+  //public double k_PTurn = 0.026; for large turns
+  public double k_PDrive = 0.0163;
+  public double k_IDrive = 0.03;
+  public double k_DDrive = 0.0153;
+  //public double k_DTurn = 0.012;for large turns
+  //public double k_DTurn = 0.0138675;
+  public double k_PTurn = 0.0129;//0.0130;
+  public double k_ITurn = 0.004;//0.003;
+  public double k_DTurn = 0.0138675;//0.0138675;
   public boolean atSetPoint = false;
   public double toler;
   public boolean abruptStop=false;
-  //0.015, 0.00361446, 0.0155625
+  //0.0215
+  //8.6
 
 
   public void setAtSetpoint(boolean value){

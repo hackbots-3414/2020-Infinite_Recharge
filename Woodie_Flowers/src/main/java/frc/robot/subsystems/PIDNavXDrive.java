@@ -47,7 +47,7 @@ public class PIDNavXDrive extends PIDSubsystem {
     super(new PIDController(0,0,0));
     getController().setPID(misterG.k_PTurn, misterG.k_ITurn, misterG.k_DTurn);
     getController().enableContinuousInput(-180, 180);
-    //getController().setTolerance(5);
+    
     robotDrive.setSafetyEnabled(false);
     
     //LiveWindow.enableTelemetry(getController());
@@ -60,6 +60,7 @@ public class PIDNavXDrive extends PIDSubsystem {
   
   public AHRS getNavX(){
     return navX;
+    
   }
   public void robotDrive (double speed, double turn){
     robotDrive.arcadeDrive(speed , turn);
@@ -82,18 +83,6 @@ public class PIDNavXDrive extends PIDSubsystem {
   public int getPreviousDistance() {
     return previousDistance;
   }
-  public void setLevel(boolean statement){
-    theNextLevel= statement;
-  }
-  public boolean getLevel() {
-    return theNextLevel;
-  }
-  public void setResetTime(int time){
-    ammmountOfTimes = time;
-  }
-  public int getResetTimes() {
-    return ammmountOfTimes;
-  }
   public void setPreviousDistance(int distance){
     previousDistance = distance;
   }
@@ -108,6 +97,11 @@ public class PIDNavXDrive extends PIDSubsystem {
     robotDrive.arcadeDrive(0 , output);
 
   }
+  public void setPIDValues(double P, double I, double D){
+    getController().setP(P);
+    getController().setI(I);
+    getController().setD(D);
+  }
   public int getEncoderLeft(){
     return leftFront.getSelectedSensorPosition();
   }
@@ -119,7 +113,7 @@ public class PIDNavXDrive extends PIDSubsystem {
     return rightBack.getSelectedSensorPosition();
   }
   public void drive(){
-    robotDrive.arcadeDrive(OI.getXboxController().getRawAxis(1), OI.getXboxController().getRawAxis(4));
+    robotDrive.arcadeDrive(-OI.getXboxController().getRawAxis(1), OI.getXboxController().getRawAxis(4));
   }
   @Override
   public double getMeasurement() {

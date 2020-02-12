@@ -9,18 +9,16 @@ package frc.robot.commands;
 
 
 
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PIDNavXDrive;
 import frc.robot.subsystems.Utilities;
-import frc.robot.commands.TurnDotEXE;;
+
 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class DriveDotEXE extends PIDCommand {
+public class DriveDotEXE extends CommandBase {
   /**
    * Creates a new DriveDotEXE.
    */
@@ -30,19 +28,6 @@ public class DriveDotEXE extends PIDCommand {
   Utilities values;
   double m_tolerance;
   public DriveDotEXE(int distance,double speed,double tolerance,PIDNavXDrive driver) {
-    super(
-        // The controller that the command will use
-        new PIDController(0, 0, 0),
-        // This should return the measurement
-        () -> 0,
-        // This should return the setpoint (can also be a constant)
-        () -> 0,
-        // This uses the output
-        output -> {
-          // Use the output here
-          
-
-        });
         okBoomer = speed;
         drivetrain = driver;
         values = new Utilities();
@@ -50,19 +35,12 @@ public class DriveDotEXE extends PIDCommand {
         m_tolerance = tolerance;
 
 
-        getController().setD(values.k_DDrive);
-        getController().setI(values.k_IDrive);
-        getController().setP(values.k_PDrive);
-
-    // Use addRequirements() here to declare subsystem dependencies.
-    // Configure additional PID options by calling `getController` here.
+        
   }
 
   // Returns true when the command should end.
   @Override
   public void initialize() {
-    drivetrain.enable();
-    super.initialize();
     values.abruptStop =false;
     //CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
   }
@@ -73,7 +51,6 @@ public class DriveDotEXE extends PIDCommand {
 
     //System.out.println("right encoder values : " + drivetrain.getEncoderRight());
     //System.out.println("left encoder values : " + -drivetrain.getEncoderLeft());
-    super.execute();
     //CommandScheduler.getInstance().schedule( new TurnDotEXE(drivetrain, 0, 0 ));
     //10,000 = 17 inches
     //20,000 = 16 inches
@@ -83,13 +60,11 @@ public class DriveDotEXE extends PIDCommand {
     if(drivetrain.getMeasurement()>m_tolerance){
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
-      drivetrain.setPreviousAngle(drivetrain.getMeasurement());
       return true;
     }
     if(drivetrain.getMeasurement()<-m_tolerance){
       drivetrain.setInterupted(true);
       drivetrain.setPreviousDistance(drivetrain.getEncoderRight() + drivetrain.getPreviousDistance());
-      drivetrain.setPreviousAngle(drivetrain.getMeasurement()*1.02);
       return true;
     }
 
