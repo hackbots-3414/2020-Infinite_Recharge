@@ -13,8 +13,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class ShooterSubsystem extends PIDSubsystem {
 
-    WPI_TalonFX leftMotor = new WPI_TalonFX(12);
-    WPI_TalonFX rightMotor = new WPI_TalonFX(11);
+    WPI_TalonFX leftMotor = new WPI_TalonFX(11);
+    WPI_TalonFX rightMotor = new WPI_TalonFX(12);
     private final SimpleMotorFeedforward m_shooterFeedForward = new SimpleMotorFeedforward(0, 0);
 
 
@@ -22,7 +22,7 @@ public class ShooterSubsystem extends PIDSubsystem {
         
         super(new PIDController(0.8, 0, 0));
         getController().setTolerance(Double.POSITIVE_INFINITY, 180);
-        rightMotor.setInverted(true);  
+        leftMotor.setInverted(true);  
         rightMotor.follow(leftMotor);  
        //controller.enableContinuousInput(-11000, 11000);
         // TODO Auto-generated constructor stub

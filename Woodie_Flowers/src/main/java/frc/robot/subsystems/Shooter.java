@@ -33,10 +33,10 @@ public class Shooter extends SubsystemBase {
     }
 
     public void init() {
-        leftMotor.config_kP(0, 0.6);
+        leftMotor.config_kP(0, 0.5);
         leftMotor.config_kI(0, 0);
-        leftMotor.config_kD(0, 50);
-        leftMotor.config_kF(0, 0.029);
+        leftMotor.config_kD(0, 25);
+        leftMotor.config_kF(0, 0.04);
     }
 
     public void setShooterVelocity(double setpoint) {
