@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -8,8 +9,10 @@ public class Shooter extends SubsystemBase {
 
     WPI_TalonFX leftMotor = new WPI_TalonFX(12);
     WPI_TalonFX rightMotor = new WPI_TalonFX(11);
+    public static final double SHOOTER_VELOCITY = 16700;
+    public static final double VELOCITY_OFFSET = 100;
 
-    public Shooter(){
+    public Shooter() {
         super();
         rightMotor.setInverted(true);
         rightMotor.follow(leftMotor);
@@ -28,10 +31,6 @@ public class Shooter extends SubsystemBase {
         return (getRightShooterVelocity() + getLeftShooterVelocity()) / 2;
     }
 
-    public double getMeasurement() {
-        return getAverageShooterVelocity();
-    }
-
     public void init() {
         leftMotor.config_kP(0, 0.5);
         leftMotor.config_kI(0, 0);
@@ -39,17 +38,26 @@ public class Shooter extends SubsystemBase {
         leftMotor.config_kF(0, 0.04);
     }
 
-    public void setShooterVelocity(double setpoint) {
-        setSetpoint(setpoint);
+    public void shoot() {
+        // TODO give this a good name
+        System.out.println("inside shoot()------------------------");
+        leftMotor.set(ControlMode.Velocity, SHOOTER_VELOCITY);
     }
 
-    private void setSetpoint(double setpoint) {
-        return;
+    public boolean isReadyToShoot() {
+        double currentShooterVelocity = leftMotor.getSelectedSensorVelocity();
+        if (currentShooterVelocity >= SHOOTER_VELOCITY - VELOCITY_OFFSET) {
+            shoot();
+            return true;
+            // TODO return true when shooter velocity is within
+            // tolerance of desired velocity
+            // command.isFinished() will call this
+        }
+        return false;
     }
 
     public void stop() {
         leftMotor.set(0.0);
-        rightMotor.set(0.0);
     }
 
 }

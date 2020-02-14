@@ -8,17 +8,20 @@ package frc.robot.commands;
 /*----------------------------------------------------------------------------*/
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SpinUpCommand extends CommandBase{
-static{
-  SmartDashboard.putNumber("shooterVelocity", 0);
-  // System.out.println("shooter velocity: " + SmartDashboard.getData("shooterVelocity"));
-}
-  private final ShooterSubsystem shooterSubsystem;
+public class SpinUpCommand extends CommandBase {
+  static {
+    SmartDashboard.putNumber("shooterVelocity", 0);
+    // System.out.println("shooter velocity: " +
+    // SmartDashboard.getData("shooterVelocity"));
+  }
+  private final Shooter shooterSubsystem;
   double velocity;
-  public SpinUpCommand(final ShooterSubsystem shooterSubsystem) {
+
+  public SpinUpCommand(final Shooter shooterSubsystem) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.shooterSubsystem = shooterSubsystem;
@@ -28,35 +31,42 @@ static{
   // Called just before this Command runs the first time
 
   public void initialize() {
-  shooterSubsystem.setSetpoint(SmartDashboard.getNumber("shooterVelocity", 0));
+    // shooterSubsystem.setSetpoint(SmartDashboard.getNumber("shooterVelocity", 0));
+    // TODO any output needed for SmartDashboard
   }
-
 
   // Called repeatedly when this Command is scheduled to run
   public void execute() {
     super.execute();
-    shooterSubsystem.enable();
-    System.out.println("inside SpinUpCommand execute()");
-    SmartDashboard.putNumber("shooterVelocity", 0);
+    shooterSubsystem.shoot();
+
+    /*
+     * shooterSubsystem.enable();
+     * System.out.println("inside SpinUpCommand execute()");
+     * SmartDashboard.putNumber("shooterVelocity", 0);
+     */
   }
 
   // Make this return true when this Command no longer needs to run execute()
-  
+  @Override
   public boolean isFinished() {
-     shooterSubsystem.atSetpoint();
-     System.out.println("current velocity: " + shooterSubsystem.getAverageShooterVelocity());
-     System.out.println("current setpoint: " + shooterSubsystem.getSetpoint());
-     if(shooterSubsystem.atSetpoint() == true){
-       System.out.println("at setpoint");
-       Timer.delay(10);
-       return true;
-     } 
-     return false;
+    /*
+     * if(shooterSubsystem.isReadyToShoot()) { return true; }
+     */
+    return false;
+    /*
+     * shooterSubsystem.atSetpoint(); System.out.println("current velocity: " +
+     * shooterSubsystem.getAverageShooterVelocity());
+     * System.out.println("current setpoint: " + shooterSubsystem.getSetpoint());
+     * if(shooterSubsystem.atSetpoint() == true){ System.out.println("at setpoint");
+     * Timer.delay(10); return true; } return false;
+     */
+    // isReadyToShoot();
   }
 
   // Called once after isFinished returns true
-  public void end() {
-    shooterSubsystem.disable();
+  @Override
+  public void end(boolean interrupted) {
     shooterSubsystem.stop();
   }
 
@@ -64,6 +74,6 @@ static{
   // subsystems is scheduled to run
 
   public void interrupted() {
-    end();
+    end(false);
   }
 }

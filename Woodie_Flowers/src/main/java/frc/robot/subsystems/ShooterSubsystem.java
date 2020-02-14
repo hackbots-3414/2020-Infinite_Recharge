@@ -17,24 +17,22 @@ public class ShooterSubsystem extends PIDSubsystem {
     WPI_TalonFX rightMotor = new WPI_TalonFX(12);
     private final SimpleMotorFeedforward m_shooterFeedForward = new SimpleMotorFeedforward(0, 0);
 
-
     public ShooterSubsystem() {
-        
+
         super(new PIDController(0.8, 0, 0));
         getController().setTolerance(Double.POSITIVE_INFINITY, 180);
-        leftMotor.setInverted(true);  
-        rightMotor.follow(leftMotor);  
-       //controller.enableContinuousInput(-11000, 11000);
+        leftMotor.setInverted(true);
+        rightMotor.follow(leftMotor);
+        // controller.enableContinuousInput(-11000, 11000);
         // TODO Auto-generated constructor stub
     }
 
-
-   @Override
+    @Override
     protected void useOutput(final double output, final double setpoint) {
         // TODO Auto-generated method stub
         SmartDashboard.putNumber("averageShooterVelocity", output);
-        //leftMotor.set(output);
-       // rightMotor.set(-output);
+        // leftMotor.set(output);
+        // rightMotor.set(-output);
         System.out.println("this is the output: " + output);
     }
 
@@ -56,16 +54,16 @@ public class ShooterSubsystem extends PIDSubsystem {
         return -rightMotor.getSelectedSensorVelocity();
     }
 
-    public double getAverageShooterVelocity(){
+    public double getAverageShooterVelocity() {
         double averageShooterVelocity = getLeftShooterVelocity() + getRightShooterVelocity() / 2;
         return averageShooterVelocity;
     }
 
-    public boolean atSetpoint(){
-       return getController().atSetpoint();
+    public boolean atSetpoint() {
+        return getController().atSetpoint();
     }
 
-    public double getSetpoint(){
+    public double getSetpoint() {
         return getController().getSetpoint();
     }
 
