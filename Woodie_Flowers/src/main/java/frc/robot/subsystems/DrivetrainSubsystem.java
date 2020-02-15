@@ -32,51 +32,44 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
    * Creates a new DrivetrainSubsystem.
    */
   
-  CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightFront = new CANSparkMax(3, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  CANSparkMax rightBack = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  private final SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
-  private final SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
-  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
-  private final AHRS NavX = new AHRS();
+  PIDNavXDrive  killerG = new PIDNavXDrive();
   DifferentialDriveOdometry m_odometry;
   double encoderConstant = (1 / (42)) * 0.15 * Math.PI * 5.1742031134;
 
   public DrivetrainSubsystem() {
-    leftFront.restoreFactoryDefaults();
-    leftBack.restoreFactoryDefaults();
-    rightFront.restoreFactoryDefaults();
-    rightBack.restoreFactoryDefaults();
-    leftFront.getEncoder().setPosition(0);
-    leftBack.getEncoder().setPosition(0);
-    rightFront.getEncoder().setPosition(0);
-    rightBack.getEncoder().setPosition(0);
+    killerG.leftFront.restoreFactoryDefaults();
+    killerG.leftBack.restoreFactoryDefaults();
+    killerG.rightFront.restoreFactoryDefaults();
+    killerG.rightBack.restoreFactoryDefaults();
+    killerG.leftFront.getEncoder().setPosition(0);
+    killerG.leftBack.getEncoder().setPosition(0);
+    killerG.rightFront.getEncoder().setPosition(0);
+    killerG.rightBack.getEncoder().setPosition(0);
     // Sets the distance per pulse for the encoders
-    leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
-    rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
+    killerG.leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
+    killerG.rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
 
    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   
 } 
 
   public double getHeading() {
-    return Math.IEEEremainder(NavX.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return Math.IEEEremainder(killerG.navX.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
   public double getLeftDistance(){
-    return -leftBack.getEncoder().getPosition();
+    return -killerG.leftBack.getEncoder().getPosition();
   }
   public double getRightDistance(){
-    return -rightFront.getEncoder().getPosition();
+    return -killerG.rightFront.getEncoder().getPosition();
   }
   public double getAverageDistance(){
     return (getLeftDistance() +  getRightDistance()) / 2;
   }
   public double getLeftVelocity(){
-    return leftBack.getEncoder().getVelocity();
+    return killerG.leftBack.getEncoder().getVelocity();
   }
   public double getRightVelocity(){
-    return -rightFront.getEncoder().getVelocity();
+    return -killerG.rightFront.getEncoder().getVelocity();
   }
   
   public void printEncoderValues(){
@@ -103,23 +96,23 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   }
   
   public void drive(){
-    m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(1), OI.getJoystick().getRawAxis(2));
+    killerG.robotDrive.arcadeDrive(-OI.getJoystick().getRawAxis(1), OI.getJoystick().getRawAxis(2));
     //printEncoderValues();
   }
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     System.out.println("left volts: " + leftVolts + " right volts: " + rightVolts);
     printEncoderValues();
-    left.setVoltage(leftVolts);
-    right.setVoltage(-rightVolts);
-    m_drivetrain.feed();
+    killerG.leftGroup.setVoltage(leftVolts);
+    killerG.rightGroup.setVoltage(-rightVolts);
+    killerG.robotDrive.feed();
   }
   public double getTurnRate() {
-    return NavX.getRate() * (false ? -1.0 : 1.0);
+    return killerG.navX.getRate() * (false ? -1.0 : 1.0);
   }
 
 public void resetEncoders() {
-  leftBack.getEncoder().setPosition(0);
-  rightFront.getEncoder().setPosition(0);
+  killerG.leftBack.getEncoder().setPosition(0);
+  killerG.rightFront.getEncoder().setPosition(0);
 }
 
 }
