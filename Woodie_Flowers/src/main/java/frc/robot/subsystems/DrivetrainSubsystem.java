@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Encoder;
@@ -71,7 +71,6 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   public double getRightVelocity(){
     return -killerG.rightFront.getEncoder().getVelocity();
   }
-  
   public void printEncoderValues(){
     System.out.println("//////////////////////// Left Encoder Posision: " + getLeftDistance());
     System.out.println("//////////////////////// Left Encoder Velocity: " + getLeftVelocity());
@@ -79,7 +78,6 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
     System.out.println("/////////////////////// Right Encoder Velocity: " + getRightVelocity());
 
   }
- 
 
   @Override
   public void periodic() {

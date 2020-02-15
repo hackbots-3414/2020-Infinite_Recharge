@@ -7,13 +7,17 @@
 
 package frc.robot;
 
+import frc.robot.commands.Drive;
+import frc.robot.commands.DriveDotEXE;
 import frc.robot.commands.TurnDotEXE;
 import frc.robot.subsystems.PIDNavXDrive;
+import frc.robot.subsystems.Utilities;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,11 +29,14 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   public PIDNavXDrive pidNavX = new PIDNavXDrive();
+  Utilities values = new Utilities();
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private String m_autoSelected;
-
+  boolean counterV2;
+  TurnDotEXE stay0degrees = new TurnDotEXE(pidNavX,5,1);
+  DriveDotEXE forward = new DriveDotEXE(200000,0.5,6,pidNavX);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -87,10 +94,14 @@ public class Robot extends TimedRobot {
         // Put default auto code here
         break;
     }
+    pidNavX.resetDistance();
+    pidNavX.enable();
     if(counter == true){
       counter = false;
-      CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
+      //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
+      CommandScheduler.getInstance().schedule(new Drive(20000000,0.5,pidNavX,5));
       System.out.println("worked");
+      
     }
    counter = true;
   }
@@ -100,23 +111,53 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-  
+    boolean stooop = false;
     
-    if (counter == true) {
+    if (counter == true ) {
     counter = false;
-    CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
+    //CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
+    //CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
+    pidNavX.enable();
+    //CommandScheduler.getInstance().schedule(forward);
     System.out.println("worked");
+    pidNavX.setPreviousDistance(0);
+    CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
+    counterV2 = false;
+    
   }
-  }
+     if(forward.isFinished() == true&& pidNavX.getInterupted() == true && counter == false && counterV2 == true){
+    CommandScheduler.getInstance().cancel(forward);
+    CommandScheduler.getInstance().schedule(stay0degrees);
+    System.out.println("pidNavx schedule");
+    pidNavX.setInterupted(false);
+    counterV2 = false;
+   }
+   if(counterV2 == false&& counter == false && Math.abs(pidNavX.getMeasurement()) > 85 && stooop ==false){
+    pidNavX.enable();
+    CommandScheduler.getInstance().schedule(forward);
+    System.out.println("drive scheduled");
+    counterV2 = true;
+    stooop = true;
+   }
+   if(stay0degrees.isFinished() == true && counterV2 == false&& counter == false){
+     CommandScheduler.getInstance().cancel(stay0degrees);
+     CommandScheduler.getInstance().schedule(forward);
+     System.out.println("drive scheduled");
+     counterV2 = true;
+   }
+    
+}
 
   @Override
   public void teleopInit() {
+    CommandScheduler.getInstance().cancelAll();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+      
     }
   }
 
@@ -125,6 +166,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    pidNavX.drive();
   }
 
   @Override

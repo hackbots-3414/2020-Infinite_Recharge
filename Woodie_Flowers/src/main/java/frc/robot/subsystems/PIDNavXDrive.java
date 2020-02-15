@@ -10,9 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-
-import frc.robot.subsystems.Constants;
-
+import frc.robot.subsystems.Utilities;
+import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -31,16 +30,28 @@ public class PIDNavXDrive extends PIDSubsystem {
   CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax rightFront = new CANSparkMax(3, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax rightBack = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  Utilities misterG = new Utilities();
+  OI axis = new OI();
+  boolean theNextLevel = false;
+  public boolean interupted =  false;
+  double previousAngle = 0;
+  int previousDistance = 0;
+  int ammmountOfTimes = 0;
+  public boolean counterForTurn = false;
+  public boolean counterForDrive = false;
+  public long time = 0;
   SpeedControllerGroup leftGroup = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup rightGroup = new SpeedControllerGroup(rightFront, rightBack);
-  DifferentialDrive robotDrive = new DifferentialDrive(leftGroup, rightGroup);
+  private DifferentialDrive robotDrive = new DifferentialDrive(leftGroup, rightGroup);
+  boolean driveIsActive;
   public PIDNavXDrive() {
     // Intert a subsystem name and PID values here
     super(new PIDController(0,0,0));
-    getController().setPID(misterG.k_P, misterG.k_I, misterG.k_D);
+    getController().setPID(misterG.k_PTurn, misterG.k_ITurn, misterG.k_DTurn);
     getController().enableContinuousInput(-180, 180);
-    //getController().setTolerance(5);
+    
     robotDrive.setSafetyEnabled(false);
+    
     //LiveWindow.enableTelemetry(getController());
   }
   
@@ -49,34 +60,79 @@ public class PIDNavXDrive extends PIDSubsystem {
     // to
     // enable() - Enables the PID controller.
   
-
+  public AHRS getNavX(){
+    return navX;
+    
+  }
   public void robotDrive (double speed, double turn){
-    System.out.println("robotDrive");
     robotDrive.arcadeDrive(speed , turn);
   }
-
+  public boolean getDriveActive(){
+    return driveIsActive;
+  }
+  public void setDriveActive(boolean statement){
+    driveIsActive = statement;
+  }
+  public boolean getInterupted(){
+    return interupted;
+  }
+  public void setInterupted(boolean statement){
+    interupted= statement;
+  }
+  public void resetDistance(){
+    previousDistance = 0;
+  }
+  public int getPreviousDistance() {
+    return previousDistance;
+  }
+  public void setPreviousDistance(int distance){
+    previousDistance = distance;
+  }
+  public double getPreviousAngle() {
+    return previousAngle;
+  }
+  public void setPreviousAngle(double angle){
+    previousAngle = angle;
+  }
   @Override
   protected void useOutput(double output, double setpoint) {
-    System.out.println("useOutput " + output + ", Setpoint: "+ setpoint);
     robotDrive.arcadeDrive(0 , output);
 
   }
-
+  public void setPIDValues(double P, double I, double D){
+    getController().setP(P);
+    getController().setI(I);
+    getController().setD(D);
+  }
+  public int getEncoderLeft(){
+    return leftFront.getSelectedSensorPosition();
+  }
+  public void resetEncoderValues(){
+    leftFront.setSelectedSensorPosition(0);
+    rightBack.setSelectedSensorPosition(0);
+  }
+  public int getEncoderRight(){
+    return rightBack.getSelectedSensorPosition();
+  }
+  public void drive(){
+    robotDrive.arcadeDrive(-OI.getXboxController().getRawAxis(1), OI.getXboxController().getRawAxis(4));
+  }
   @Override
   public double getMeasurement() {
-    System.out.println("getMeasurement is working, navx angle is: " + navX.getAngle()+ ", Position error == " + getController().getPositionError());
+    //System.out.println("getMeasurement is working, navx angle is: " + navX.getAngle()+ ", Position error == " + getController().getPositionError());
     getController().getPositionError();
     return navX.getAngle();
     
   }
   public boolean atSetPoint(){
-    System.out.println("atSetPoint "+ getController().atSetpoint());
-    
     return misterG.atSetPoint;
   }
+  
   @Override
   public void enable() {
     System.out.println("enable");
+    leftFront.setSelectedSensorPosition(0);
+    rightBack.setSelectedSensorPosition(0);
     navX.reset();
     super.enable();
   }
