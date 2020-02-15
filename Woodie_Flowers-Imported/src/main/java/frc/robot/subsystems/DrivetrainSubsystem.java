@@ -10,11 +10,15 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -36,12 +40,16 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax rightFront = new CANSparkMax(3, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax rightBack = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  private final SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
-  private final SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
-  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
-  private final AHRS NavX = new AHRS();
+  double encoderConstant = (1 / 8.68) * 0.155 * Math.PI;
+  NetworkTableEntry m_xEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("X");
+  NetworkTableEntry m_yEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Y");
+
+  //private final SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
+  //private final SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
+  DifferentialDrive m_drivetrain = new DifferentialDrive(leftBack, rightFront);
+  private final AHRS NavX = new AHRS(Port.kMXP);
   DifferentialDriveOdometry m_odometry;
-  double encoderConstant = (1 / (42)) * 0.15 * Math.PI * 5.1742031134;
+
 
   public DrivetrainSubsystem() {
     leftFront.restoreFactoryDefaults();
@@ -55,6 +63,13 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
     // Sets the distance per pulse for the encoders
     leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
     rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
+    leftBack.getEncoder().setVelocityConversionFactor(encoderConstant/60);
+    rightFront.getEncoder().setVelocityConversionFactor(encoderConstant/60);
+   // rightFront.getEncoder().setInverted(true);
+    leftFront.follow(leftBack);
+    rightBack.follow(rightFront);
+
+
 
    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   
@@ -64,27 +79,31 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
     return Math.IEEEremainder(NavX.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
   public double getLeftDistance(){
-    return -leftBack.getEncoder().getPosition();
+    //System.out.println("left distance: " + leftBack.getEncoder().getPosition());
+    return leftBack.getEncoder().getPosition();
   }
   public double getRightDistance(){
-    return -rightFront.getEncoder().getPosition();
+    //System.out.println("rightt distance: " + rightFront.getEncoder().getPosition());
+    return rightFront.getEncoder().getPosition();
   }
-  public double getAverageDistance(){
-    return (getLeftDistance() +  getRightDistance()) / 2;
-  }
+//  public double getAverageDistance(){
+//    return (getLeftDistance() +  getRightDistance()) / 2;
+//  }
   public double getLeftVelocity(){
+   // System.out.println("left velocity: " + leftBack.getEncoder().getVelocity());
     return leftBack.getEncoder().getVelocity();
   }
   public double getRightVelocity(){
-    return -rightFront.getEncoder().getVelocity();
+   // System.out.println("right velocity: " + rightFront.getEncoder().getVelocity());
+    return rightFront.getEncoder().getVelocity();
   }
   
   public void printEncoderValues(){
-    System.out.println("//////////////////////// Left Encoder Posision: " + getLeftDistance());
+   /* System.out.println("//////////////////////// Left Encoder Posision: " + getLeftDistance());
     System.out.println("//////////////////////// Left Encoder Velocity: " + getLeftVelocity());
     System.out.println("/////////////////////// Right Encoder Posision: " + getRightDistance());
     System.out.println("/////////////////////// Right Encoder Velocity: " + getRightVelocity());
-
+*/
   }
  
 
@@ -93,6 +112,10 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
     // This method will be called once per scheduler run
     m_odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftDistance(),
     getRightDistance());
+    
+    var translation = m_odometry.getPoseMeters().getTranslation();
+    m_xEntry.setNumber(translation.getX());
+    m_yEntry.setNumber(translation.getY());
   }
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
@@ -106,11 +129,15 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
     m_drivetrain.arcadeDrive(-OI.getJoystick().getRawAxis(1), OI.getJoystick().getRawAxis(2));
     //printEncoderValues();
   }
+  public void setMaxOutput(double maxOutput){
+    m_drivetrain.setMaxOutput(maxOutput);
+  }
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    System.out.println("left volts: " + leftVolts + " right volts: " + rightVolts);
-    printEncoderValues();
-    left.setVoltage(leftVolts);
-    right.setVoltage(-rightVolts);
+   // System.out.println("Angle: " + NavX.getAngle());
+    //System.out.println("left volts: " + leftVolts + " right volts: " + rightVolts);
+   // printEncoderValues();
+    leftBack.setVoltage(leftVolts);
+    rightFront.setVoltage(-rightVolts);
     m_drivetrain.feed();
   }
   public double getTurnRate() {

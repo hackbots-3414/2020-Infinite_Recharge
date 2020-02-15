@@ -9,8 +9,12 @@ package frc.robot;
 
 import static frc.robot.DriveConstants.kMaxAccelerationMetersPerSecondSquared;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -19,9 +23,11 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -41,6 +47,7 @@ public class RobotContainer {
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
   DifferentialDriveVoltageConstraint autoVoltageConstraint;
   TrajectoryConfig config;
+  String trajectoryJSON = "paths/YourPath.wpilib.json";
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -56,7 +63,7 @@ public class RobotContainer {
                                  DriveConstants.kvVoltSecondsPerMeter,
                                  DriveConstants.kaVoltSecondsSquaredPerMeter),
       DriveConstants.kDriveKinematics,
-      10);
+      5);
   config =
       new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
                            DriveConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -70,18 +77,32 @@ public class RobotContainer {
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(
-                new Translation2d(0.4, 0),
-                new Translation2d(0.8, 0)
-            ),
+                new Translation2d(1, 0 ),
+                new Translation2d(2, 0)),
+            
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(1.2, 0, new Rotation2d(0)),
+            new Pose2d(3, 0, new Rotation2d(0)),
             // Pass config
             config);
-      
+            RamseteController disabledRamsete = new RamseteController() {
+              @Override
+              public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+                      double angularVelocityRefRadiansPerSecond) {
+                  return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+              }
+          };
+          String trajectoryJSON = "paths/slightTurn.wpilib.json";
+try {
+  Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+  Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+} catch (IOException ex) {
+  DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+}
        RamseteCommand ramseteCommand = new RamseteCommand(
           exampleTrajectory,
           m_drivetrainSubsystem::getPose,
-          new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+          disabledRamsete,
+          //new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
           new SimpleMotorFeedforward(DriveConstants.ksVolts,
                                      DriveConstants.kvVoltSecondsPerMeter,
                                      DriveConstants.kaVoltSecondsSquaredPerMeter),
@@ -92,6 +113,7 @@ public class RobotContainer {
           // RamseteCommand passes volts to the callback
           m_drivetrainSubsystem::tankDriveVolts,
           m_drivetrainSubsystem
+
       );
       return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
   }
