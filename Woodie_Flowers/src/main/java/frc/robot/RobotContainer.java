@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import frc.robot.commands.AlignAndShootCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LimelightAlignCommand;
@@ -68,6 +69,10 @@ public class RobotContainer {
 
     JoystickButton spinUpShooterButton = new JoystickButton(OI.getXboxController(), 4);
     spinUpShooterButton.whileHeld(new SpinUpCommand(m_shooter));
+
+    JoystickButton parallelCommandButton = new JoystickButton(OI.getXboxController(), 3);
+    parallelCommandButton.whileHeld(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter));
+    System.out.println("button 3 just pressed--------------------------");
   }
 
   /**
