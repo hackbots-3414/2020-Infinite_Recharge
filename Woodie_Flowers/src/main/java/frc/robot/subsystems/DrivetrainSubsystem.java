@@ -59,4 +59,9 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
      return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
   }
+
+  public void stop() {
+     left.set(0.0);
+     right.set(0.0);
+  }
 }
