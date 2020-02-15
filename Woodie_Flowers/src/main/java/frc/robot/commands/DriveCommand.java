@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class DriveCommand extends CommandBase {
@@ -26,12 +25,14 @@ public class DriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    drivetrainSubsystem.drive();
+    public void execute() {
+      drivetrainSubsystem.resetEncoders();
+      drivetrainSubsystem.drive();
   }
 
   // Called once the command ends or is interrupted.
