@@ -47,7 +47,7 @@ public class Left_Turn extends CommandBase {
 // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Intializing......Running.........");
+    System.out.println("Left_Turn: Intializing......Running.........");
     running = true;
     startTime = System.currentTimeMillis();
   }
@@ -55,17 +55,17 @@ public class Left_Turn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Enter Execute...............");    
+    System.out.println("Left_Turn: Enter Execute...............");    
       //running = true;
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
 
     if (!running || (DURRATION_IN_MILLISECONDS <= SinceHowLongRunning)){
-      System.out.println("Shutting Down................");
+      System.out.println("Left_Turn: Shutting Down................");
       shutDownInAuton(); 
       running = false;
       drivetrainSubsystem.drive(0,0);
     } else {
-      System.out.println("Running......................");
+      System.out.println("Left_Turn: Running......................");
       drivetrainSubsystem.drive(ROTATION,SPEED);
       drivetrainSubsystem.drive(.50,-.50);
       //Timer.stop(5);
@@ -77,7 +77,7 @@ public class Left_Turn extends CommandBase {
     drivetrainSubsystem.drive(0,0);
     running = false;
     drivetrainSubsystem.m_drivetrain.setSafetyEnabled(false);
-    System.out.println("ShutDownInAuton() EXIT..............");
+    System.out.println("Left_Turn: ShutDownInAuton() EXIT..............");
   
 
     }
@@ -86,14 +86,14 @@ public class Left_Turn extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("End().................");
+    System.out.println("Left_Turn: End().................");
     running = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("IsFinished................");
+    System.out.println("Left_Turn: IsFinished................");
     return !running;
   }
 }

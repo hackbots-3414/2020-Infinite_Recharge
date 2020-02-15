@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 
-public class Forward extends CommandBase {
+public class Eight_Forward extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURATION_IN_MILLISECONDS = 3000;
+  public static final long DURATION_IN_MILLISECONDS = 100;
   public static final double SPEED = .5;
   public static final double ROTATION = 0;
   /**
@@ -30,7 +30,7 @@ public class Forward extends CommandBase {
   JoystickButton toggleButton = new JoystickButton(rightJoy, 3);
 
 
-  public Forward(DrivetrainSubsystem subsystem) {
+  public Eight_Forward(DrivetrainSubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     drivetrainSubsystem = subsystem;
     addRequirements(drivetrainSubsystem);
@@ -40,7 +40,7 @@ public class Forward extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Forward: Intializing......Running.........");
+    System.out.println("Eight_Forward: Intializing......Running.........");
     
     running = true;
     startTime = System.currentTimeMillis();
@@ -51,15 +51,15 @@ public class Forward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Forward: Enter Execute...............");
+    System.out.println("Eight_Forward: Enter Execute...............");
     //if(rightJoy.getRawButtonPressed(3)){}
     long SinceHowLongRunning = System.currentTimeMillis() - startTime;
 
     if (!running || (DURATION_IN_MILLISECONDS <= SinceHowLongRunning)){
-      System.out.println("Forward: Shutting Down................");
+      System.out.println("Eight_Forward: Shutting Down................");
       shutDownInAuton(); 
     } else {
-      System.out.println("Forward: Running......................");
+      System.out.println("Eight_Forward: Running......................");
       drivetrainSubsystem.drive(SPEED,ROTATION);
     }
   }
