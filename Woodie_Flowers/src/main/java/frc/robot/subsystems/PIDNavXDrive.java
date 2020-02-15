@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
 import frc.robot.subsystems.Utilities;
 import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -24,11 +25,12 @@ public class PIDNavXDrive extends PIDSubsystem {
    * Add your docs here.
    */
   AHRS navX = new AHRS(SerialPort.Port.kMXP); /* Alternatives:  SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB */
+  Constants misterG = new Constants();
+  CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightFront = new CANSparkMax(3, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightBack = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   Utilities misterG = new Utilities();
-  WPI_TalonSRX leftFront = new WPI_TalonSRX(1);
-  WPI_TalonSRX leftBack = new WPI_TalonSRX (2);
-  WPI_TalonSRX rightFront = new WPI_TalonSRX(5);
-  WPI_TalonSRX rightBack = new WPI_TalonSRX(4);
   OI axis = new OI();
   boolean theNextLevel = false;
   public boolean interupted =  false;
