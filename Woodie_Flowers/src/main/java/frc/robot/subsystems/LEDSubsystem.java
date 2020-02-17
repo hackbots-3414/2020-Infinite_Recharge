@@ -21,7 +21,7 @@ public class LEDSubsystem extends SubsystemBase {
 
   private int m_chaseLightIndex = 0;
   private boolean m_isDecreasing = false;
-  private int m_lastValue=0;
+  private int m_lastValue = 0;
 
   /**
    * Creates a new LEDSubsystem.
@@ -131,8 +131,8 @@ public class LEDSubsystem extends SubsystemBase {
     }
   }
 
-  public void parkedAndDisabled() {
-    solidColorBlue();
+  public void colorPulsePurple() {
+    colorPulse(ColorSystem.getColor(ColorSystem.COLOR_PURPLE));
   }
 
   public void drivingTargetNotInView() {
