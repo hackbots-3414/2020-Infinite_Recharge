@@ -17,10 +17,12 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
+
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,6 +33,22 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
    *
    * Creates a new DrivetrainSubsystem.
    */
+
+  CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightFront = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  CANSparkMax rightBack = new CANSparkMax(5, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+  SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
+  SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
+  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
+  
+  private final Encoder m_leftEncoder = new Encoder(1,2);
+  private final Encoder m_rightEncoder = new Encoder(3,4);
+
+
+  
+  
+
   
   PIDNavXDrive  killerG = new PIDNavXDrive();
   DifferentialDriveOdometry m_odometry;
@@ -79,12 +97,34 @@ public class DrivetrainSubsystem extends SubsystemBase {  /**
 
   }
 
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     m_odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftDistance(),
     getRightDistance());
   }
+
+
+  public void drive(){
+     m_drivetrain.arcadeDrive(-OI.getXboxController().getY(Hand.kLeft), OI.getXboxController().getX(Hand.kRight));
+  }
+
+  public void drive(double speed, double rotation){
+   m_drivetrain.arcadeDrive(speed, rotation);
+  }
+
+  public void tankDrive(double leftSpeed, double rightSpeed){
+   m_drivetrain.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+     return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+  }
+
+  public void stop() {
+     left.set(0.0);
+     right.set(0.0);
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }

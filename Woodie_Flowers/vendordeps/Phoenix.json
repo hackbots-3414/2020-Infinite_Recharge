@@ -24,6 +24,7 @@
             "groupId": "com.ctre.phoenix",
             "artifactId": "cci",
             "version": "5.18.1",
+
             "isJar": false,
             "skipInvalidPlatforms": true,
             "validPlatforms": [
@@ -36,6 +37,7 @@
             "groupId": "com.ctre.phoenix",
             "artifactId": "diagnostics",
             "version": "5.18.1",
+
             "isJar": false,
             "skipInvalidPlatforms": true,
             "validPlatforms": [
@@ -48,6 +50,7 @@
             "groupId": "com.ctre.phoenix",
             "artifactId": "canutils",
             "version": "5.18.1",
+
             "isJar": false,
             "skipInvalidPlatforms": true,
             "validPlatforms": [
