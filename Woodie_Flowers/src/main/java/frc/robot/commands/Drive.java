@@ -7,7 +7,7 @@
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.subsystems.PIDNavXDrive;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Utilities;
 
 public class Drive extends ParallelCommandGroup {
@@ -15,11 +15,10 @@ public class Drive extends ParallelCommandGroup {
    * Add your docs here.
    */
   int dist;
-  Utilities finished = new Utilities();
   double speeder;
-  PIDNavXDrive lumbago;
+  DrivetrainSubsystem lumbago;
   double m_tolerance;
-  public Drive(int distance, double speed, PIDNavXDrive drivetrain, double tolerance) {
+  public Drive(int distance, double speed, DrivetrainSubsystem drivetrain, double tolerance) {
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
