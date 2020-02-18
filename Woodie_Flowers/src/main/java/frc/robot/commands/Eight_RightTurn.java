@@ -26,7 +26,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Eight_RightTurn extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURRATION_IN_MILLISECONDS = 4500;
+  public static final long DURRATION_IN_MILLISECONDS = 3100;
   public static final double SPEED = 0;
   public static final double ROTATION = .50;
   //public static final double seconds = 5;

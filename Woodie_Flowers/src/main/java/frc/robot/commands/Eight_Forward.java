@@ -16,7 +16,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Eight_Forward extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURATION_IN_MILLISECONDS = 100;
+  public static final long DURATION_IN_MILLISECONDS = 1000;
   public static final double SPEED = .5;
   public static final double ROTATION = 0;
   /**
@@ -25,9 +25,6 @@ public class Eight_Forward extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
   private long startTime = 0;
   private boolean running= false;
-
-  Joystick rightJoy  = new Joystick(0);
-  JoystickButton toggleButton = new JoystickButton(rightJoy, 3);
 
 
   public Eight_Forward(DrivetrainSubsystem subsystem) {

@@ -8,6 +8,7 @@ import frc.robot.commands.All_In_One;
 import frc.robot.commands.Backwards;
 import frc.robot.commands.Circles8;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.Eight_Forward;
 import frc.robot.commands.Eight_LeftTurn;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Forward;
@@ -16,7 +17,8 @@ import frc.robot.commands.Backwards;
 import frc.robot.commands.Forward;
 import frc.robot.commands.Right_Turn;
 import frc.robot.commands.Eight_RightTurn;
-import frc.robot.commands.Robot_Circles_Final;
+import frc.robot.commands.Robot_Eight;
+
 import frc.robot.commands.Left_Turn;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -75,7 +77,7 @@ public class RobotContainer {
     System.out.println("Turning Left for 2 seconds(2000 milliseconds......................");
     
     JoystickButton toggleButton10 = new JoystickButton(OI.getJoystick(),10);
-    toggleButton10.whenPressed(new Robot_Circles_Final(m_drivetrainSubsystem));
+    toggleButton10.whenPressed(new Robot_Eight(m_drivetrainSubsystem));
     System.out.println("Going in a 8 shape...............");
 
     JoystickButton toggleButton6 = new JoystickButton(OI.getJoystick(),6);
@@ -83,6 +85,10 @@ public class RobotContainer {
 
     JoystickButton toggleButton7 = new JoystickButton(OI.getJoystick(),7);
     toggleButton7.whenPressed(new Eight_RightTurn(m_drivetrainSubsystem));
+    
+    JoystickButton toggleButton9 = new JoystickButton(OI.getJoystick(),9);
+    toggleButton9.whenPressed(new Eight_Forward(m_drivetrainSubsystem));
+    System.out.println("Eight_Forward...........");
 
 
     
