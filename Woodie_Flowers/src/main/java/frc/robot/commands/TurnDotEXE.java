@@ -8,18 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PIDNavXDrive;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Utilities;;
 
 
 public class TurnDotEXE extends CommandBase {
-  PIDNavXDrive navXDrive = null; 
+  DrivetrainSubsystem navXDrive = null; 
   double m_angle;
   public Utilities util = new Utilities();
   public double m_tolerance;
   double initialRefrenceAngle;
   boolean isFinishedend = false;
-  public TurnDotEXE (final PIDNavXDrive pidNavXDrive,double angularBruhMoment,double m_tolerancei) {
+  public TurnDotEXE (final DrivetrainSubsystem pidNavXDrive,double angularBruhMoment,double m_tolerancei) {
 
     navXDrive = pidNavXDrive;
     m_angle = angularBruhMoment;

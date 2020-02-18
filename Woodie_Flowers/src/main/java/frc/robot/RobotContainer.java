@@ -56,7 +56,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    //CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
+    CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
     configureButtonBindings();
 
   }
