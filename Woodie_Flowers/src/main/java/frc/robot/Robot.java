@@ -108,26 +108,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    /*m_autoSelected = m_chooser.getSelected();
-    switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;
-    }
-    pidNavX.resetDistance();
-    pidNavX.enable();
-    if (counter == true) {
-      counter = false;
-      // CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
-      CommandScheduler.getInstance().schedule(new Drive(20000000, 0.5, pidNavX, 5));
-      System.out.println("worked");
-
-    }
-    counter = true;*/
+    /*
+     * m_autoSelected = m_chooser.getSelected(); switch (m_autoSelected) { case
+     * kCustomAuto: // Put custom auto code here break; case kDefaultAuto: default:
+     * // Put default auto code here break; } pidNavX.resetDistance();
+     * pidNavX.enable(); if (counter == true) { counter = false; //
+     * CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
+     * CommandScheduler.getInstance().schedule(new Drive(20000000, 0.5, pidNavX,
+     * 5)); System.out.println("worked");
+     * 
+     * } counter = true;
+     */
   }
 
   /**
@@ -173,41 +164,30 @@ public class Robot extends TimedRobot {
   }
 }
 
-/*@Override
-  public void autonomousPeriodic() {
-    boolean stooop = false;
-
-    if (counter == true) {
-      counter = false;
-      // CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3));
-      // CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
-      pidNavX.enable();
-      // CommandScheduler.getInstance().schedule(forward);
-      System.out.println("worked");
-      pidNavX.setPreviousDistance(0);
-      CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX, -90, 5));
-      counterV2 = false;
-
-    }
-    if (forward.isFinished() == true && pidNavX.getInterupted() == true && counter == false && counterV2 == true) {
-      CommandScheduler.getInstance().cancel(forward);
-      CommandScheduler.getInstance().schedule(stay0degrees);
-      System.out.println("pidNavx schedule");
-      pidNavX.setInterupted(false);
-      counterV2 = false;
-    }
-    if (counterV2 == false && counter == false && Math.abs(pidNavX.getMeasurement()) > 85 && stooop == false) {
-      pidNavX.enable();
-      CommandScheduler.getInstance().schedule(forward);
-      System.out.println("drive scheduled");
-      counterV2 = true;
-      stooop = true;
-    }
-    if (stay0degrees.isFinished() == true && counterV2 == false && counter == false) {
-      CommandScheduler.getInstance().cancel(stay0degrees);
-      CommandScheduler.getInstance().schedule(forward);
-      System.out.println("drive scheduled");
-      counterV2 = true;
-    }
-
-  }*/
+/*
+ * @Override public void autonomousPeriodic() { boolean stooop = false;
+ * 
+ * if (counter == true) { counter = false; //
+ * CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,180,3)); //
+ * CommandScheduler.getInstance().schedule(new DriveDotEXE(20000,0.5));
+ * pidNavX.enable(); // CommandScheduler.getInstance().schedule(forward);
+ * System.out.println("worked"); pidNavX.setPreviousDistance(0);
+ * CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX, -90, 5));
+ * counterV2 = false;
+ * 
+ * } if (forward.isFinished() == true && pidNavX.getInterupted() == true &&
+ * counter == false && counterV2 == true) {
+ * CommandScheduler.getInstance().cancel(forward);
+ * CommandScheduler.getInstance().schedule(stay0degrees);
+ * System.out.println("pidNavx schedule"); pidNavX.setInterupted(false);
+ * counterV2 = false; } if (counterV2 == false && counter == false &&
+ * Math.abs(pidNavX.getMeasurement()) > 85 && stooop == false) {
+ * pidNavX.enable(); CommandScheduler.getInstance().schedule(forward);
+ * System.out.println("drive scheduled"); counterV2 = true; stooop = true; } if
+ * (stay0degrees.isFinished() == true && counterV2 == false && counter == false)
+ * { CommandScheduler.getInstance().cancel(stay0degrees);
+ * CommandScheduler.getInstance().schedule(forward);
+ * System.out.println("drive scheduled"); counterV2 = true; }
+ * 
+ * }
+ */

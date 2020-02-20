@@ -15,7 +15,10 @@ import frc.robot.commands.DriveCommand;
 
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LimelightAlignCommand;
+import frc.robot.commands.SequenceCommand;
 import frc.robot.commands.SpinUpCommand;
+import frc.robot.commands.StopCommand;
+import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -45,12 +48,14 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final Shooter m_shooter = new Shooter();
+  private final ConveyorSubsystem m_conveyor = new ConveyorSubsystem();
+  private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
 
-  //private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  //private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
-
+  // private final DrivetrainSubsystem m_drivetrainSubsystem = new
+  // DrivetrainSubsystem();
+  // private final DriveCommand m_driveCommand = new
+  // DriveCommand(m_drivetrainSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -68,21 +73,19 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
     System.out.println("---------------inside configureButtonBindings()");
 
-    JoystickButton limelightAlignButton = new JoystickButton(OI.getXboxController(), 2);
-    limelightAlignButton.whileHeld(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem));
+    bindCommandToButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), 1);
+    bindCommandToButton(new SpinUpCommand(m_shooter), 2);
+    bindCommandToButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
+    bindCommandToButton(new SequenceCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter, m_conveyor, m_stop),
+        4);
+  }
 
-    // JoystickButton spinUpShooterButton = new
-    // JoystickButton(OI.getXboxController(), 4);
-    // spinUpShooterButton.whileHeld(new SpinUpCommand(m_ShooterSubsystem));
-
-    JoystickButton spinUpShooterButton = new JoystickButton(OI.getXboxController(), 4);
-    spinUpShooterButton.whileHeld(new SpinUpCommand(m_shooter));
-
-    JoystickButton parallelCommandButton = new JoystickButton(OI.getXboxController(), 3);
-    parallelCommandButton.whileHeld(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter));
-    System.out.println("button 3 just pressed--------------------------");
+  public void bindCommandToButton(Command command, int buttonNumber) {
+    JoystickButton joystickButton = new JoystickButton(OI.getXboxController(), buttonNumber);
+    joystickButton.whileHeld(command);
   }
 
   /**

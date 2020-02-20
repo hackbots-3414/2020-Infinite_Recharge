@@ -11,4 +11,7 @@ package frc.robot.subsystems;
  * Add your docs here.
  */
 public class ConveyorSubsystem {
+    public void dummyMethod() {
+        System.out.println("conveyor command executing---------------------------");
+    }
 }

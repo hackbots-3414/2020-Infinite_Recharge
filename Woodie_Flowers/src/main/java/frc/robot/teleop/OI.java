@@ -13,14 +13,14 @@ import edu.wpi.first.wpilibj.XboxController;
  * Add your docs here.
  */
 public class OI {
-    static XboxController pad = new XboxController(0);
+  static XboxController pad = new XboxController(0);
 
-    private static final int leftYAxis = 1;
-    private static final int leftXAxis =  2;
-    private static final int rightYAxis = 3;
-    private static final int rightXAxis = 4;
+  private static final int leftYAxis = 1;
+  private static final int leftXAxis = 2;
+  private static final int rightYAxis = 3;
+  private static final int rightXAxis = 4;
 
-  public static XboxController getXboxController(){
+  public static XboxController getXboxController() {
     return pad;
-  }   
+  }
 }

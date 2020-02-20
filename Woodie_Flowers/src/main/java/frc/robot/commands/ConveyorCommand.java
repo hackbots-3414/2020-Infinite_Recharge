@@ -8,9 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ConveyorSubsystem;
 
 public class ConveyorCommand extends CommandBase {
-  public ConveyorCommand() {
+  private ConveyorSubsystem conveyor;
+
+  public ConveyorCommand(ConveyorSubsystem conveyor) {
+    super();
+    this.conveyor = conveyor;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -23,6 +28,7 @@ public class ConveyorCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
+    conveyor.dummyMethod();
   }
 
   // Make this return true when this Command no longer needs to run execute()

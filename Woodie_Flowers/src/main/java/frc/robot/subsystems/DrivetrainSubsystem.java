@@ -47,7 +47,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
   DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
-  public boolean interupted =  false;
+  public boolean interupted = false;
   boolean driveIsActive;
   double previousAngle = 0;
   double previousDistance = 0;
@@ -56,9 +56,9 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   double encoderConstant = (1 / (42)) * 0.15 * Math.PI * 5.1742031134;
 
   public DrivetrainSubsystem() {
-    super(new PIDController(0,0,0));
+    super(new PIDController(0, 0, 0));
 
-  getController().setPID(Utilities.k_PTurn, Utilities.k_ITurn, Utilities.k_DTurn);
+    getController().setPID(Utilities.k_PTurn, Utilities.k_ITurn, Utilities.k_DTurn);
     getController().enableContinuousInput(-180, 180);
 
     leftFront.restoreFactoryDefaults();
@@ -132,14 +132,13 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void stop() {
-     left.set(0.0);
-     right.set(0.0);
+    left.set(0.0);
+    right.set(0.0);
   }
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
-
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     System.out.println("left volts: " + leftVolts + " right volts: " + rightVolts);
@@ -157,54 +156,70 @@ public class DrivetrainSubsystem extends PIDSubsystem {
     leftBack.getEncoder().setPosition(0);
     rightFront.getEncoder().setPosition(0);
   }
-//start PID navX code
-  public boolean getDriveActive(){
+
+  // start PID navX code
+  public boolean getDriveActive() {
     return driveIsActive;
   }
-  public void setDriveActive(boolean statement){
+
+  public void setDriveActive(boolean statement) {
     driveIsActive = statement;
   }
-  public boolean getInterupted(){
+
+  public boolean getInterupted() {
     return interupted;
   }
-  public void setInterupted(boolean statement){
-    interupted= statement;
+
+  public void setInterupted(boolean statement) {
+    interupted = statement;
   }
-  public void resetDistance(){
+
+  public void resetDistance() {
     previousDistance = 0;
   }
+
   public double getPreviousDistance() {
     return previousDistance;
   }
-  public void setPreviousDistance(double distance){
+
+  public void setPreviousDistance(double distance) {
     previousDistance = distance;
   }
+
   public double getPreviousAngle() {
     return previousAngle;
   }
-  public void setPreviousAngle(double angle){
+
+  public void setPreviousAngle(double angle) {
     previousAngle = angle;
   }
+
   @Override
   protected void useOutput(double output, double setpoint) {
-    m_drivetrain.arcadeDrive(0 , output);
+    m_drivetrain.arcadeDrive(0, output);
 
   }
-  public void setPIDValues(double P, double I, double D){
+
+  public void setPIDValues(double P, double I, double D) {
     getController().setP(P);
     getController().setI(I);
     getController().setD(D);
   }
+
   @Override
   public double getMeasurement() {
-    //System.out.println("getMeasurement is working, navx angle is: " + navX.getAngle()+ ", Position error == " + getController().getPositionError());
+    // System.out.println("getMeasurement is working, navx angle is: " +
+    // navX.getAngle()+ ", Position error == " +
+    // getController().getPositionError());
     getController().getPositionError();
     return navX.getAngle();
-    
+
   }
-  public boolean atSetPoint(){
+
+  public boolean atSetPoint() {
     return Utilities.atSetPoint;
   }
+
   @Override
   public void enable() {
     System.out.println("enable");

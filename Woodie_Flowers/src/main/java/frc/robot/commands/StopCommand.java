@@ -14,13 +14,11 @@ import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.Shooter;
 
 public class StopCommand extends CommandBase {
-  private LimelightAlignCommand limelight;
   private Shooter shooter;
   private DrivetrainSubsystem drivetrain;
 
-  public StopCommand(LimelightAlignCommand limelight, Shooter shooter, DrivetrainSubsystem drivetrain) {
+  public StopCommand(Shooter shooter, DrivetrainSubsystem drivetrain) {
     super();
-    this.limelight = limelight;
     this.shooter = shooter;
     this.drivetrain = drivetrain;
     // Use requires() here to declare subsystem dependencies
@@ -36,7 +34,7 @@ public class StopCommand extends CommandBase {
   @Override
   public void execute() {
     super.execute();
-    //limelight.stop();
+    // limelight.stop();
     shooter.stop();
     drivetrain.stop();
 
