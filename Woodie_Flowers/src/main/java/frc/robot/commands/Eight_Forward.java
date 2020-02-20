@@ -16,7 +16,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Eight_Forward extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURATION_IN_MILLISECONDS = 1000;
+  public static final long DURATION_IN_MILLISECONDS = 500;
   public static final double SPEED = .5;
   public static final double ROTATION = 0;
   /**

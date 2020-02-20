@@ -25,14 +25,23 @@ public class Robot_Eight extends SequentialCommandGroup {
     new Eight_LeftTurn(drive),
     new Eight_RightTurn(drive),
     new Forward(drive),
-    new Eight_RightTurn(drive)
-   // new Eight_Forward(drive),
-  //  new Eight_RightTurn(drive),
-   // new Eight_Forward(drive),
+    new Eight_RightTurn(drive),
+    new Eight_Forward(drive),
+    new Eight_RightTurn(drive),
+    new Eight_Forward(drive),
+    new Eight_RightTurn(drive),
     //new Eight_RightTurn(drive),
+    //new Eight_2ndLeftTurn(drive),
+    new Eight_Forward(drive),
     //new Backwards(drive),
-    //new Eight_LeftTurn(drive),
-   // new Eight_Forward(drive)
+    new Eight_LeftTurn(drive),
+    new Eight_2ndLeftTurn(drive),
+    new Eight_2ndLeftTurn(drive),
+    new Forward(drive),
+    new Eight_LeftTurn(drive),
+    new Eight_Forward(drive),
+    new Eight_Forward(drive)
+    
 
 
 

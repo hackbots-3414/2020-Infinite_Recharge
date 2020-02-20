@@ -23,7 +23,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Eight_LeftTurn extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURRATION_IN_MILLISECONDS = 1400;
+  public static final long DURRATION_IN_MILLISECONDS = 1700;
   public static final double SPEED = 0;
   public static final double ROTATION = .5;
   //public static final double seconds = 5;
@@ -88,6 +88,7 @@ public class Eight_LeftTurn extends CommandBase {
   public void end(boolean interrupted) {
     System.out.println("Eight_Left_Turn: End().................");
     running = false;
+  
   }
 
   // Returns true when the command should end.
@@ -95,7 +96,9 @@ public class Eight_LeftTurn extends CommandBase {
   public boolean isFinished() {
     System.out.println("Eight_Left_Turn: IsFinished................");
     return !running;
+    
   }
+  
 }
 
 
