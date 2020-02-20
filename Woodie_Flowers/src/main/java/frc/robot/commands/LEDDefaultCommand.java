@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ColorSystem;
 import frc.robot.subsystems.LEDSubsystem;
 
 public class LEDDefaultCommand extends CommandBase {
@@ -31,8 +32,8 @@ public class LEDDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Led.DefaultCommand.Execute()");
-    ledSubsystem.colorPulsePurple();
+    // System.out.println("Led.DefaultCommand.Execute()");
+    ledSubsystem.switchOnLEDs(ColorSystem.COLOR_PURPLE, ColorSystem.COLOR_PATTERN_CHASE);
   }
 
   // Called once the command ends or is interrupted.

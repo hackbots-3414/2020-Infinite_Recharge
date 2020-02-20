@@ -34,9 +34,8 @@ public class LEDSubsystem extends SubsystemBase {
     m_ledBuffer = new AddressableLEDBuffer(NUMBER_OF_LEDS);
     m_led.setLength(m_ledBuffer.getLength());
     // Set the data
-    m_led.setData(m_ledBuffer);
-    m_led.start();
-
+     m_led.setData(m_ledBuffer);
+     m_led.start();
   }
 
   @Override
@@ -60,6 +59,8 @@ public class LEDSubsystem extends SubsystemBase {
     if (pattern.equalsIgnoreCase(ColorSystem.COLOR_PATTERN_PULSE)) {
       colorPulse(ColorSystem.getColor(colorName));
     }
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 
   public void solidColorRed() {
@@ -67,6 +68,8 @@ public class LEDSubsystem extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
     }
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 
   public void solidColorYellow() {
@@ -74,6 +77,8 @@ public class LEDSubsystem extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
     }
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 
   public void solidColorBlue() {
@@ -81,6 +86,8 @@ public class LEDSubsystem extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
     }
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 
   public void solidColorGreen() {
@@ -88,6 +95,8 @@ public class LEDSubsystem extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
     }
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 
   public void lightChaseRed() {
@@ -129,6 +138,9 @@ public class LEDSubsystem extends SubsystemBase {
     if (m_chaseLightIndex == 0) {
       m_isDecreasing = false;
     }
+
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 
   public void colorPulsePurple() {
@@ -178,5 +190,7 @@ public class LEDSubsystem extends SubsystemBase {
       m_ledBuffer.setHSV(i, color.getHue(), 255, m_lastValue);
     }
     m_led.setData(m_ledBuffer);
+    m_led.setData(m_ledBuffer);
+    m_led.start();
   }
 }
