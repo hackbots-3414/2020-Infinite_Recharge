@@ -48,6 +48,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
   DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
   public boolean interupted = false;
+
   boolean driveIsActive;
   double previousAngle = 0;
   double previousDistance = 0;
@@ -116,7 +117,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void drive() {
-    m_drivetrain.arcadeDrive(-OI.getXboxController().getY(Hand.kLeft), OI.getXboxController().getX(Hand.kRight));
+    m_drivetrain.tankDrive(-OI.getRightJoystick().getY(), OI.getLeftJoystick().getY());
   }
 
   public void drive(double speed, double rotation) {
