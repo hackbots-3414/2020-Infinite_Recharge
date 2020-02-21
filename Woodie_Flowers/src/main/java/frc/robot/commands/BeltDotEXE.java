@@ -7,35 +7,43 @@
 
 package frc.robot.commands;
 
+import org.ietf.jgss.Oid;
+
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BeltSubsyteem;
-import frc.robot.subsystems.IRSensor;
 import frc.robot.teleop.OI;
 
 public class BeltDotEXE extends CommandBase {
-  BeltSubsyteem theBeltBois = new BeltSubsyteem();
-  IRSensor irsfront = new IRSensor(0);
-  IRSensor irsback = new IRSensor(1);
+
+  BeltSubsyteem theBeltBois;
   //back 1
   //front 0
-  public BeltDotEXE() {
-
+  public BeltDotEXE(BeltSubsyteem belt) {
+    theBeltBois = belt;
+    addRequirements(belt);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+   
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    theBeltBois.beltMethod(0.15);
-    System.out.println("Front irs: "+ irsfront.getStatus());
-    System.out.println("Back irs: "+ irsback.getStatus());
+    SmartDashboard.putBoolean("Back", theBeltBois.irsback.get());
+    System.out.println("Front irs: "+ theBeltBois.irsfront.get());
+    System.out.println("Back irs: "+ theBeltBois.irsback.get());
+    if(theBeltBois.irsback.get() == true){
+      theBeltBois.beltMethod(0.0);
+    }
+    else{
+      theBeltBois.beltMethod(0.15);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -44,17 +52,6 @@ public class BeltDotEXE extends CommandBase {
   }
 
   // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    if(OI.getXboxController().getAButton() == false){
-    theBeltBois.beltMethod(0.0);
-    System.out.println("Belt Is Done");
-    return true;
-    }
-    else{
-      return false;
-    }
-  }
 
   
 }

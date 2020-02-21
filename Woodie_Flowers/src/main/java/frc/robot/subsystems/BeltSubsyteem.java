@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BeltSubsyteem extends SubsystemBase {
@@ -25,6 +26,8 @@ public class BeltSubsyteem extends SubsystemBase {
     CANSparkMax topBelt = new CANSparkMax(42,MotorType.kBrushless);
     CANSparkMax midBelt = new CANSparkMax(41,MotorType.kBrushless);
     CANSparkMax lowBelt = new CANSparkMax(43,MotorType.kBrushless);
+    public DigitalInput irsfront = new DigitalInput(1);
+    public DigitalInput irsback = new DigitalInput(0);
   public BeltSubsyteem() {
     
   }

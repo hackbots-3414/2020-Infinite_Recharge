@@ -48,7 +48,6 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
   DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
   public boolean interupted = false;
-
   boolean driveIsActive;
   double previousAngle = 0;
   double previousDistance = 0;
@@ -73,6 +72,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
     // Sets the distance per pulse for the encoders
     leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
     rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
+    m_drivetrain.setSafetyEnabled(false);
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
@@ -117,7 +117,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void drive() {
-    m_drivetrain.tankDrive(-OI.getRightJoystick().getY(), OI.getLeftJoystick().getY());
+    m_drivetrain.tankDrive(OI.getRightJoystick().getY(), OI.getLeftJoystick().getY());
   }
 
   public void drive(double speed, double rotation) {

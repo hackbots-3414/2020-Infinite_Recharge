@@ -18,10 +18,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-
+import frc.robot.commands.BeltDotEXE;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveDotEXE;
 import frc.robot.commands.TurnDotEXE;
+import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Utilities;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -42,15 +43,12 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
-  public DrivetrainSubsystem pidNavX = new DrivetrainSubsystem();
   Utilities values = new Utilities();
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private String m_autoSelected;
-  boolean counterV2;
-  TurnDotEXE stay0degrees = new TurnDotEXE(pidNavX, 5, 1);
-  DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6, pidNavX);
+  ;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -65,7 +63,6 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    CommandScheduler.getInstance().registerSubsystem(pidNavX);
   }
 
   /**
@@ -126,7 +123,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-
   }
 
   @Override
@@ -147,7 +143,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    
   }
 
   @Override
