@@ -6,15 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Robot_Eight extends SequentialCommandGroup {
@@ -41,13 +33,6 @@ public class Robot_Eight extends SequentialCommandGroup {
     new Eight_LeftTurn(drive),
     new Eight_Forward(drive),
     new Eight_Forward(drive)
-    
-
-
-
-
-
     );
-    
   }
 }

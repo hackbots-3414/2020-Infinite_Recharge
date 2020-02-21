@@ -6,13 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-
-
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
-
 
 public class Eight_Forward extends CommandBase {
   public static final String RobotMap = null;

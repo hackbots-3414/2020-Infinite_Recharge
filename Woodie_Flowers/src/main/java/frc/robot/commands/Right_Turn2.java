@@ -5,24 +5,9 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
-
 package frc.robot.commands;
-
-
-import java.time.Duration;
-
-import javax.swing.text.Style;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
-
 
 public class Right_Turn2 extends CommandBase {
   public static final String RobotMap = null;
@@ -34,13 +19,10 @@ public class Right_Turn2 extends CommandBase {
  // public static final double right = -.15;
   //public static final long Angle_Remaining = 90;
 
-
   private final DrivetrainSubsystem drivetrainSubsystem;
   private long startTime = 0;
   private boolean running = false;
-
   
-
   public Right_Turn2(DrivetrainSubsystem drive) {
     drivetrainSubsystem = drive;
     addRequirements(drivetrainSubsystem);

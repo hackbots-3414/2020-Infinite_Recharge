@@ -5,45 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 package frc.robot.commands;
-
-
-import java.time.Duration;
-
-import javax.swing.text.Style;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DrivetrainSubsystem;
-
-
 public class Eight_LeftTurn extends CommandBase {
   public static final String RobotMap = null;
   public static final long DURRATION_IN_MILLISECONDS = 1700;
   public static final double SPEED = 0;
   public static final double ROTATION = .5;
-  //public static final double seconds = 5;
-  //public static final double left = 0.0;
- // public static final double right = -.15;
-  //public static final long Angle_Remaining = 90;
-
-
   private final DrivetrainSubsystem drivetrainSubsystem;
   private long startTime = 0;
   private boolean running = false;
-
-  
 
   public Eight_LeftTurn(DrivetrainSubsystem drive) {
     drivetrainSubsystem = drive;
     addRequirements(drivetrainSubsystem);
 }
   
-
 // Called when the command is initially scheduled.
   @Override
   public void initialize() {

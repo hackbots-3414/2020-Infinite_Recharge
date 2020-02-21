@@ -16,7 +16,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class Forward extends CommandBase {
   public static final String RobotMap = null;
-  public static final long DURATION_IN_MILLISECONDS = 3000;
+  public static final long DURATION_IN_MILLISECONDS = 2800;
   public static final double SPEED = .5;
   public static final double ROTATION = 0;
   /**
