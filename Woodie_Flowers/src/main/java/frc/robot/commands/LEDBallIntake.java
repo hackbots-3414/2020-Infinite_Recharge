@@ -11,13 +11,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ColorSystem;
 import frc.robot.subsystems.LEDSubsystem;
 
-public class LEDDefaultCommand extends CommandBase {
+public class LEDBallIntake extends CommandBase {
   private LEDSubsystem ledSubsystem;
 
   /**
    * Creates a new LEDDefaultCommand.
    */
-  public LEDDefaultCommand(LEDSubsystem ledSubsystem) {
+  public LEDBallIntake(LEDSubsystem ledSubsystem) {
     this.ledSubsystem = ledSubsystem;
 
     addRequirements(ledSubsystem);
@@ -33,7 +33,7 @@ public class LEDDefaultCommand extends CommandBase {
   @Override
   public void execute() {
     // System.out.println("Led.DefaultCommand.Execute()");
-    ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
+    ledSubsystem.switchOnLEDs(ColorSystem.COLOR_GREEN, ColorSystem.COLOR_PATTERN_PULSE);
   }
 
   // Called once the command ends or is interrupted.

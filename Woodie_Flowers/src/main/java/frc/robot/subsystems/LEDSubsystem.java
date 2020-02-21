@@ -176,13 +176,13 @@ public class LEDSubsystem extends SubsystemBase {
       if (m_lastValue == 0) {
         m_isDecreasing = false;
       } else {
-        m_lastValue -= 1;
+        m_lastValue -= 5;
       }
     } else {
       if (m_lastValue == 255) {
         m_isDecreasing = true;
       } else {
-        m_lastValue += 1;
+        m_lastValue += 5;
       }
     }
 
