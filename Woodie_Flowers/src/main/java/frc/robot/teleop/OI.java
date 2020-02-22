@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class OI {
   static XboxController pad = new XboxController(0);
-  static Joystick left = new Joystick(1);
-  static Joystick right = new Joystick(2);
   private static final int leftYAxis = 1;
   private static final int leftXAxis = 2;
   private static final int rightYAxis = 3;
@@ -26,13 +24,4 @@ public class OI {
     return pad;
   }
 
-  public static Joystick getLeftJoystick() {
-
-    return left;
-  }
-
-  public static Joystick getRightJoystick() {
-
-    return right;
-  }
 }
