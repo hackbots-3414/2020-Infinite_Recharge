@@ -7,13 +7,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
   IntakeSubsystem intake;
-
+  BeltSubsyteem belt;
   public IntakeCommand(IntakeSubsystem intake) {
     this.intake = intake;
     addRequirements(intake);
@@ -30,7 +30,7 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void execute() {
     intake.goDown();
-    intake.setSpeed(0.3);
+    intake.setSpeed(0.30);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -8,20 +8,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class SequenceCommand extends SequentialCommandGroup {
+public class ShootSequenceCommand extends SequentialCommandGroup {
   /**
    * Creates a new SequenceCommand.
    */
-  public SequenceCommand(LimelightSubsystem limelight, DrivetrainSubsystem drivetrain, Shooter shooter, StopCommand stop) {
+
+  Shooter shooter;
+  DrivetrainSubsystem drivetrain;
+
+  public ShootSequenceCommand(BeltSubsyteem belt, DrivetrainSubsystem drivetrain,
+      Shooter shooter) {
     super();
-    sequence(new AlignAndShootCommand(limelight, drivetrain, shooter),
-        new StopCommand(shooter, drivetrain));
+    // addCommands(new AlignAndShootCommand(limelight, drivetrain, shooter), new
+    // BeltShootCommand(belt));
+    addCommands(new SpinUpCommand(shooter), new BeltShootCommand(belt));
+    this.shooter = shooter;
+    this.drivetrain = drivetrain;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    shooter.stop();
+    drivetrain.stop();
+    super.end(interrupted);
+    //new StopCommand(shooter, drivetrain);
   }
 }

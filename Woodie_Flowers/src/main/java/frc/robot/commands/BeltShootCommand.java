@@ -9,17 +9,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BeltSubsyteem;
-import frc.robot.subsystems.IntakeSubsystem;
 
-public class BeltDotEXE extends CommandBase {
+public class BeltShootCommand extends CommandBase {
 
   BeltSubsyteem theBeltBois;
-  IntakeSubsystem intake;
+  boolean running;
   //back 1
   //front 0
-  public BeltDotEXE(BeltSubsyteem belt, IntakeSubsystem intake) {
+  public BeltShootCommand(BeltSubsyteem belt) {
     theBeltBois = belt;
-    this.intake = intake;
     addRequirements(belt);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -33,32 +31,22 @@ public class BeltDotEXE extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean check = true;
-   // SmartDashboard.putBoolean("Back", theBeltBois.irsback.get());
-    //System.out.println("Front irs: "+ theBeltBois.irsfront.get());
-    //System.out.println("Back irs: "+ theBeltBois.irsback.get());
-    if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
-      theBeltBois.beltMethod(0.23);
-    }
-    else{
-      theBeltBois.beltMethod(0.0);
-    }
+    running = true;
+    theBeltBois.beltMethod(0.5);
   }
 
   @Override
-  public boolean isFinished(){
-    if(theBeltBois.irsback.get() == false){
-      intake.stop();
-      intake.goUp();
-      return true;
-    }
-    return false;
-    //return !theBeltBois.irsback.get();
+  public boolean isFinished() {
+    // TODO Auto-generated method stub
+    return !running;
   }
-
   // Called once the command ends or is interrupted.
+
   @Override
   public void end(boolean interrupted) {
+    running = false;
+    theBeltBois.beltMethod(0.0);
+    super.end(interrupted);
   }
 
   // Returns true when the command should end.

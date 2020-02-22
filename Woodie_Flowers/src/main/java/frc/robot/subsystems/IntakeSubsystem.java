@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -10,6 +9,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
     CANSparkMax intakeMotor = new CANSparkMax(31, MotorType.kBrushless);
     Solenoid intake = new Solenoid(0);
+
+    public IntakeSubsystem() {
+        intakeMotor.setSmartCurrentLimit(30);
+    }
 
     public void goDown() {
         //System.out.println("intake go down");
