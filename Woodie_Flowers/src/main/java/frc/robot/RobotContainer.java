@@ -15,6 +15,7 @@ import frc.robot.commands.BeltDotEXE;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveDotEXE;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LimelightAlignCommand;
 import frc.robot.commands.SequenceCommand;
 import frc.robot.commands.SpinUpCommand;
@@ -23,6 +24,7 @@ import frc.robot.commands.TurnDotEXE;
 import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -56,6 +58,7 @@ public class RobotContainer {
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   // private final DrivetrainSubsystem m_drivetrainSubsystem = new
   // DrivetrainSubsystem();
@@ -86,6 +89,7 @@ public class RobotContainer {
     //bindCommandToButton(new SpinUpCommand(m_shooter), 2);
     bindCommandToButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
     bindCommandToButton(new SequenceCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter, m_stop),4);
+    bindCommandToButton(new IntakeCommand(m_intake), 5);
     
   }
 

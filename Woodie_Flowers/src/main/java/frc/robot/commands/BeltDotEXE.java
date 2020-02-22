@@ -36,9 +36,9 @@ public class BeltDotEXE extends CommandBase {
   @Override
   public void execute() {
     boolean check = true;
-    SmartDashboard.putBoolean("Back", theBeltBois.irsback.get());
-    System.out.println("Front irs: "+ theBeltBois.irsfront.get());
-    System.out.println("Back irs: "+ theBeltBois.irsback.get());
+   // SmartDashboard.putBoolean("Back", theBeltBois.irsback.get());
+    //System.out.println("Front irs: "+ theBeltBois.irsfront.get());
+    //System.out.println("Back irs: "+ theBeltBois.irsback.get());
     if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
       theBeltBois.beltMethod(0.13);
     }
