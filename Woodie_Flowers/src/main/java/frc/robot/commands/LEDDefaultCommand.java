@@ -8,11 +8,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.ColorSystem;
 import frc.robot.subsystems.LEDSubsystem;
 
 public class LEDDefaultCommand extends CommandBase {
   private LEDSubsystem ledSubsystem;
+
+  public int getConveyorState() {
+    // 0 = empty (purple)
+    // 1 = some (flashing)
+    // 2 = full (solid)
+    return 0;
+  }
+
+  public int getLimelightState() {
+    // 0 = no target found (red)
+    // 1 = target found (yellow)
+    // 2 = target alligned (green)
+    return 0;
+  }
 
   /**
    * Creates a new LEDDefaultCommand.
@@ -33,7 +48,42 @@ public class LEDDefaultCommand extends CommandBase {
   @Override
   public void execute() {
     // System.out.println("Led.DefaultCommand.Execute()");
-    ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
+    //ledSubsystem.switchOnLEDs(ColorSystem.COLOR_PURPLE, ColorSystem.COLOR_PATTERN_PULSE);
+
+    int conveyorState = getConveyorState();
+    int limelightState = getLimelightState();
+
+    double matchTime = getMatchTimeRemaining();
+
+    if (conveyorState == 0 && limelightState == 0) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_PURPLE, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (conveyorState == 0 && limelightState == 1) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_PURPLE, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (conveyorState == 0 && limelightState == 2) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_PURPLE, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (conveyorState == 1 && limelightState == 0) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_RED, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (conveyorState == 1 && limelightState == 1) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_YELLOW, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (conveyorState == 1 && limelightState == 2) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_GREEN, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (conveyorState == 2 && limelightState == 0) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_RED, ColorSystem.COLOR_PATTERN_SOLID);
+    } else if (conveyorState == 2 && limelightState == 1) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_YELLOW, ColorSystem.COLOR_PATTERN_SOLID);
+    } else if (conveyorState == 2 && limelightState == 2) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_GREEN, ColorSystem.COLOR_PATTERN_SOLID);
+    }
+    int intPart = (int) matchTime;
+    System.out.println("intPart: " + intPart + " from matchTime: " + matchTime);
+    
+    if (!DriverStation.getInstance().isAutonomous() && matchTime <= 10 && intPart % 2 == 1) {
+        ledSubsystem.switchOnLEDs(ColorSystem.COLOR_YELLOW, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (!DriverStation.getInstance().isAutonomous() && matchTime <= 16 && matchTime >= 10 && intPart % 3 == 0) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
+    } else if (!DriverStation.getInstance().isAutonomous() && matchTime <= 30 && matchTime >= 16 && intPart % 4 == 1) {
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_RED, ColorSystem.COLOR_PATTERN_PULSE);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -45,5 +95,10 @@ public class LEDDefaultCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public double getMatchTimeRemaining() {
+    // return 150 - DriverStation.getInstance().getMatchTime();
+    return DriverStation.getInstance().getMatchTime() - 80;
   }
 }

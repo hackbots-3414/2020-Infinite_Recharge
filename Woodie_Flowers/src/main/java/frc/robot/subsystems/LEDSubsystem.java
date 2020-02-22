@@ -190,7 +190,6 @@ public class LEDSubsystem extends SubsystemBase {
       m_ledBuffer.setHSV(i, color.getHue(), 255, m_lastValue);
     }
     m_led.setData(m_ledBuffer);
-    m_led.setData(m_ledBuffer);
     m_led.start();
   }
 }
