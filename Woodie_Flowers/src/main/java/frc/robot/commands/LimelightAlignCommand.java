@@ -26,7 +26,7 @@ public class LimelightAlignCommand extends CommandBase {
 
     public boolean isFinished() {
         double tx = limelight.getHorizontalOffset();
-        double ta = limelight.getTargetArea();
+        //double ta = limelight.getTargetArea();
         System.out.println("this is tx: " + tx);
 
         if (tx > -0.3 && tx < 0.3) {
@@ -40,7 +40,7 @@ public class LimelightAlignCommand extends CommandBase {
             double base = 0.25;
             double throttleFloor = 0.175;
             double throttlePercent = 0.0;
-            double angleBias = 1.5;
+            double angleBias = 2.0;
             double magnitude = base - 1 / Math.exp(Math.abs(heading_error + angleBias));
             System.out.println("this is magnitude " + magnitude);
             throttlePercent = Math.max(magnitude, throttleFloor);
@@ -55,9 +55,9 @@ public class LimelightAlignCommand extends CommandBase {
              * steering_adjust);
              */
             double left = 0.0;
-            left -= throttlePercent;// steering_adjust; originally subtract
+            left += throttlePercent;// steering_adjust; originally subtract
             double right = 0.0;
-            right += throttlePercent;// steering_adjust;
+            right -= throttlePercent;// steering_adjust;
 
             drivetrain.tankDrive(left, right);
             return false;
