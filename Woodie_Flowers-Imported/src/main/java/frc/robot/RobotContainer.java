@@ -47,8 +47,10 @@ public class RobotContainer {
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
   DifferentialDriveVoltageConstraint autoVoltageConstraint;
   TrajectoryConfig config;
-  String trajectoryJSON = "paths/YourPath.wpilib.json";
-
+  String trajectoryJSON = "paths/center_auton_start.wpilib.json";
+  Path trajectoryPath;
+  Trajectory trajectory;
+ 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -57,6 +59,9 @@ public class RobotContainer {
     configureButtonBindings();
   }
   public Command getAutonomousCommand() {
+    
+ 
+    
     autoVoltageConstraint =
     new DifferentialDriveVoltageConstraint(
       new SimpleMotorFeedforward(DriveConstants.ksVolts,
@@ -70,8 +75,23 @@ public class RobotContainer {
           // Add kinematics to ensure max speed is actually obeyed
           .setKinematics(DriveConstants.kDriveKinematics)
           // Apply the voltage constraint
-          .addConstraint(autoVoltageConstraint);
+          .addConstraint(autoVoltageConstraint)
+          .setReversed(true);
           // An example trajectory to follow.  All units in meters.
+          try {
+            trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+          
+          } catch (IOException ex) {
+            // TODO Auto-generated catch block
+            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+            ex.printStackTrace();
+          }
+          Trajectory backwardsCurve = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(6.724, -2.166, new Rotation2d(Math.PI)), List.of(), new Pose2d(2.732, -2.166, new Rotation2d(Math.PI)), config);
+          Trajectory backwards = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0,0, new Rotation2d(0)), List.of(), new Pose2d(-6, 0, new Rotation2d(Math.PI / 2)), config);
+          
           Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
@@ -91,18 +111,12 @@ public class RobotContainer {
                   return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
               }
           };
-          String trajectoryJSON = "paths/slightTurn.wpilib.json";
-try {
-  Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-  Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-} catch (IOException ex) {
-  DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-}
+
        RamseteCommand ramseteCommand = new RamseteCommand(
-          exampleTrajectory,
+          backwards,
           m_drivetrainSubsystem::getPose,
           disabledRamsete,
-          //new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+         //new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
           new SimpleMotorFeedforward(DriveConstants.ksVolts,
                                      DriveConstants.kvVoltSecondsPerMeter,
                                      DriveConstants.kaVoltSecondsSquaredPerMeter),
@@ -116,6 +130,7 @@ try {
 
       );
       return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
+      
   }
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
