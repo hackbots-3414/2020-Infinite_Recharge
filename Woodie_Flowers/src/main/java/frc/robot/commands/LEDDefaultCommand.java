@@ -33,7 +33,7 @@ public class LEDDefaultCommand extends CommandBase {
   @Override
   public void execute() {
     // System.out.println("Led.DefaultCommand.Execute()");
-    ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
+   // ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
   }
 
   // Called once the command ends or is interrupted.
