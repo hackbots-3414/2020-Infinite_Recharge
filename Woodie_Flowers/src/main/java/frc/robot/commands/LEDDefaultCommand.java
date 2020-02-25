@@ -78,11 +78,14 @@ public class LEDDefaultCommand extends CommandBase {
     System.out.println("intPart: " + intPart + " from matchTime: " + matchTime);
     
     if (!DriverStation.getInstance().isAutonomous() && matchTime <= 10 && intPart % 2 == 1) {
-        ledSubsystem.switchOnLEDs(ColorSystem.COLOR_YELLOW, ColorSystem.COLOR_PATTERN_PULSE);
+      System.out.println("yellow");
+        ledSubsystem.switchOnLEDs(ColorSystem.COLOR_YELLOW, ColorSystem.COLOR_PATTERN_SOLID);
     } else if (!DriverStation.getInstance().isAutonomous() && matchTime <= 16 && matchTime >= 10 && intPart % 3 == 0) {
-      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
+      System.out.println("blue");
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_SOLID);
     } else if (!DriverStation.getInstance().isAutonomous() && matchTime <= 30 && matchTime >= 16 && intPart % 4 == 1) {
-      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_RED, ColorSystem.COLOR_PATTERN_PULSE);
+      System.out.println("red");
+      ledSubsystem.switchOnLEDs(ColorSystem.COLOR_RED, ColorSystem.COLOR_PATTERN_SOLID);
     }
   }
 
@@ -99,6 +102,6 @@ public class LEDDefaultCommand extends CommandBase {
 
   public double getMatchTimeRemaining() {
     // return 150 - DriverStation.getInstance().getMatchTime();
-    return DriverStation.getInstance().getMatchTime() - 80;
+    return DriverStation.getInstance().getMatchTime();
   }
 }
