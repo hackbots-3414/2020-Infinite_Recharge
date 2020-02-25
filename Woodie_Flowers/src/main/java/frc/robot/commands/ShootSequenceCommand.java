@@ -10,6 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -23,12 +25,13 @@ public class ShootSequenceCommand extends SequentialCommandGroup {
   Shooter shooter;
   DrivetrainSubsystem drivetrain;
 
-  public ShootSequenceCommand(BeltSubsyteem belt, DrivetrainSubsystem drivetrain,
-      Shooter shooter) {
+  public ShootSequenceCommand(BeltSubsyteem belt, DrivetrainSubsystem drivetrain, Shooter shooter, LEDSubsystem led,
+     IntakeSubsystem intake) {
     super();
-    // addCommands(new AlignAndShootCommand(limelight, drivetrain, shooter), new
-    // BeltShootCommand(belt));
+    //addCommands(new AlignAndShootCommand(limelight, drivetrain, shooter), new
+    //BeltShootCommand(belt));
     addCommands(new SpinUpCommand(shooter), new BeltShootCommand(belt));
+    //addCommands(new TransportFullLEDParallelCommand(intake, belt, led), new ShooterLEDParallelCommand(shooter, led));
     this.shooter = shooter;
     this.drivetrain = drivetrain;
   }
@@ -38,6 +41,6 @@ public class ShootSequenceCommand extends SequentialCommandGroup {
     shooter.stop();
     drivetrain.stop();
     super.end(interrupted);
-    //new StopCommand(shooter, drivetrain);
+    // new StopCommand(shooter, drivetrain);
   }
 }

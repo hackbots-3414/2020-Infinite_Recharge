@@ -17,6 +17,7 @@ import frc.robot.commands.BeltDotEXE;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveDotEXE;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LEDShooterCommand;
 import frc.robot.commands.LimelightAlignCommand;
 import frc.robot.commands.ShootSequenceCommand;
 import frc.robot.commands.StopCommand;
@@ -25,6 +26,7 @@ import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.teleop.OI;
@@ -38,12 +40,14 @@ import frc.robot.teleop.OI;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   boolean counterV2;
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
   private final Shooter m_shooter = new Shooter();
+  private final LEDShooterCommand m_ledShooter = new LEDShooterCommand(m_ledSubsystem);
   TurnDotEXE stay0degrees = new TurnDotEXE(m_drivetrainSubsystem, 5, 1);
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
@@ -80,7 +84,7 @@ public class RobotContainer {
     bindCommandToButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), 1);
     //bindCommandToButton(new SpinUpCommand(m_shooter), 2);
     bindCommandToButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
-    bindCommandToButton(new ShootSequenceCommand(m_belt, m_drivetrainSubsystem, m_shooter), 4);
+    bindCommandToButton(new ShootSequenceCommand(m_belt, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake), 4);
     bindCommandToButton(new IntakeCommand(m_intake), 5);
 
   }
