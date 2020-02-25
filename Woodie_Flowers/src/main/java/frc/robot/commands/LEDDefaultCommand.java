@@ -87,6 +87,7 @@ public class LEDDefaultCommand extends CommandBase {
       System.out.println("red");
       ledSubsystem.switchOnLEDs(ColorSystem.COLOR_RED, ColorSystem.COLOR_PATTERN_SOLID);
     }
+   // ledSubsystem.switchOnLEDs(ColorSystem.COLOR_LIGHT_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
   }
 
   // Called once the command ends or is interrupted.

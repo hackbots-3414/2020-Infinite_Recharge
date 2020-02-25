@@ -5,10 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.config;
+
+import java.util.HashMap;
 
 /**
  * Add your docs here.
  */
-public class Conveyer {
+public class WoodieConfig {
+    public static HashMap<String, Double> getConfig() {
+        HashMap<String, Double> config = new HashMap<>();
+        config.put("", 0.0);
+
+        return config; 
+    }
 }

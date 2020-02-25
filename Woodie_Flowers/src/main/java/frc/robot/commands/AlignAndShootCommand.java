@@ -22,13 +22,11 @@ public class AlignAndShootCommand extends ParallelCommandGroup {
    * Creates a new AlignAndShootParallelCommand.
    */
 
-   public AlignAndShootCommand(LimelightSubsystem limelight, DrivetrainSubsystem drivetrain, Shooter shooter) { 
-     super();
-     addCommands(new LimelightAlignCommand(limelight, drivetrain), new SpinUpCommand(shooter));
-     //parallel.addRequirements(limelight, drivetrain, shooter);
-   }
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
-
+  public AlignAndShootCommand(LimelightSubsystem limelight, DrivetrainSubsystem drivetrain, Shooter shooter) {
+    super(new LimelightAlignCommand(limelight, drivetrain), new SpinUpCommand(shooter));
+    // parallel.addRequirements(limelight, drivetrain, shooter);
+  }
+  // Add your commands in the super() call, e.g.
+  // super(new FooCommand(), new BarCommand());super();
 
 }

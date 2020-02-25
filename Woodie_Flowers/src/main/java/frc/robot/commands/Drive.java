@@ -6,8 +6,9 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.subsystems.PIDNavXDrive;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Utilities;
 
 public class Drive extends ParallelCommandGroup {
@@ -15,11 +16,11 @@ public class Drive extends ParallelCommandGroup {
    * Add your docs here.
    */
   int dist;
-  Utilities finished = new Utilities();
   double speeder;
-  PIDNavXDrive lumbago;
+  DrivetrainSubsystem lumbago;
   double m_tolerance;
-  public Drive(int distance, double speed, PIDNavXDrive drivetrain, double tolerance) {
+
+  public Drive(int distance, double speed, DrivetrainSubsystem drivetrain, double tolerance) {
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());
@@ -36,12 +37,12 @@ public class Drive extends ParallelCommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
-    dist=distance;
-    speeder =speed;
+    dist = distance;
+    speeder = speed;
     lumbago = drivetrain;
     lumbago.setDriveActive(true);
     m_tolerance = tolerance;
-    addCommands(new DriveDotEXE(dist, speeder,m_tolerance,lumbago), new TurnDotEXE(lumbago, 0, 0));
-    parallel(new DriveDotEXE(dist, speeder,m_tolerance,lumbago), new TurnDotEXE(lumbago, 0, 0));
+    addCommands(new DriveDotEXE(dist, speeder, m_tolerance, lumbago), new TurnDotEXE(lumbago, 0, 0));
+    parallel(new DriveDotEXE(dist, speeder, m_tolerance, lumbago), new TurnDotEXE(lumbago, 0, 0));
   }
 }
