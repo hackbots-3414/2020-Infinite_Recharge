@@ -8,19 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.ColorSystem;
-import frc.robot.subsystems.LEDSubsystem;
 
-public class LEDDefaultCommand extends CommandBase {
-  private LEDSubsystem ledSubsystem;
-
+public class HookDotEXE extends CommandBase {
   /**
-   * Creates a new LEDDefaultCommand.
+   * Creates a new HookDotEXE.
    */
-  public LEDDefaultCommand(LEDSubsystem ledSubsystem) {
-    this.ledSubsystem = ledSubsystem;
-
-    addRequirements(ledSubsystem);
+  public HookDotEXE() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -32,8 +25,6 @@ public class LEDDefaultCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // System.out.println("Led.DefaultCommand.Execute()");
-    ledSubsystem.switchOnLEDs(ColorSystem.COLOR_BLUE, ColorSystem.COLOR_PATTERN_PULSE);
   }
 
   // Called once the command ends or is interrupted.
