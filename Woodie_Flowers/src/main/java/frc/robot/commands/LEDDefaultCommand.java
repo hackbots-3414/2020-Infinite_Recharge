@@ -75,7 +75,7 @@ public class LEDDefaultCommand extends CommandBase {
       ledSubsystem.switchOnLEDs(ColorSystem.COLOR_GREEN, ColorSystem.COLOR_PATTERN_SOLID);
     }
     int intPart = (int) matchTime;
-    System.out.println("intPart: " + intPart + " from matchTime: " + matchTime);
+    //System.out.println("intPart: " + intPart + " from matchTime: " + matchTime);
     
     if (!DriverStation.getInstance().isAutonomous() && matchTime <= 10 && intPart % 2 == 1) {
       System.out.println("yellow");

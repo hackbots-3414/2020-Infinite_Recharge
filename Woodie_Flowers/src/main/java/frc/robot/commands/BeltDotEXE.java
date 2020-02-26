@@ -7,17 +7,15 @@
 
 package frc.robot.commands;
 
-import org.ietf.jgss.Oid;
-
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BeltSubsyteem;
-import frc.robot.teleop.OI;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class BeltDotEXE extends CommandBase {
 
   BeltSubsyteem theBeltBois;
+  IntakeSubsystem intake;
   //back 1
   //front 0
   double output;
@@ -48,6 +46,17 @@ public class BeltDotEXE extends CommandBase {
     else{
       theBeltBois.beltMethod(0.0);
     }
+  }
+
+  @Override
+  public boolean isFinished(){
+    if(theBeltBois.irsback.get() == false){
+      intake.stop();
+      intake.goUp();
+      return true;
+    }
+    return false;
+    //return !theBeltBois.irsback.get();
   }
 
   // Called once the command ends or is interrupted.

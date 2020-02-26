@@ -35,9 +35,10 @@ import frc.robot.commands.DriveDotEXE;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HookDotEXE;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LEDShooterCommand;
 import frc.robot.commands.LimelightAlignCommand;
 import frc.robot.commands.PulleyDotEXE;
-import frc.robot.commands.SequenceCommand;
+import frc.robot.commands.ShootSequenceCommand;
 import frc.robot.commands.SpinUpCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.TurnDotEXE;
@@ -46,10 +47,10 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.HookSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PulleySubsystem;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.teleop.OI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -70,11 +71,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   boolean counterV2;
-  public BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
  DifferentialDriveVoltageConstraint autoVoltageConstraint;
   TrajectoryConfig config;
@@ -82,9 +83,11 @@ public class RobotContainer {
   Path trajectoryPath;
   Trajectory trajectory;
   private final Shooter m_shooter = new Shooter();
+  private final LEDShooterCommand m_ledShooter = new LEDShooterCommand(m_ledSubsystem);
   TurnDotEXE stay0degrees = new TurnDotEXE(m_drivetrainSubsystem, 5, 1);
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
+  BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem, 0.35);
   BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem, -0.55);
   HookSubsystem hookSubsystem = new HookSubsystem();
@@ -93,6 +96,8 @@ public class RobotContainer {
   PulleySubsystem pulleySubsystem = new PulleySubsystem(); 
   PulleyDotEXE pullyCommandpos = new PulleyDotEXE(0.4, pulleySubsystem);
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final BeltSubsyteem m_belt = new BeltSubsyteem();
+  //BeltDotEXE beltCommand = new BeltDotEXE(m_belt, m_intake);
 
   // private final DrivetrainSubsystem m_drivetrainSubsystem = new
   // DrivetrainSubsystem();
@@ -104,7 +109,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     //CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
-    CommandScheduler.getInstance().setDefaultCommand(beltDriveSubsyteem,beltCommand);
+    CommandScheduler.getInstance().setDefaultCommand(m_belt,beltCommand);
     configureButtonBindings();
 
   }
@@ -192,20 +197,30 @@ public Command getAutonomousCommand() {
 
     System.out.println("---------------inside configureButtonBindings()");
 
-    bindCommandToButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), 1);
-    bindCommandToButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
-    bindCommandToButton(new SequenceCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter, m_stop),4);
-    bindCommandToButton(new IntakeCommand(m_intake), 5);
-    bindCommandToButton(hookCommandpos, 6);
-    bindCommandToButton(hookCommandneg, 7);
-    bindCommandToButton(pullyCommandpos, 2);
-    bindCommandToButton(ejectBelt, 8);
+    whileHeldOperatorPadButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), 1);
+    whileHeldOperatorPadButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
+    whileHeldOperatorPadButton(new ShootSequenceCommand(m_belt, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake), 4);
+    whileHeldOperatorPadButton(new IntakeCommand(m_intake), 5);
+    whileHeldOperatorPadButton(hookCommandpos, 6);
+    whileHeldOperatorPadButton(hookCommandneg, 7);
+    whileHeldOperatorPadButton(pullyCommandpos, 2);
     
   }
 
-  public void bindCommandToButton(final Command command, final int buttonNumber) {
-    final JoystickButton joystickButton = new JoystickButton(OI.getXboxController(), buttonNumber);
+  public void whileHeldOperatorPadButton(final Command command, final int buttonNumber) {
+    final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
     joystickButton.whileHeld(command);
+  }
+  
+
+  public void whenPressedOperatorPadButton(final Command command, final int buttonNumber) {
+    final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
+    joystickButton.whenPressed(command);
+  }
+
+  public void whenPressedDriverPadButton(final Command command, final int buttonNumber) {
+    final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
+    joystickButton.whenPressed(command);
   }
   
 

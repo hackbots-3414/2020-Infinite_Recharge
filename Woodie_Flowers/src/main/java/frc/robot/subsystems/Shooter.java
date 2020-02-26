@@ -10,7 +10,7 @@ public class Shooter extends SubsystemBase {
     WPI_TalonFX leftMotor = new WPI_TalonFX(12);
     WPI_TalonFX rightMotor = new WPI_TalonFX(11);
     public static final double SHOOTER_VELOCITY = 16700;
-    public static final double VELOCITY_OFFSET = 100;
+    public static final double VELOCITY_OFFSET = 1000;
 
     public Shooter() {
         super();
@@ -39,15 +39,12 @@ public class Shooter extends SubsystemBase {
     }
 
     public void shoot() {
-        // TODO give this a good name
-        System.out.println("inside shoot()------------------------");
         leftMotor.set(ControlMode.Velocity, SHOOTER_VELOCITY);
     }
 
     public boolean isReadyToShoot() {
         double currentShooterVelocity = leftMotor.getSelectedSensorVelocity();
         if (currentShooterVelocity >= SHOOTER_VELOCITY - VELOCITY_OFFSET) {
-            shoot();
             return true;
             // TODO return true when shooter velocity is within
             // tolerance of desired velocity

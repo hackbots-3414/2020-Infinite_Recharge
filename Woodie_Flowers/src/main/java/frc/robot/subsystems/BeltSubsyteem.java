@@ -7,11 +7,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -28,7 +24,11 @@ public class BeltSubsyteem extends SubsystemBase {
     CANSparkMax lowBelt = new CANSparkMax(43,MotorType.kBrushless);
     public DigitalInput irsfront = new DigitalInput(1);
     public DigitalInput irsback = new DigitalInput(0);
+    
   public BeltSubsyteem() {
+  topBelt.setSmartCurrentLimit(30);
+  midBelt.setSmartCurrentLimit(30);
+  lowBelt.setSmartCurrentLimit(30);
     
   }
 

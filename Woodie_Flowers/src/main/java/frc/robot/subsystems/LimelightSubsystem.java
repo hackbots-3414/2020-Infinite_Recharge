@@ -1,8 +1,7 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.networktables.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightSubsystem extends SubsystemBase {
 
@@ -16,7 +15,8 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     public double getHorizontalOffset() {
-        double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+        double tx = (double) NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getNumber(0);
+        System.out.println("-------------------------tx value: " + tx);
         return tx;
     }
 
@@ -48,6 +48,14 @@ public class LimelightSubsystem extends SubsystemBase {
     public double getShortestSide() {
         double tshort = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tshort").getDouble(0);
         return tshort;
+    }
+
+    public void turnLEDOn () {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+    }
+
+    public void turnLEDOff() {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
 
