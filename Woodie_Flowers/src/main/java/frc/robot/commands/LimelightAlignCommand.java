@@ -18,10 +18,17 @@ public class LimelightAlignCommand extends CommandBase {
         this.drivetrain = drivetrain;
     }
 
-    public void execute() {
-
+    @Override
+    public void initialize() {
+        // TODO Auto-generated method stub
+        super.initialize();
+        limelight.turnLEDOn();
     }
-
+    @Override
+    public void execute() {
+        
+    }
+    @Override
     public boolean isFinished() {
         double tx = limelight.getHorizontalOffset();
         double angle_tolerance = 0.5;
@@ -69,9 +76,18 @@ public class LimelightAlignCommand extends CommandBase {
             // right = 0.2;
             // }
             drivetrain.tankDrive(left, right);
+            limelight.turnLEDOff();
             return false;
         }
 
+    }
+    @Override
+    public void end(boolean interrupted) {
+        limelight.turnLEDOff();
+    }
+
+    public void interrupted() {
+        end(false);
     }
 
 }
