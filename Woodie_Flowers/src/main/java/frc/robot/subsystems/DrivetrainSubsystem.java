@@ -151,8 +151,8 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     System.out.println("left volts: " + leftVolts + " right volts: " + rightVolts);
     printEncoderValues();
-    left.setVoltage(leftVolts);
-    right.setVoltage(-rightVolts);
+    left.setVoltage(-leftVolts);
+    right.setVoltage(rightVolts);
     m_drivetrain.feed();
   }
 
