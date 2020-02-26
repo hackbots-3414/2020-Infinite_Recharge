@@ -15,13 +15,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class BeltDotEXE extends CommandBase {
 
   BeltSubsyteem theBeltBois;
-  IntakeSubsystem intake;
   //back 1
   //front 0
   double output;
-  public BeltDotEXE(BeltSubsyteem belt,double speed) {
+  public BeltDotEXE(BeltSubsyteem belt) {
     theBeltBois = belt;
-    output = speed;
     addRequirements(belt);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -41,22 +39,11 @@ public class BeltDotEXE extends CommandBase {
     //System.out.println("Back irs: "+ theBeltBois.irsback.get());
     if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
       SmartDashboard.putBoolean("irsBack", theBeltBois.irsback.get());
-      theBeltBois.beltMethod(output);
+      theBeltBois.beltMethod(0.35);
     }
     else{
       theBeltBois.beltMethod(0.0);
     }
-  }
-
-  @Override
-  public boolean isFinished(){
-    if(theBeltBois.irsback.get() == false){
-      intake.stop();
-      intake.goUp();
-      return true;
-    }
-    return false;
-    //return !theBeltBois.irsback.get();
   }
 
   // Called once the command ends or is interrupted.

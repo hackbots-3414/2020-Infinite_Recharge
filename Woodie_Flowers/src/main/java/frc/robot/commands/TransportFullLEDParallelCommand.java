@@ -20,7 +20,7 @@ public class TransportFullLEDParallelCommand extends ParallelCommandGroup {
    * Creates a new TransportFullLEDParallelCommand.
    */
   public TransportFullLEDParallelCommand(IntakeSubsystem intake, BeltSubsyteem belt, LEDSubsystem led) {
-    super(new BeltDotEXE(belt, 0), new LEDTransportFull(led));
+    super(new BeltDotEXE(belt), new LEDTransportFull(led));
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
   }

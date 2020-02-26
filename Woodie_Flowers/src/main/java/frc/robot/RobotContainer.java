@@ -88,15 +88,15 @@ public class RobotContainer {
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
   BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
-  BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem, 0.35);
-  BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem, -0.55);
+  BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
+  BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem);
   HookSubsystem hookSubsystem = new HookSubsystem();
   HookDotEXE hookCommandpos = new HookDotEXE(0.4,hookSubsystem);
   HookDotEXE hookCommandneg = new HookDotEXE(-0.4,hookSubsystem);
   PulleySubsystem pulleySubsystem = new PulleySubsystem(); 
   PulleyDotEXE pullyCommandpos = new PulleyDotEXE(0.4, pulleySubsystem);
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
-  private final BeltSubsyteem m_belt = new BeltSubsyteem();
+  // private final BeltSubsyteem m_belt = new BeltSubsyteem();
   //BeltDotEXE beltCommand = new BeltDotEXE(m_belt, m_intake);
 
   // private final DrivetrainSubsystem m_drivetrainSubsystem = new
@@ -109,7 +109,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     //CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
-    CommandScheduler.getInstance().setDefaultCommand(m_belt,beltCommand);
+    CommandScheduler.getInstance().setDefaultCommand(beltDriveSubsyteem,beltCommand);
     configureButtonBindings();
 
   }
@@ -197,13 +197,13 @@ public Command getAutonomousCommand() {
 
     System.out.println("---------------inside configureButtonBindings()");
 
-    whileHeldOperatorPadButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), 1);
-    whileHeldOperatorPadButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
-    whileHeldOperatorPadButton(new ShootSequenceCommand(m_belt, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake), 4);
-    whileHeldOperatorPadButton(new IntakeCommand(m_intake), 5);
-    whileHeldOperatorPadButton(hookCommandpos, 6);
-    whileHeldOperatorPadButton(hookCommandneg, 7);
-    whileHeldOperatorPadButton(pullyCommandpos, 2);
+    whileHeldOperatorPadButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), OI.A_BTN_LIMELIGHTALIGN); 
+    whileHeldOperatorPadButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), OI.X_BTN_ALIGNANDSHOOT);
+    whileHeldOperatorPadButton(new ShootSequenceCommand(beltDriveSubsyteem, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake), OI.Y_BTN_SHOOTSEQUENCE);
+    whileHeldOperatorPadButton(new IntakeCommand(m_intake), OI.LB_BTN_INTAKE);
+    whileHeldOperatorPadButton(hookCommandpos, OI.RB_BTN_HOOK_POSITIVE);
+    whileHeldOperatorPadButton(hookCommandneg, OI.CENTERLEFT_BTN_HOOK_NEGATIVE);
+    whileHeldOperatorPadButton(pullyCommandpos, OI.B_BTN_PULLY);
     
   }
 

@@ -7,10 +7,6 @@
 
 package frc.robot.subsystems;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 
@@ -66,15 +62,8 @@ public class DrivetrainSubsystem extends PIDSubsystem {
     leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
     rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
     m_drivetrain.setSafetyEnabled(false);
-<<<<<<< HEAD
-    leftFront.setSmartCurrentLimit(65);
-    leftBack.setSmartCurrentLimit(65);
-    rightFront.setSmartCurrentLimit(65);
-    rightBack.setSmartCurrentLimit(65);
-=======
 	leftBack.getEncoder().setVelocityConversionFactor(encoderConstant/60);
     rightFront.getEncoder().setVelocityConversionFactor(encoderConstant/60);
->>>>>>> master
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
@@ -105,16 +94,12 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void printEncoderValues() {
-<<<<<<< HEAD
-
-=======
   /*  System.out.println("//////////////////////// Left Encoder Posision: " + getLeftDistance());
     System.out.println("//////////////////////// Left Encoder Velocity: " + getLeftVelocity());
     System.out.println("/////////////////////// Right Encoder Posision: " + getRightDistance());
     System.out.println("/////////////////////// Right Encoder Velocity: " + getRightVelocity());
 	
 */
->>>>>>> master
   }
   
   
