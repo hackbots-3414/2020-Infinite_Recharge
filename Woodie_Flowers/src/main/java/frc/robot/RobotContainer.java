@@ -85,7 +85,8 @@ public class RobotContainer {
   TurnDotEXE stay0degrees = new TurnDotEXE(m_drivetrainSubsystem, 5, 1);
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
-  BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
+  BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem, 0.35);
+  BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem, -0.55);
   HookSubsystem hookSubsystem = new HookSubsystem();
   HookDotEXE hookCommandpos = new HookDotEXE(0.4,hookSubsystem);
   HookDotEXE hookCommandneg = new HookDotEXE(-0.4,hookSubsystem);
@@ -198,6 +199,7 @@ public Command getAutonomousCommand() {
     bindCommandToButton(hookCommandpos, 6);
     bindCommandToButton(hookCommandneg, 7);
     bindCommandToButton(pullyCommandpos, 2);
+    bindCommandToButton(ejectBelt, 8);
     
   }
 

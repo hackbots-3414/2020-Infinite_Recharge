@@ -20,8 +20,10 @@ public class BeltDotEXE extends CommandBase {
   BeltSubsyteem theBeltBois;
   //back 1
   //front 0
-  public BeltDotEXE(BeltSubsyteem belt) {
+  double output;
+  public BeltDotEXE(BeltSubsyteem belt,double speed) {
     theBeltBois = belt;
+    output = speed;
     addRequirements(belt);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -41,7 +43,7 @@ public class BeltDotEXE extends CommandBase {
     //System.out.println("Back irs: "+ theBeltBois.irsback.get());
     if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
       SmartDashboard.putBoolean("irsBack", theBeltBois.irsback.get());
-      theBeltBois.beltMethod(0.35);
+      theBeltBois.beltMethod(output);
     }
     else{
       theBeltBois.beltMethod(0.0);
