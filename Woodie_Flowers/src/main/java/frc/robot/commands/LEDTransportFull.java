@@ -11,13 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ColorSystem;
 import frc.robot.subsystems.LEDSubsystem;
 
+
 public class LEDTransportFull extends CommandBase {
-  private LEDSubsystem ledSubsystem;
+  private final LEDSubsystem ledSubsystem;
 
   /**
    * Creates a new LEDDefaultCommand.
    */
-  public LEDTransportFull(LEDSubsystem ledSubsystem) {
+  public LEDTransportFull(final LEDSubsystem ledSubsystem) {
     this.ledSubsystem = ledSubsystem;
 
     addRequirements(ledSubsystem);
@@ -38,7 +39,7 @@ public class LEDTransportFull extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(final boolean interrupted) {
   }
 
   // Returns true when the command should end.
@@ -47,3 +48,4 @@ public class LEDTransportFull extends CommandBase {
     return false;
   }
 }
+

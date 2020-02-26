@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -38,7 +39,8 @@ public class BeltDotEXE extends CommandBase {
     //System.out.println("Front irs: "+ theBeltBois.irsfront.get());
     //System.out.println("Back irs: "+ theBeltBois.irsback.get());
     if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
-      theBeltBois.beltMethod(0.23);
+      SmartDashboard.putBoolean("irsBack", theBeltBois.irsback.get());
+      theBeltBois.beltMethod(0.35);
     }
     else{
       theBeltBois.beltMethod(0.0);

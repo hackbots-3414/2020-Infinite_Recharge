@@ -21,6 +21,10 @@ public class ColorSystem {
     public static final String COLOR_YELLOW = "yellow";
     public static final String COLOR_GREEN = "green";
     public static final String COLOR_PURPLE = "purple";
+    public static final String COLOR_ORANGE = "orange";
+    public static final String COLOR_LIGHT_BLUE = "light_blue";
+    public static final String COLOR_PINK = "pink";
+
     public static final String COLOR_PATTERN_SOLID = "solid";
     public static final String COLOR_PATTERN_CHASE = "chase";
     public static final String COLOR_PATTERN_PULSE = "pulse";
@@ -36,6 +40,9 @@ public class ColorSystem {
         colorMap.put(COLOR_GREEN, new Color(COLOR_GREEN, 61, 255, 255));
         colorMap.put(COLOR_BLUE, new Color(COLOR_BLUE, 120, 255, 255));
         colorMap.put(COLOR_PURPLE, new Color(COLOR_PURPLE, 137, 255, 255));
+        colorMap.put(COLOR_ORANGE, new Color(COLOR_ORANGE, 12, 255, 255));
+        colorMap.put(COLOR_LIGHT_BLUE, new Color(COLOR_LIGHT_BLUE, 85, 255, 255));
+        colorMap.put(COLOR_PINK, new Color(COLOR_PINK, 162, 255, 255));
     }
 
     public static Color getColor(String name) {

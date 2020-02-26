@@ -16,18 +16,24 @@ import frc.robot.commands.AlignAndShootCommand;
 import frc.robot.commands.BeltDotEXE;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveDotEXE;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.HookDotEXE;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDShooterCommand;
 import frc.robot.commands.LimelightAlignCommand;
+import frc.robot.commands.PulleyDotEXE;
 import frc.robot.commands.ShootSequenceCommand;
+import frc.robot.commands.SpinUpCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.TurnDotEXE;
 import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.HookSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.PulleySubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.teleop.OI;
 
@@ -51,7 +57,11 @@ public class RobotContainer {
   TurnDotEXE stay0degrees = new TurnDotEXE(m_drivetrainSubsystem, 5, 1);
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
-
+  HookSubsystem hookSubsystem = new HookSubsystem();
+  HookDotEXE hookCommandpos = new HookDotEXE(0.4,hookSubsystem);
+  HookDotEXE hookCommandneg = new HookDotEXE(-0.4,hookSubsystem);
+  PulleySubsystem pulleySubsystem = new PulleySubsystem(); 
+  PulleyDotEXE pullyCommandpos = new PulleyDotEXE(0.4, pulleySubsystem);
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final BeltSubsyteem m_belt = new BeltSubsyteem();
   BeltDotEXE beltCommand = new BeltDotEXE(m_belt, m_intake);
@@ -65,7 +75,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
+    //CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
     CommandScheduler.getInstance().setDefaultCommand(m_belt,beltCommand);
     configureButtonBindings();
 
@@ -81,23 +91,32 @@ public class RobotContainer {
 
     System.out.println("---------------inside configureButtonBindings()");
 
-    bindCommandToButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), 1);
-    //bindCommandToButton(new SpinUpCommand(m_shooter), 2);
-    bindCommandToButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
-    bindCommandToButton(new ShootSequenceCommand(m_belt, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake), 4);
-    bindCommandToButton(new IntakeCommand(m_intake), 5);
-
+    whileHeldOperatorPadButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), 1);
+    whileHeldOperatorPadButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), 3);
+    whileHeldOperatorPadButton(new ShootSequenceCommand(m_belt, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake), 4);
+    whileHeldOperatorPadButton(new IntakeCommand(m_intake), 5);
+    whileHeldOperatorPadButton(hookCommandpos, 6);
+    whileHeldOperatorPadButton(hookCommandneg, 7);
+    whileHeldOperatorPadButton(pullyCommandpos, 2);
+    
   }
 
-  public void bindCommandToButton(final Command command, final int buttonNumber) {
+  public void whileHeldOperatorPadButton(final Command command, final int buttonNumber) {
     final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
     joystickButton.whileHeld(command);
   }
+  
 
-  public void whenPressedButton(final Command command, final int buttonNumber) {
+  public void whenPressedOperatorPadButton(final Command command, final int buttonNumber) {
     final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
     joystickButton.whenPressed(command);
   }
+
+  public void whenPressedDriverPadButton(final Command command, final int buttonNumber) {
+    final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
+    joystickButton.whenPressed(command);
+  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
