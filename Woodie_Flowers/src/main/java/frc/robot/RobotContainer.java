@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -14,6 +15,7 @@ import frc.robot.commands.AlignAndShootCommand;
 import frc.robot.commands.BeltDotEXE;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveDotEXE;
+import frc.robot.commands.EjectDotEXE;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HookDotEXE;
 import frc.robot.commands.IntakeCommand;
@@ -62,7 +64,7 @@ public class RobotContainer {
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem, 0.35);
-  BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem, -0.55);
+  EjectDotEXE ejectBelt = new EjectDotEXE(beltDriveSubsyteem, -0.55);
   HookSubsystem hookSubsystem = new HookSubsystem();
   HookDotEXE hookCommandpos = new HookDotEXE(0.4,hookSubsystem);
   HookDotEXE hookCommandneg = new HookDotEXE(-0.4,hookSubsystem);

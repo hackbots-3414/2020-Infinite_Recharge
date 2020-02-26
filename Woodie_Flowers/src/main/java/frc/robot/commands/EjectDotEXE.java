@@ -7,21 +7,16 @@
 
 package frc.robot.commands;
 
-import org.ietf.jgss.Oid;
-
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BeltSubsyteem;
-import frc.robot.teleop.OI;
 
-public class BeltDotEXE extends CommandBase {
-
+public class EjectDotEXE extends CommandBase {
+ 
   BeltSubsyteem theBeltBois;
   //back 1
   //front 0
   double output;
-  public BeltDotEXE(BeltSubsyteem belt,double speed) {
+  public EjectDotEXE(BeltSubsyteem belt,double speed) {
     theBeltBois = belt;
     output = speed;
     addRequirements(belt);
@@ -38,23 +33,18 @@ public class BeltDotEXE extends CommandBase {
   @Override
   public void execute() {
    // SmartDashboard.putBoolean("Back", theBeltBois.irsback.get());
-    //System.out.println("Front irs: "+ theBeltBois.irsfront.get());
-    //System.out.println("Back irs: "+ theBeltBois.irsback.get());
-    if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
-      SmartDashboard.putBoolean("irsBack", theBeltBois.irsback.get());
+    //System.out.println("Front irs: "+ theBeltBois.irsfront.get
       theBeltBois.beltMethod(output);
-    }
-    else{
-      theBeltBois.beltMethod(0.0);
-    }
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    theBeltBois.beltMethod(0.0);
   }
 
   // Returns true when the command should end.
-
-  
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
 }
