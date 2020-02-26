@@ -22,15 +22,8 @@ public class PulleySubsystem extends SubsystemBase {
     
   }
   public void setPullEy(double speed){
-    pullEy.set(ControlMode.PercentOutput, speed);
+    pullEy.set(ControlMode.PercentOutput, -speed);
     pulley.set(ControlMode.PercentOutput, speed);
-  }
-  public int getEncoder(){
-    return (pulley.getSelectedSensorPosition()+pullEy.getSelectedSensorPosition())/2;
-  }
-  public void setEncoder(int value){
-    pulley.setSelectedSensorPosition(value);
-    pullEy.setSelectedSensorPosition(value);
   }
 
   @Override

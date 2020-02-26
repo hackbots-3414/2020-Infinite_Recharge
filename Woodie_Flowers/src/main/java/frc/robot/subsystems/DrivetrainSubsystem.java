@@ -117,7 +117,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void drive() {
-    m_drivetrain.arcadeDrive(-OI.getXboxController().getY(Hand.kLeft), OI.getXboxController().getX(Hand.kRight));
+    m_drivetrain.arcadeDrive(OI.getXboxController().getY(Hand.kLeft), -OI.getXboxController().getX(Hand.kRight));
   }
 
   public void drive(double speed, double rotation) {

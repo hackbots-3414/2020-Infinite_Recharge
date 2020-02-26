@@ -16,8 +16,12 @@ public class HookDotEXE extends CommandBase {
   /**
    * Creates a new HookDotEXE.
    */
-  HookSubsystem hook = new HookSubsystem();
-  public HookDotEXE() {
+  HookSubsystem hook;
+  double speed;
+  public HookDotEXE(double output,HookSubsystem hookSubsystem) {
+    speed = output;
+    hook = hookSubsystem;
+    addRequirements(hookSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -30,21 +34,19 @@ public class HookDotEXE extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hook.setHook(OI.getXboxController().getRawAxis(1));
+    hook.setHook(speed);
+    System.out.println("hook encoder vals: " + hook.getEncoder() + "Speed: " + speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    hook.setHook(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(hook.getEncoder()> 1000000000){
-      hook.setEncoder(0);
-      return true;
-    }
     return false;
   }
 }
