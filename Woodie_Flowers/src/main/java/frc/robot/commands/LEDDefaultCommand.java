@@ -10,16 +10,18 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.ColorSystem;
+import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.LEDSubsystem;
 
 public class LEDDefaultCommand extends CommandBase {
   private LEDSubsystem ledSubsystem;
+  private BeltSubsyteem beltSubsyteem;
 
   public int getConveyorState() {
     // 0 = empty (purple)
     // 1 = some (flashing)
     // 2 = full (solid)
-    return 0;
+    return beltSubsyteem.getConveyorState();
   }
 
   public int getLimelightState() {
@@ -32,8 +34,9 @@ public class LEDDefaultCommand extends CommandBase {
   /**
    * Creates a new LEDDefaultCommand.
    */
-  public LEDDefaultCommand(LEDSubsystem ledSubsystem) {
+  public LEDDefaultCommand(LEDSubsystem ledSubsystem, BeltSubsyteem beltSubsyteem) {
     this.ledSubsystem = ledSubsystem;
+    this.beltSubsyteem = beltSubsyteem;
 
     addRequirements(ledSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.

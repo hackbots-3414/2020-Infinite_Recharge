@@ -44,6 +44,9 @@ public class BeltDotEXE extends CommandBase {
     else{
       theBeltBois.beltMethod(0.0);
     }
+    if(theBeltBois.irsback.get()){
+      theBeltBois.setconveyorSensorback(true);
+    }
   }
 
   // Called once the command ends or is interrupted.

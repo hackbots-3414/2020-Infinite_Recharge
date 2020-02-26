@@ -24,7 +24,10 @@ public class BeltSubsyteem extends SubsystemBase {
     CANSparkMax lowBelt = new CANSparkMax(43,MotorType.kBrushless);
     public DigitalInput irsfront = new DigitalInput(1);
     public DigitalInput irsback = new DigitalInput(0);
-    
+
+    private boolean conveyorSensorFront = false;
+    private boolean conveyorSensorBack = false;
+
   public BeltSubsyteem() {
   topBelt.setSmartCurrentLimit(30);
   midBelt.setSmartCurrentLimit(30);
@@ -42,4 +45,19 @@ public class BeltSubsyteem extends SubsystemBase {
     midBelt.set(speed/1.5);
     lowBelt.set(-speed);
   }
-}
+  public int getConveyorState(){
+      if (conveyorSensorFront == false && conveyorSensorBack == false){
+        return 0;
+      } else if (conveyorSensorFront == true && conveyorSensorBack == false){
+        return 1;
+      }
+      return 2;
+    } 
+  public void setconveyorSensorfront(boolean conveyorSensorFront){
+    this.conveyorSensorFront = conveyorSensorFront;
+  }
+  public void setconveyorSensorback(boolean conveyorSensorback){
+    this.conveyorSensorBack = conveyorSensorBack;
+  }
+  }
+

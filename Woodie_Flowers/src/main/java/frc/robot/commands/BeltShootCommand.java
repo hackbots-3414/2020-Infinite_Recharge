@@ -46,6 +46,8 @@ public class BeltShootCommand extends CommandBase {
   public void end(boolean interrupted) {
     running = false;
     theBeltBois.beltMethod(0.0);
+    theBeltBois.setconveyorSensorfront(false);
+    theBeltBois.setconveyorSensorback(false);
     super.end(interrupted);
   }
 
