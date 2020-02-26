@@ -7,31 +7,12 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.teleop.OI;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.BeltDotEXE;
-import frc.robot.commands.Drive;
-import frc.robot.commands.DriveDotEXE;
-import frc.robot.commands.TurnDotEXE;
-import frc.robot.subsystems.BeltSubsyteem;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.Utilities;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.Utilities;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -105,6 +86,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
     /*
      * m_autoSelected = m_chooser.getSelected(); switch (m_autoSelected) { case
      * kCustomAuto: // Put custom auto code here break; case kDefaultAuto: default:

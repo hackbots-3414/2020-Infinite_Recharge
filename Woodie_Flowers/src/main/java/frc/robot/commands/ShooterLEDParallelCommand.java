@@ -7,21 +7,20 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class SequenceCommand extends SequentialCommandGroup {
+public class ShooterLEDParallelCommand extends ParallelCommandGroup {
   /**
-   * Creates a new SequenceCommand.
+   * Creates a new ShooterLEDParallelCommand.
    */
-  public SequenceCommand(LimelightSubsystem limelight, DrivetrainSubsystem drivetrain, Shooter shooter, StopCommand stop) {
-    super();
-    sequence(new AlignAndShootCommand(limelight, drivetrain, shooter),
-        new StopCommand(shooter, drivetrain));
+  public ShooterLEDParallelCommand(Shooter shooter, LEDSubsystem led) {
+    super(new SpinUpCommand(shooter), new LEDShooterCommand(led));
+    // Add your commands in the super() call, e.g.
+    // super(new FooCommand(), new BarCommand());super();
   }
 }

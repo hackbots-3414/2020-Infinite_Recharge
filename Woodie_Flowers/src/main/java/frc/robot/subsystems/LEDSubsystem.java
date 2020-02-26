@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public class LEDSubsystem extends SubsystemBase {
-  public static final int NUMBER_OF_LEDS = 150;
+  public static final int NUMBER_OF_LEDS = 12;
   public static final int LED_PORT = 9;
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
@@ -63,6 +63,14 @@ public class LEDSubsystem extends SubsystemBase {
     m_led.start();
   }
 
+  public void solidColorPurple() {
+    Color color = ColorSystem.getColor(ColorSystem.COLOR_PURPLE);
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setHSV(i, color.getHue(), color.getSaturation(), color.getValue());
+    }
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+  }
   public void solidColorRed() {
     Color color = ColorSystem.getColor(ColorSystem.COLOR_RED);
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
@@ -71,7 +79,6 @@ public class LEDSubsystem extends SubsystemBase {
     m_led.setData(m_ledBuffer);
     m_led.start();
   }
-
   public void solidColorYellow() {
     Color color = ColorSystem.getColor(ColorSystem.COLOR_YELLOW);
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
@@ -189,7 +196,6 @@ public class LEDSubsystem extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setHSV(i, color.getHue(), 255, m_lastValue);
     }
-    m_led.setData(m_ledBuffer);
     m_led.setData(m_ledBuffer);
     m_led.start();
   }
