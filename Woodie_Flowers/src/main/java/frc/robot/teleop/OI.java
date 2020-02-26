@@ -15,13 +15,18 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class OI {
   static XboxController pad = new XboxController(0);
+  static XboxController pad2 = new XboxController(1);
   private static final int leftYAxis = 1;
   private static final int leftXAxis = 2;
   private static final int rightYAxis = 3;
   private static final int rightXAxis = 4;
 
-  public static XboxController getXboxController() {
+  public static XboxController getDrivePad() {
     return pad;
+  }
+
+  public static XboxController getOperatorPad() {
+    return pad2;
   }
 
 }

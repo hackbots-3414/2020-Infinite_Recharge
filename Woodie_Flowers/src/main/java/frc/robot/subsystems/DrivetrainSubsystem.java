@@ -7,32 +7,21 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
-
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DriveConstants;
 import frc.robot.teleop.OI;
-import edu.wpi.first.wpilibj.SerialPort;
 
 public class DrivetrainSubsystem extends PIDSubsystem {
   /**
@@ -53,7 +42,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   double previousDistance = 0;
 
   DifferentialDriveOdometry m_odometry;
-  double encoderConstant = (1 / (42)) * 0.15 * Math.PI * 5.1742031134;
+   double encoderConstant = (1 / 8.68) * 0.155 * Math.PI;
 
   public DrivetrainSubsystem() {
     super(new PIDController(0, 0, 0));
@@ -73,6 +62,8 @@ public class DrivetrainSubsystem extends PIDSubsystem {
     leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
     rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
     m_drivetrain.setSafetyEnabled(false);
+	leftBack.getEncoder().setVelocityConversionFactor(encoderConstant/60);
+    rightFront.getEncoder().setVelocityConversionFactor(encoderConstant/60);
 
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
@@ -83,11 +74,11 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public double getLeftDistance() {
-    return -leftBack.getEncoder().getPosition();
+    return leftBack.getEncoder().getPosition();
   }
 
   public double getRightDistance() {
-    return -rightFront.getEncoder().getPosition();
+    return rightFront.getEncoder().getPosition();
   }
 
   public double getAverageDistance() {
@@ -99,16 +90,19 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public double getRightVelocity() {
-    return -rightFront.getEncoder().getVelocity();
+    return rightFront.getEncoder().getVelocity();
   }
 
   public void printEncoderValues() {
-    System.out.println("//////////////////////// Left Encoder Posision: " + getLeftDistance());
+  /*  System.out.println("//////////////////////// Left Encoder Posision: " + getLeftDistance());
     System.out.println("//////////////////////// Left Encoder Velocity: " + getLeftVelocity());
     System.out.println("/////////////////////// Right Encoder Posision: " + getRightDistance());
     System.out.println("/////////////////////// Right Encoder Velocity: " + getRightVelocity());
-
+	
+*/
   }
+  
+  
 
   @Override
   public void periodic() {
@@ -117,7 +111,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void drive() {
-    m_drivetrain.arcadeDrive(OI.getXboxController().getY(Hand.kLeft), -OI.getXboxController().getX(Hand.kRight));
+    m_drivetrain.arcadeDrive(OI.getDrivePad().getY(Hand.kLeft), -OI.getDrivePad().getX(Hand.kRight));
   }
 
   public void drive(double speed, double rotation) {
@@ -140,12 +134,15 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
-
+ public void setMaxOutput(double maxOutput){
+    m_drivetrain.setMaxOutput(maxOutput);
+  }
+  
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    System.out.println("left volts: " + leftVolts + " right volts: " + rightVolts);
+
     printEncoderValues();
-    left.setVoltage(leftVolts);
-    right.setVoltage(-rightVolts);
+    left.setVoltage(-leftVolts);
+    right.setVoltage(rightVolts);
     m_drivetrain.feed();
   }
 
@@ -223,7 +220,7 @@ public class DrivetrainSubsystem extends PIDSubsystem {
 
   @Override
   public void enable() {
-    System.out.println("enable");
+
     resetEncoders();
     navX.reset();
     super.enable();

@@ -7,21 +7,21 @@
 
 package frc.robot.commands;
 
-import org.ietf.jgss.Oid;
-
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BeltSubsyteem;
-import frc.robot.teleop.OI;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class BeltDotEXE extends CommandBase {
 
   BeltSubsyteem theBeltBois;
+  IntakeSubsystem intake;
   //back 1
   //front 0
-  public BeltDotEXE(BeltSubsyteem belt) {
+  double output;
+  public BeltDotEXE(BeltSubsyteem belt,double speed) {
     theBeltBois = belt;
+    output = speed;
     addRequirements(belt);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -41,8 +41,8 @@ public class BeltDotEXE extends CommandBase {
     //System.out.println("Back irs: "+ theBeltBois.irsback.get());
     if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
       SmartDashboard.putBoolean("irsBack", theBeltBois.irsback.get());
-      theBeltBois.beltMethod(0.35);
       theBeltBois.setconveyorSensorfront(true);
+      theBeltBois.beltMethod(output);
     }
     else{
       theBeltBois.beltMethod(0.0);
@@ -50,6 +50,17 @@ public class BeltDotEXE extends CommandBase {
     if(theBeltBois.irsback.get()){
       theBeltBois.setconveyorSensorback(true);
     }
+  }
+
+  @Override
+  public boolean isFinished(){
+    if(theBeltBois.irsback.get() == false){
+      intake.stop();
+      intake.goUp();
+      return true;
+    }
+    return false;
+    //return !theBeltBois.irsback.get();
   }
 
   // Called once the command ends or is interrupted.
