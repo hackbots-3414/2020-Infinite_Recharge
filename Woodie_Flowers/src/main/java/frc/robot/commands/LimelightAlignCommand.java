@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -22,16 +23,16 @@ public class LimelightAlignCommand extends CommandBase {
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        limelight.turnLEDOn();
     }
     @Override
     public void execute() {
-        
+        limelight.turnLEDOn();
+        limelight.visionProcessor();
     }
     @Override
     public boolean isFinished() {
         double tx = limelight.getHorizontalOffset();
-        double angle_tolerance = 0.5;
+        double angle_tolerance = 0.02;
         // double ta = limelight.getTargetArea();
 
         if (tx > -1 * angle_tolerance && tx < angle_tolerance) {
@@ -43,9 +44,9 @@ public class LimelightAlignCommand extends CommandBase {
             // double kp = -0.025f;
             double heading_error = tx;
             double base = 0.25;
-            double throttleFloor = 0.125;
+            double throttleFloor = 0.05;//0.125
             double throttlePercent = 0.0;
-            double angleBias = 1.5;
+            double angleBias = .10;//1.5
             // Equation to perform an inverse expontation decay of the throttle response
             double magnitude = base - 1 / Math.exp(Math.abs(heading_error + angleBias));
 
@@ -76,14 +77,15 @@ public class LimelightAlignCommand extends CommandBase {
             // right = 0.2;
             // }
             drivetrain.tankDrive(left, right);
-            limelight.turnLEDOff();
             return false;
         }
 
     }
     @Override
     public void end(boolean interrupted) {
+       Timer.delay(0.3);
         limelight.turnLEDOff();
+       limelight.driverCameraVision();
     }
 
     public void interrupted() {

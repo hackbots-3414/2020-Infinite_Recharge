@@ -58,5 +58,12 @@ public class LimelightSubsystem extends SubsystemBase {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
+    public void visionProcessor() {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
+    }
+
+    public void driverCameraVision() {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
+    }
 
 }

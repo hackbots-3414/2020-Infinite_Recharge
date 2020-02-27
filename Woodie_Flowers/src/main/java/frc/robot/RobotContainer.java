@@ -35,6 +35,7 @@ import frc.robot.commands.DriveDotEXE;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HookDotEXE;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LEDDefaultCommand;
 import frc.robot.commands.LEDShooterCommand;
 import frc.robot.commands.LimelightAlignCommand;
 import frc.robot.commands.PulleyDotEXE;
@@ -71,13 +72,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   boolean counterV2;
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
- DifferentialDriveVoltageConstraint autoVoltageConstraint;
+  DifferentialDriveVoltageConstraint autoVoltageConstraint;
   TrajectoryConfig config;
   String trajectoryJSON = "paths/center_auton_start.wpilib.json";
   Path trajectoryPath;
@@ -85,19 +86,19 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter();
   private final LEDShooterCommand m_ledShooter = new LEDShooterCommand(m_ledSubsystem);
   TurnDotEXE stay0degrees = new TurnDotEXE(m_drivetrainSubsystem, 5, 1);
-  DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
+  DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6, m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
   BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
   BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem);
   HookSubsystem hookSubsystem = new HookSubsystem();
-  HookDotEXE hookCommandpos = new HookDotEXE(0.4,hookSubsystem);
-  HookDotEXE hookCommandneg = new HookDotEXE(-0.4,hookSubsystem);
-  PulleySubsystem pulleySubsystem = new PulleySubsystem(); 
+  HookDotEXE hookCommandpos = new HookDotEXE(0.4, hookSubsystem);
+  HookDotEXE hookCommandneg = new HookDotEXE(-0.4, hookSubsystem);
+  PulleySubsystem pulleySubsystem = new PulleySubsystem();
   PulleyDotEXE pullyCommandpos = new PulleyDotEXE(0.4, pulleySubsystem);
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   // private final BeltSubsyteem m_belt = new BeltSubsyteem();
-  //BeltDotEXE beltCommand = new BeltDotEXE(m_belt, m_intake);
+  // BeltDotEXE beltCommand = new BeltDotEXE(m_belt, m_intake);
 
   // private final DrivetrainSubsystem m_drivetrainSubsystem = new
   // DrivetrainSubsystem();
@@ -108,85 +109,73 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    //CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
-    CommandScheduler.getInstance().setDefaultCommand(beltDriveSubsyteem,beltCommand);
+    CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
+    CommandScheduler.getInstance().setDefaultCommand(beltDriveSubsyteem, beltCommand);
+    CommandScheduler.getInstance().setDefaultCommand(m_ledSubsystem,
+        new LEDDefaultCommand(m_ledSubsystem, beltDriveSubsyteem));
     configureButtonBindings();
 
   }
-public Command getAutonomousCommand() {
-    
- 
-    
-    autoVoltageConstraint =
-    new DifferentialDriveVoltageConstraint(
-      new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                 DriveConstants.kvVoltSecondsPerMeter,
-                                 DriveConstants.kaVoltSecondsSquaredPerMeter),
-      DriveConstants.kDriveKinematics,
-      5);
-  config =
-      new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
-                           DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-          // Add kinematics to ensure max speed is actually obeyed
-          .setKinematics(DriveConstants.kDriveKinematics)
-          // Apply the voltage constraint
-          .addConstraint(autoVoltageConstraint)
-          .setReversed(true);
-          // An example trajectory to follow.  All units in meters.
-          try {
-            trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-          
-          } catch (IOException ex) {
-            // TODO Auto-generated catch block
-            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-            ex.printStackTrace();
-          }
-          Trajectory backwardsCurve = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(6.724, -2.166, new Rotation2d(Math.PI)), List.of(), new Pose2d(2.732, -2.166, new Rotation2d(Math.PI)), config);
-          Trajectory backwards = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0,0, new Rotation2d(0)), List.of(), new Pose2d(-6, 0, new Rotation2d(0)), config);
-          
-          Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(
-                new Translation2d(1, 0 ),
-                new Translation2d(2, 0)),
-            
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            // Pass config
-            config);
-            RamseteController disabledRamsete = new RamseteController() {
-              @Override
-              public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
-                      double angularVelocityRefRadiansPerSecond) {
-                  return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
-              }
-          };
 
-       RamseteCommand ramseteCommand = new RamseteCommand(
-          backwards,
-          m_drivetrainSubsystem::getPose,
-          disabledRamsete,
-         //new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
-          new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                     DriveConstants.kvVoltSecondsPerMeter,
-                                     DriveConstants.kaVoltSecondsSquaredPerMeter),
-          DriveConstants.kDriveKinematics,
-          m_drivetrainSubsystem::getWheelSpeeds,
-          new PIDController(DriveConstants.kPDriveVel, 0, 0),
-          new PIDController(DriveConstants.kPDriveVel, 0, 0),
-          // RamseteCommand passes volts to the callback
-          m_drivetrainSubsystem::tankDriveVolts,
-          m_drivetrainSubsystem
+  public Command getAutonomousCommand() {
 
-      );
-      return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
-      
+    autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(DriveConstants.ksVolts,
+        DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics, 5);
+    config = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(DriveConstants.kDriveKinematics)
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint).setReversed(true);
+    // An example trajectory to follow. All units in meters.
+    try {
+      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+
+    } catch (IOException ex) {
+      // TODO Auto-generated catch block
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+      ex.printStackTrace();
+    }
+    Trajectory backwardsCurve = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(6.724, -2.166, new Rotation2d(Math.PI)), List.of(),
+        new Pose2d(2.732, -2.166, new Rotation2d(Math.PI)), config);
+    Trajectory backwards = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)), List.of(),
+        new Pose2d(-6, 0, new Rotation2d(0)), config);
+
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
+
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)),
+        // Pass config
+        config);
+    RamseteController disabledRamsete = new RamseteController() {
+      @Override
+      public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+          double angularVelocityRefRadiansPerSecond) {
+        return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+      }
+    };
+
+    RamseteCommand ramseteCommand = new RamseteCommand(backwards, m_drivetrainSubsystem::getPose, disabledRamsete,
+        // new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics, m_drivetrainSubsystem::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0), new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_drivetrainSubsystem::tankDriveVolts, m_drivetrainSubsystem
+
+    );
+    return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
+
   }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by instantiating a {@link GenericHID} or one of its subclasses
@@ -197,32 +186,34 @@ public Command getAutonomousCommand() {
 
     System.out.println("---------------inside configureButtonBindings()");
 
-    whileHeldOperatorPadButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem), OI.A_BTN_LIMELIGHTALIGN); 
-    whileHeldOperatorPadButton(new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter), OI.X_BTN_ALIGNANDSHOOT);
-    whileHeldOperatorPadButton(new ShootSequenceCommand(beltDriveSubsyteem, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake), OI.Y_BTN_SHOOTSEQUENCE);
-    whileHeldOperatorPadButton(new IntakeCommand(m_intake), OI.LB_BTN_INTAKE);
-    whileHeldOperatorPadButton(hookCommandpos, OI.RB_BTN_HOOK_POSITIVE);
-    whileHeldOperatorPadButton(hookCommandneg, OI.CENTERLEFT_BTN_HOOK_NEGATIVE);
-    whileHeldOperatorPadButton(pullyCommandpos, OI.B_BTN_PULLY);
-    
+    whileHeldDriverPadButton(new LimelightAlignCommand(m_limelightSubsystem, m_drivetrainSubsystem),
+        OI.Y_BTN_LIMELIGHTALIGN);
+    // whileHeldOperatorPadButton(new AlignAndShootCommand(m_limelightSubsystem,
+    // m_drivetrainSubsystem, m_shooter), OI.X_BTN_ALIGNANDSHOOT);
+    whileHeldDriverPadButton(
+        new ShootSequenceCommand(beltDriveSubsyteem, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake),
+        OI.B_BTN_SHOOTSEQUENCE);
+    whileHeldOperatorPadButton(new IntakeCommand(m_intake), OI.B_BTN_INTAKE);
+    whileHeldOperatorPadButton(hookCommandpos, OI.LB_BTN_HOOK_POSITIVE);
+    whileHeldOperatorPadButton(hookCommandneg, OI.RB_BTN_HOOK_NEGATIVE);
+    whileHeldOperatorPadButton(pullyCommandpos, OI.X_BTN_PULLY);
+
   }
 
   public void whileHeldOperatorPadButton(final Command command, final int buttonNumber) {
     final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
     joystickButton.whileHeld(command);
   }
-  
 
   public void whenPressedOperatorPadButton(final Command command, final int buttonNumber) {
     final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
     joystickButton.whenPressed(command);
   }
 
-  public void whenPressedDriverPadButton(final Command command, final int buttonNumber) {
-    final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
-    joystickButton.whenPressed(command);
+  public void whileHeldDriverPadButton(final Command command, final int buttonNumber) {
+    final JoystickButton joystickButton = new JoystickButton(OI.getDrivePad(), buttonNumber);
+    joystickButton.whileHeld(command);
   }
-  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
