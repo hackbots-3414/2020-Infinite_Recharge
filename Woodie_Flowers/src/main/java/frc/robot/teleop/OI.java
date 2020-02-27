@@ -29,6 +29,7 @@ public class OI {
   public static final int RB_BTN_HOOK_POSITIVE = 6;
   public static final int CENTERLEFT_BTN_HOOK_NEGATIVE = 7;
   public static final int B_BTN_PULLY = 2;
+  public static final int CENTERRIGHT_BTN_EJECT_BELT = 8;
 
 
   public static XboxController getDrivePad() {

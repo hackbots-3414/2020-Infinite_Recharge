@@ -33,7 +33,6 @@ import frc.robot.commands.AlignAndShootCommand;
 import frc.robot.commands.BeltDotEXE;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveDotEXE;
-import frc.robot.commands.EjectDotEXE;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HookDotEXE;
 import frc.robot.commands.IntakeCommand;
@@ -72,6 +71,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
   // The robot's subsystems and commands are defined here...
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   boolean counterV2;
@@ -89,14 +89,8 @@ public class RobotContainer {
   TurnDotEXE stay0degrees = new TurnDotEXE(m_drivetrainSubsystem, 5, 1);
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6,m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
-<<<<<<< HEAD
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem, 0.35);
-  EjectDotEXE ejectBelt = new EjectDotEXE(beltDriveSubsyteem, -0.55);
-=======
-  BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
-  BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
-  BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem);
->>>>>>> 38416ba13eac249b364889debacbeb5993f68e45
+  BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem, -0.55);
   HookSubsystem hookSubsystem = new HookSubsystem();
   HookDotEXE hookCommandpos = new HookDotEXE(0.4,hookSubsystem);
   HookDotEXE hookCommandneg = new HookDotEXE(-0.4,hookSubsystem);
