@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.commands.AlignAndShootCommand;
+import frc.robot.commands.AutonCenter;
 import frc.robot.commands.BeltDotEXE;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveDotEXE;
@@ -77,8 +78,10 @@ public class RobotContainer {
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final LEDSubsystem m_ledSubsystem = new LEDSubsystem();
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem);
+  private final AutonCenter m_autonCenter = new AutonCenter();
  DifferentialDriveVoltageConstraint autoVoltageConstraint;
-  TrajectoryConfig config;
+  TrajectoryConfig configReversedTrue;
+  TrajectoryConfig configReversedFalse;
   String trajectoryJSON = "paths/center_auton_start.wpilib.json";
   Path trajectoryPath;
   Trajectory trajectory;
@@ -97,6 +100,7 @@ public class RobotContainer {
   PulleyDotEXE pullyCommandpos = new PulleyDotEXE(0.4, pulleySubsystem);
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final BeltSubsyteem m_belt = new BeltSubsyteem();
+  TurnDotEXE left90 = new TurnDotEXE(m_drivetrainSubsystem, 90, 5);
   //BeltDotEXE beltCommand = new BeltDotEXE(m_belt, m_intake);
 
   // private final DrivetrainSubsystem m_drivetrainSubsystem = new
@@ -111,10 +115,9 @@ public class RobotContainer {
     //CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
     CommandScheduler.getInstance().setDefaultCommand(m_belt,beltCommand);
     configureButtonBindings();
-
   }
 public Command getAutonomousCommand() {
-    
+    //return m_autonCenter;
  
     
     autoVoltageConstraint =
@@ -124,7 +127,7 @@ public Command getAutonomousCommand() {
                                  DriveConstants.kaVoltSecondsSquaredPerMeter),
       DriveConstants.kDriveKinematics,
       5);
-  config =
+  configReversedTrue =
       new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
                            DriveConstants.kMaxAccelerationMetersPerSecondSquared)
           // Add kinematics to ensure max speed is actually obeyed
@@ -132,6 +135,14 @@ public Command getAutonomousCommand() {
           // Apply the voltage constraint
           .addConstraint(autoVoltageConstraint)
           .setReversed(true);
+  configReversedFalse =
+  new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+  DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+// Add kinematics to ensure max speed is actually obeyed
+.setKinematics(DriveConstants.kDriveKinematics)
+// Apply the voltage constraint
+.addConstraint(autoVoltageConstraint)
+.setReversed(false);
           // An example trajectory to follow.  All units in meters.
           try {
             trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -143,9 +154,9 @@ public Command getAutonomousCommand() {
             ex.printStackTrace();
           }
           Trajectory backwardsCurve = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(6.724, -2.166, new Rotation2d(Math.PI)), List.of(), new Pose2d(2.732, -2.166, new Rotation2d(Math.PI)), config);
+            new Pose2d(6.724, -2.166, new Rotation2d(Math.PI)), List.of(), new Pose2d(2.732, -2.166, new Rotation2d(Math.PI)), configReversedFalse);
           Trajectory backwards = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0,0, new Rotation2d(0)), List.of(), new Pose2d(-6, 0, new Rotation2d(0)), config);
+            new Pose2d(0,0, new Rotation2d(0)), List.of(), new Pose2d(-1, 0, new Rotation2d(0)), configReversedTrue);
           
           Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
@@ -158,7 +169,7 @@ public Command getAutonomousCommand() {
             // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(3, 0, new Rotation2d(0)),
             // Pass config
-            config);
+            configReversedFalse);
             RamseteController disabledRamsete = new RamseteController() {
               @Override
               public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
@@ -184,8 +195,9 @@ public Command getAutonomousCommand() {
           m_drivetrainSubsystem
 
       );
-      return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
       
+      return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
+    
   }
   /**
    * Use this method to define your button->command mappings. Buttons can be

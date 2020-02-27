@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutonCenter;
+// import frc.robot.commands.sixMeterTrajectory;
 import frc.robot.subsystems.Utilities;
 
 /**
@@ -24,6 +26,8 @@ import frc.robot.subsystems.Utilities;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+ // private sixMeterTrajectory sixMeters;
+  private AutonCenter autonCenter;
   Utilities values = new Utilities();
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -88,7 +92,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null) { 
       m_autonomousCommand.schedule();
     }
     /*
