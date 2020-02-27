@@ -33,9 +33,9 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax rightFront = new CANSparkMax(4, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax rightBack = new CANSparkMax(5, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
-  SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
-  SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
-  DifferentialDrive m_drivetrain = new DifferentialDrive(left, right);
+  //SpeedControllerGroup left = new SpeedControllerGroup(leftFront, leftBack);
+  //SpeedControllerGroup right = new SpeedControllerGroup(rightFront, rightBack);
+  DifferentialDrive m_drivetrain = new DifferentialDrive(leftFront, rightFront);
   public boolean interupted = false;
   boolean driveIsActive;
   double previousAngle = 0;
@@ -54,10 +54,20 @@ public class DrivetrainSubsystem extends PIDSubsystem {
     leftBack.restoreFactoryDefaults();
     rightFront.restoreFactoryDefaults();
     rightBack.restoreFactoryDefaults();
+    leftBack.follow(leftFront);
+    rightBack.follow(rightFront);
     leftFront.getEncoder().setPosition(0);
     leftBack.getEncoder().setPosition(0);
     rightFront.getEncoder().setPosition(0);
     rightBack.getEncoder().setPosition(0);
+    leftFront.setSmartCurrentLimit(65);
+    leftBack.setSmartCurrentLimit(65);
+    rightFront.setSmartCurrentLimit(65);
+    rightBack.setSmartCurrentLimit(65);
+    leftFront.burnFlash();
+    leftBack.burnFlash();
+    rightFront.burnFlash();
+    rightBack.burnFlash();
     // Sets the distance per pulse for the encoders
     leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
     rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
@@ -127,8 +137,8 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void stop() {
-    left.set(0.0);
-    right.set(0.0);
+    leftFront.set(0.0);
+    rightFront.set(0.0);
   }
 
   public Pose2d getPose() {
@@ -141,8 +151,8 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
 
     printEncoderValues();
-    left.setVoltage(-leftVolts);
-    right.setVoltage(rightVolts);
+    leftFront.setVoltage(-leftVolts);
+    rightFront.setVoltage(rightVolts);
     m_drivetrain.feed();
   }
 
