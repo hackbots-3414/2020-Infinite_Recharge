@@ -26,8 +26,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   Utilities values = new Utilities();
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
+  private static final String kDefaultAuto = "Back Up 2 Meters";
+  private static final String kCustomAuto = "Center Auton";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private String m_autoSelected;
   ;
@@ -42,8 +42,8 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
+    m_chooser.setDefaultOption("Back up 2 meters Auto", kDefaultAuto);
+    m_chooser.addOption("Back up and shoot Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
@@ -89,22 +89,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-    /*
-     * m_autoSelected = m_chooser.getSelected(); switch (m_autoSelected) { case
-     * kCustomAuto: // Put custom auto code here break; case kDefaultAuto: default:
-     * // Put default auto code here break; } pidNavX.resetDistance();
-     * pidNavX.enable(); if (counter == true) { counter = false; //
-     * CommandScheduler.getInstance().schedule(new TurnDotEXE(pidNavX,-90,5));
-     * CommandScheduler.getInstance().schedule(new Drive(20000000, 0.5, pidNavX,
-     * 5)); System.out.println("worked");
-     * 
-     * } counter = true;
-     */
+   
+    
+      m_autoSelected = m_chooser.getSelected();
+      switch (m_autoSelected) { 
+        case kCustomAuto: // Put custom auto code here break; case kDefaultAuto: default:
+      // Put default auto code here break; } pidNavX.resetDistance();
+
+      m_autonomousCommand = m_robotContainer.getAutonShoot();
+      break;
+        default: 
+        m_autonomousCommand = m_robotContainer.getAutonNoShoot();
+      }
+      if (m_autonomousCommand != null) {
+        m_autonomousCommand.schedule();
+      }
+     
   }
 
   /**

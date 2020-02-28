@@ -33,9 +33,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
  */
 public class Robot extends TimedRobot {
   XboxController pad = new XboxController(0);
-  CANSparkMax leftFront = new CANSparkMax(2, MotorType.kBrushless);
-  CANSparkMax leftBack = new CANSparkMax(1, MotorType.kBrushless);
-  CANSparkMax rightFront = new CANSparkMax(5, MotorType.kBrushless);
+  CANSparkMax leftFront = new CANSparkMax(1, MotorType.kBrushless);
+  CANSparkMax leftBack = new CANSparkMax(2, MotorType.kBrushless);
+  CANSparkMax rightFront = new CANSparkMax(3, MotorType.kBrushless);
   CANSparkMax rightBack = new CANSparkMax(4, MotorType.kBrushless);
   CANSparkMax intake = new CANSparkMax(31, MotorType.kBrushless);
   CANSparkMax topBelt = new CANSparkMax(42, MotorType.kBrushless);
@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void teleopPeriodic() {
-  // drivetrain.arcadeDrive((pad.getX(Hand.kRight)),(-pad.getY(Hand.kLeft)));
+  drivetrain.arcadeDrive((pad.getX(Hand.kRight)),(-pad.getY(Hand.kLeft)));
     if(pad.getAButton()){
       shooterA.set(ControlMode.PercentOutput, -0.2);
       shooterB.set(ControlMode.PercentOutput, 0.2);

@@ -10,7 +10,7 @@ public class Shooter extends SubsystemBase {
 
     WPI_TalonFX leftMotor = new WPI_TalonFX(12);
     WPI_TalonFX rightMotor = new WPI_TalonFX(11);
-    public static final double SHOOTER_VELOCITY = 16700;
+    public static final double SHOOTER_VELOCITY = 17700; //16700
     public static final double VELOCITY_OFFSET = 500;
 
     public Shooter() {

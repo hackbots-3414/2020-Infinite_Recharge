@@ -32,10 +32,11 @@ public class LimelightAlignCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         double tx = limelight.getHorizontalOffset();
+        double ta = limelight.getTargetArea();
         double angle_tolerance = 0.02;
         // double ta = limelight.getTargetArea();
 
-        if (tx > -1 * angle_tolerance && tx < angle_tolerance) {
+        if (tx > -1 * angle_tolerance && tx < angle_tolerance || ta < 0.92) {
 
             drivetrain.tankDrive(0, 0);
             return true;

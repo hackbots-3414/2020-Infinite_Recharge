@@ -11,7 +11,7 @@ public class IntakeSubsystem extends SubsystemBase {
     Solenoid intake = new Solenoid(0);
 
     public IntakeSubsystem() {
-        intakeMotor.setSmartCurrentLimit(30);
+        intakeMotor.setSmartCurrentLimit(40);
     }
 
     public void goDown() {

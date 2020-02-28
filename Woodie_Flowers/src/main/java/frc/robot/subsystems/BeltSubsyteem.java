@@ -48,7 +48,7 @@ public class BeltSubsyteem extends SubsystemBase {
   public int getConveyorState(){
       if (conveyorSensorFront == false && conveyorSensorBack == false){
         return 0;
-      } else if (conveyorSensorFront == true && conveyorSensorBack == false){
+      } else if (conveyorSensorBack == true && conveyorSensorFront == false){
         return 1;
       }
       return 2;
