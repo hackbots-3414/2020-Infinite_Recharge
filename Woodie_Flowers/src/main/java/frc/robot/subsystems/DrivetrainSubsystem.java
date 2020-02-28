@@ -64,17 +64,16 @@ public class DrivetrainSubsystem extends PIDSubsystem {
     leftBack.setSmartCurrentLimit(65);
     rightFront.setSmartCurrentLimit(65);
     rightBack.setSmartCurrentLimit(65);
-    leftFront.burnFlash();
-    leftBack.burnFlash();
-    rightFront.burnFlash();
-    rightBack.burnFlash();
     // Sets the distance per pulse for the encoders
     leftBack.getEncoder().setPositionConversionFactor(encoderConstant);
     rightFront.getEncoder().setPositionConversionFactor(encoderConstant);
     m_drivetrain.setSafetyEnabled(false);
 	leftBack.getEncoder().setVelocityConversionFactor(encoderConstant/60);
     rightFront.getEncoder().setVelocityConversionFactor(encoderConstant/60);
-
+    leftFront.burnFlash();
+    leftBack.burnFlash();
+    rightFront.burnFlash();
+    rightBack.burnFlash();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
   }

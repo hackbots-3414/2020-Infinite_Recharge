@@ -37,6 +37,7 @@ public class SpinUpCommand extends CommandBase {
   public void execute() {
     super.execute();
     shooterSubsystem.shoot();
+  
 
     /*
      * shooterSubsystem.enable();

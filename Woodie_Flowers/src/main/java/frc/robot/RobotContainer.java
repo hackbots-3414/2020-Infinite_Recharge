@@ -95,7 +95,7 @@ public class RobotContainer {
   HookDotEXE hookCommandpos = new HookDotEXE(0.4, hookSubsystem);
   HookDotEXE hookCommandneg = new HookDotEXE(-0.4, hookSubsystem);
   PulleySubsystem pulleySubsystem = new PulleySubsystem();
-  PulleyDotEXE pullyCommandpos = new PulleyDotEXE(0.4, pulleySubsystem);
+  PulleyDotEXE pullyCommandpos = new PulleyDotEXE(0.6, pulleySubsystem);
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   // private final BeltSubsyteem m_belt = new BeltSubsyteem();
   // BeltDotEXE beltCommand = new BeltDotEXE(m_belt, m_intake);

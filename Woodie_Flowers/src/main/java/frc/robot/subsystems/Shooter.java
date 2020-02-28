@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -10,7 +11,7 @@ public class Shooter extends SubsystemBase {
     WPI_TalonFX leftMotor = new WPI_TalonFX(12);
     WPI_TalonFX rightMotor = new WPI_TalonFX(11);
     public static final double SHOOTER_VELOCITY = 16700;
-    public static final double VELOCITY_OFFSET = 1000;
+    public static final double VELOCITY_OFFSET = 500;
 
     public Shooter() {
         super();
@@ -32,10 +33,14 @@ public class Shooter extends SubsystemBase {
     }
 
     public void init() {
-        leftMotor.config_kP(0, 0.5);
+        leftMotor.config_kP(0, 0.25);//0.5
         leftMotor.config_kI(0, 0);
-        leftMotor.config_kD(0, 25);
+        leftMotor.config_kD(0, 0); //25
         leftMotor.config_kF(0, 0.04);
+        leftMotor.configAllowableClosedloopError(0, 400);
+        leftMotor.configVoltageCompSaturation(12);
+        leftMotor.enableVoltageCompensation(true);
+        leftMotor.config_IntegralZone(0, 600); //400*1.5    
     }
 
     public void shoot() {

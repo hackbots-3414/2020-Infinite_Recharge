@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -34,6 +35,12 @@ public class ShootSequenceCommand extends SequentialCommandGroup {
     //addCommands(new TransportFullLEDParallelCommand(intake, belt, led), new ShooterLEDParallelCommand(shooter, led));
     this.shooter = shooter;
     this.drivetrain = drivetrain;
+  }
+ @Override
+  public void execute() {
+    // TODO Auto-generated method stub
+    super.execute();
+    SmartDashboard.putNumber("shooterVelocityRead", shooter.getAverageShooterVelocity());
   }
 
   @Override
