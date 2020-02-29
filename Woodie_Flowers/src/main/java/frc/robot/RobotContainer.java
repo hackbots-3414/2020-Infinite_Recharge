@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import frc.robot.commands.AlignAndShootCommand;
 import frc.robot.commands.BeltDotEXE;
+import frc.robot.commands.BeltShootCommand;
 import frc.robot.commands.CenterAuton;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveDotEXE;
@@ -94,7 +95,8 @@ public class RobotContainer {
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
   BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
-  BeltDotEXE ejectBelt = new BeltDotEXE(beltDriveSubsyteem);
+  BeltShootCommand ejectBelt = new BeltShootCommand(beltDriveSubsyteem, -0.5);
+  BeltShootCommand beltForward = new BeltShootCommand(beltDriveSubsyteem, 0.5); 
   HookSubsystem hookSubsystem = new HookSubsystem();
   HookDotEXE hookCommandpos = new HookDotEXE(0.4, hookSubsystem);
   HookDotEXE hookCommandneg = new HookDotEXE(-0.4, hookSubsystem);
@@ -189,10 +191,67 @@ public class RobotContainer {
     return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
 
   }
+  public Command shootDistance() {
 
+    autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(DriveConstants.ksVolts,
+        DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics, 5);
+    config = new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(DriveConstants.kDriveKinematics)
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint).setReversed(true);
+    // An example trajectory to follow. All units in meters.
+    try {
+      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+
+    } catch (IOException ex) {
+      // TODO Auto-generated catch block
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+      ex.printStackTrace();
+    }
+   /* Trajectory backwardsCurve = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(6.724, -2.166, new Rotation2d(Math.PI)), List.of(),
+        new Pose2d(2.732, -2.166, new Rotation2d(Math.PI)), config); */
+    Trajectory backwards = TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)), List.of(),
+        new Pose2d(-2 /*-4.5*/, 0, new Rotation2d(0)), config);
+
+    /*Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
+
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)),
+        // Pass config
+        config);*/
+    RamseteController disabledRamsete = new RamseteController() {
+      @Override
+      public ChassisSpeeds calculate(Pose2d currentPose, Pose2d poseRef, double linearVelocityRefMeters,
+          double angularVelocityRefRadiansPerSecond) {
+        return new ChassisSpeeds(linearVelocityRefMeters, 0.0, angularVelocityRefRadiansPerSecond);
+      }
+    };
+
+    RamseteCommand ramseteCommand = new RamseteCommand(backwards, m_drivetrainSubsystem::getPose, disabledRamsete,
+        // new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts, DriveConstants.kvVoltSecondsPerMeter,
+            DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics, m_drivetrainSubsystem::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0), new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_drivetrainSubsystem::tankDriveVolts, m_drivetrainSubsystem
+
+    );
+    return ramseteCommand.andThen(() -> m_drivetrainSubsystem.tankDriveVolts(0, 0));
+
+  }
   public Command GetCenter(){
     AlignAndShootCommand autonShoot = new AlignAndShootCommand(m_limelightSubsystem, m_drivetrainSubsystem, m_shooter);
-    CenterAuton centerStart = new CenterAuton(getAutonomousCommand(), autonShoot);
+   CenterAuton centerStart = new CenterAuton(shootDistance(), autonShoot, new BeltShootCommand(beltDriveSubsyteem, 0.5), m_stop);
     return centerStart;
   }
 
@@ -217,7 +276,8 @@ public class RobotContainer {
     whileHeldOperatorPadButton(hookCommandpos, OI.LB_BTN_HOOK_POSITIVE);
     whileHeldOperatorPadButton(hookCommandneg, OI.RB_BTN_HOOK_NEGATIVE);
     whileHeldOperatorPadButton(pullyCommandpos, OI.X_BTN_PULLY);
-
+    whileHeldOperatorPadButton(ejectBelt, 8);
+    whileHeldOperatorPadButton(beltForward, 7);
   }
 
   public void whileHeldOperatorPadButton(final Command command, final int buttonNumber) {
@@ -229,6 +289,7 @@ public class RobotContainer {
     final JoystickButton joystickButton = new JoystickButton(OI.getOperatorPad(), buttonNumber);
     joystickButton.whenPressed(command);
   }
+
 
   public void whileHeldDriverPadButton(final Command command, final int buttonNumber) {
     final JoystickButton joystickButton = new JoystickButton(OI.getDrivePad(), buttonNumber);

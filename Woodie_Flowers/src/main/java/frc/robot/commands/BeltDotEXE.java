@@ -17,11 +17,11 @@ public class BeltDotEXE extends CommandBase {
   BeltSubsyteem theBeltBois;
   //back 1
   //front 0
-  double output;
+
   public BeltDotEXE(BeltSubsyteem belt) {
     theBeltBois = belt;
     addRequirements(belt);
-    // Use addRequirements() here to declare subsystem dependencies.
+        // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -53,6 +53,7 @@ public class BeltDotEXE extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    theBeltBois.beltMethod(0.0);
   }
 
   // Returns true when the command should end.

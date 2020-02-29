@@ -31,7 +31,7 @@ public class ShootSequenceCommand extends SequentialCommandGroup {
     super();
     //addCommands(new AlignAndShootCommand(limelight, drivetrain, shooter), new
     //BeltShootCommand(belt));
-    addCommands(new SpinUpCommand(shooter), new BeltShootCommand(belt));
+    addCommands(new SpinUpCommand(shooter), new BeltShootCommand(belt,0.35));
     //addCommands(new TransportFullLEDParallelCommand(intake, belt, led), new ShooterLEDParallelCommand(shooter, led));
     this.shooter = shooter;
     this.drivetrain = drivetrain;

@@ -16,9 +16,11 @@ public class BeltShootCommand extends CommandBase {
   boolean running;
   //back 1
   //front 0
-  public BeltShootCommand(BeltSubsyteem belt) {
+  double output;
+  public BeltShootCommand(BeltSubsyteem belt, double output) {
     theBeltBois = belt;
     addRequirements(belt);
+    this.output = output;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -32,7 +34,7 @@ public class BeltShootCommand extends CommandBase {
   @Override
   public void execute() {
     running = true;
-    theBeltBois.beltMethod(0.5);
+    theBeltBois.beltMethod(output);
   }
 
   @Override

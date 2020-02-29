@@ -9,6 +9,7 @@ public class LimelightAlignCommand extends CommandBase {
 
     private final LimelightSubsystem limelight;
     private final DrivetrainSubsystem drivetrain;
+    private long startTime = 0;
 
     public LimelightAlignCommand(LimelightSubsystem limelight, DrivetrainSubsystem drivetrain) {
         super();
@@ -21,6 +22,7 @@ public class LimelightAlignCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        startTime = System.currentTimeMillis();
         // TODO Auto-generated method stub
         super.initialize();
     }
@@ -28,26 +30,57 @@ public class LimelightAlignCommand extends CommandBase {
     public void execute() {
         limelight.turnLEDOn();
         limelight.visionProcessor();
+        //Timer.delay(0.3); 
+        System.out.println("////////Limelight Is On!////////");
     }
     @Override
     public boolean isFinished() {
         double tx = limelight.getHorizontalOffset();
         double ta = limelight.getTargetArea();
-        double angle_tolerance = 0.02;
+        double angle_tolerance = 0.9; //0.03;
         // double ta = limelight.getTargetArea();
-
-        if (tx > -1 * angle_tolerance && tx < angle_tolerance || ta < 0.92) {
-
+        if (System.currentTimeMillis() - startTime < 300 && tx == 0){
+            return false; 
+        }
+        if (tx > -1 * angle_tolerance && tx < angle_tolerance) {
+        System.out.println("////////Exited Limelight////////");
             drivetrain.tankDrive(0, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             return true;
         } else {
 
             // double kp = -0.025f;
             double heading_error = tx;
             double base = 0.25;
-            double throttleFloor = 0.05;//0.125
+            double throttleFloor = 0.18;//0.05
             double throttlePercent = 0.0;
-            double angleBias = .10;//1.5
+            double angleBias = .10;//1.5s
             // Equation to perform an inverse expontation decay of the throttle response
             double magnitude = base - 1 / Math.exp(Math.abs(heading_error + angleBias));
 

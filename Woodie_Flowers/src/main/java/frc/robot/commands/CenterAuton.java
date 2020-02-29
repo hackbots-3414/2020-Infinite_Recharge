@@ -17,9 +17,9 @@ public class CenterAuton extends SequentialCommandGroup {
   /**
    * Creates a new Center.
    */
-  public CenterAuton(Command backupCommand, AlignAndShootCommand shoot) {
+  public CenterAuton(Command backupCommand, AlignAndShootCommand shoot, BeltShootCommand runBelts, StopCommand stop) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(backupCommand, backupCommand, shoot);
+    super(backupCommand, shoot, runBelts.withTimeout(4), stop);
   }
 }
