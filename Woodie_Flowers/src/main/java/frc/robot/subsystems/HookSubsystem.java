@@ -17,8 +17,10 @@ public class HookSubsystem extends SubsystemBase {
    * Creates a new HookSubsystem.
    */
   TalonSRX captainHook = new TalonSRX(51);
+ 
   public HookSubsystem() {
-
+    captainHook.configReverseSoftLimitThreshold(-30000); //33000
+    captainHook.configReverseSoftLimitEnable(true);
   }
   public void setHook(double speed){
     captainHook.set(ControlMode.PercentOutput, speed);
@@ -32,5 +34,9 @@ public class HookSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void resetEncoder() {
+    captainHook.setSelectedSensorPosition(0);
   }
 }

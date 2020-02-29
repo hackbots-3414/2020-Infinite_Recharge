@@ -41,7 +41,7 @@ public class BeltSubsyteem extends SubsystemBase {
   }
 
   public void beltMethod(double speed) {
-    topBelt.set(speed/4);
+    topBelt.set(speed/2);// divide by 4
     midBelt.set(speed/1.5);
     lowBelt.set(-speed);
   }

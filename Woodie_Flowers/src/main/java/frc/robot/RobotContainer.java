@@ -126,6 +126,7 @@ public class RobotContainer {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     autonShoot = GetCenter();
     autonNoShoot = getAutonomousCommand();
+    hookSubsystem.resetEncoder();
   }
   public Command getAutonShoot() {
     return autonShoot;
