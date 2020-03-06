@@ -12,10 +12,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.ColorSystem;
 import frc.robot.subsystems.BeltSubsyteem;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class LEDDefaultCommand extends CommandBase {
   private LEDSubsystem ledSubsystem;
   private BeltSubsyteem beltSubsyteem;
+  private LimelightSubsystem limeLightSystem;
 
   public int getConveyorState() {
     // 0 = empty (purple)
@@ -28,15 +30,16 @@ public class LEDDefaultCommand extends CommandBase {
     // 0 = no target found (red)
     // 1 = target found (yellow)
     // 2 = target alligned (green)
-    return 0;
+    return limeLightSystem.getLimeLightState();
   }
 
   /**
    * Creates a new LEDDefaultCommand.
    */
-  public LEDDefaultCommand(LEDSubsystem ledSubsystem, BeltSubsyteem beltSubsyteem) {
+  public LEDDefaultCommand(LEDSubsystem ledSubsystem, BeltSubsyteem beltSubsyteem, LimelightSubsystem limeLightSubsystem) {
     this.ledSubsystem = ledSubsystem;
     this.beltSubsyteem = beltSubsyteem;
+    this.limeLightSystem = limeLightSubsystem;
 
     addRequirements(ledSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.

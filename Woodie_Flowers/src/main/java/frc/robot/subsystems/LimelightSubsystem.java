@@ -66,4 +66,10 @@ public class LimelightSubsystem extends SubsystemBase {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
     }
 
+    //todo(needs to be completed)
+    public int getLimeLightState() {
+        return 0;
+    }
 }
+
+    

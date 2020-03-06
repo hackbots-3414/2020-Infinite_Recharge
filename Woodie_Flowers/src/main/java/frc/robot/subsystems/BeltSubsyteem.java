@@ -46,10 +46,10 @@ public class BeltSubsyteem extends SubsystemBase {
     lowBelt.set(-speed);
   }
   public int getConveyorState(){
-    System.out.println("----------------------- conveyorSensorFront: = " + conveyorSensorFront + " conveyorSensorBack " + conveyorSensorBack);
+   // System.out.println("----------------------- conveyorSensorFront: = " + conveyorSensorFront + " conveyorSensorBack " + conveyorSensorBack);
       if (conveyorSensorFront == false && conveyorSensorBack == false){
         return 0;
-      } else if (conveyorSensorBack == true && conveyorSensorFront == false){
+      } else if (conveyorSensorFront == false && conveyorSensorBack == true){
         return 1;
       }
       return 2;
