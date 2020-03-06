@@ -41,8 +41,8 @@ public class BeltSubsyteem extends SubsystemBase {
   }
 
   public void beltMethod(double speed) {
-    topBelt.set(speed/2);// divide by 4
-    midBelt.set(speed/1.5);
+    topBelt.set(speed/3);// divide by 4
+    midBelt.set(speed/2);
     lowBelt.set(-speed);
   }
   public int getConveyorState(){

@@ -88,15 +88,15 @@ public class RobotContainer {
   String trajectoryJSON = "paths/center_auton_start.wpilib.json";
   Path trajectoryPath;
   Trajectory trajectory;
-  private final Shooter m_shooter = new Shooter();
+  private Shooter m_shooter = new Shooter(m_limelightSubsystem);
   private final LEDShooterCommand m_ledShooter = new LEDShooterCommand(m_ledSubsystem);
   TurnDotEXE stay0degrees = new TurnDotEXE(m_drivetrainSubsystem, 5, 1);
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6, m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
   BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
-  BeltShootCommand ejectBelt = new BeltShootCommand(beltDriveSubsyteem, -0.5);
-  BeltShootCommand beltForward = new BeltShootCommand(beltDriveSubsyteem, 0.5); 
+  BeltShootCommand ejectBelt = new BeltShootCommand(beltDriveSubsyteem, -0.7);
+  BeltShootCommand beltForward = new BeltShootCommand(beltDriveSubsyteem, 0.7); 
   HookSubsystem hookSubsystem = new HookSubsystem();
   HookDotEXE hookCommandpos = new HookDotEXE(0.4, hookSubsystem);
   HookDotEXE hookCommandneg = new HookDotEXE(-0.4, hookSubsystem);
@@ -271,7 +271,7 @@ public class RobotContainer {
     // whileHeldOperatorPadButton(new AlignAndShootCommand(m_limelightSubsystem,
     // m_drivetrainSubsystem, m_shooter), OI.X_BTN_ALIGNANDSHOOT);
     whileHeldDriverPadButton(
-        new ShootSequenceCommand(beltDriveSubsyteem, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake),
+        new ShootSequenceCommand(beltDriveSubsyteem, m_drivetrainSubsystem, m_shooter, m_ledSubsystem, m_intake, m_limelightSubsystem),
         OI.B_BTN_SHOOTSEQUENCE);
     whileHeldOperatorPadButton(new IntakeCommand(m_intake), OI.B_BTN_INTAKE);
     whileHeldOperatorPadButton(hookCommandpos, OI.LB_BTN_HOOK_POSITIVE);

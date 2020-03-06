@@ -22,8 +22,8 @@ public class PulleySubsystem extends SubsystemBase {
     
   }
   public void setPullEy(double speed){
-    pullEy.set(ControlMode.PercentOutput, speed);
-    pulley.set(ControlMode.PercentOutput, -speed);
+    pullEy.set(ControlMode.PercentOutput, -speed);
+    pulley.set(ControlMode.PercentOutput, speed);
   }
 
   @Override

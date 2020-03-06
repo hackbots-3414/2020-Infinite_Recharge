@@ -37,7 +37,8 @@ public class BeltDotEXE extends CommandBase {
    // SmartDashboard.putBoolean("Back", theBeltBois.irsback.get());
     //System.out.println("Front irs: "+ theBeltBois.irsfront.get());
     //System.out.println("Back irs: "+ theBeltBois.irsback.get());
-    if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
+    // if(!theBeltBois.irsback.get() && theBeltBois.irsfront.get()){
+      if(!theBeltBois.irsback.get()){
       SmartDashboard.putBoolean("irsBack", theBeltBois.irsback.get());
       theBeltBois.beltMethod(0.35);
       theBeltBois.setconveyorSensorback(true);

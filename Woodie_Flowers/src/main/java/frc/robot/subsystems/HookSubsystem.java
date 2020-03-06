@@ -19,7 +19,7 @@ public class HookSubsystem extends SubsystemBase {
   TalonSRX captainHook = new TalonSRX(51);
  
   public HookSubsystem() {
-    captainHook.configReverseSoftLimitThreshold(-30000); //33000
+    captainHook.configReverseSoftLimitThreshold(-17000);
     captainHook.configReverseSoftLimitEnable(true);
   }
   public void setHook(double speed){

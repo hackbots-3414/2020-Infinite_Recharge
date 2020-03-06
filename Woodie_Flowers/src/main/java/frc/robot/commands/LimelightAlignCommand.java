@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -9,7 +10,7 @@ public class LimelightAlignCommand extends CommandBase {
 
     private final LimelightSubsystem limelight;
     private final DrivetrainSubsystem drivetrain;
-    private long startTime = 0;
+    private long startTime = System.currentTimeMillis();
 
     public LimelightAlignCommand(LimelightSubsystem limelight, DrivetrainSubsystem drivetrain) {
         super();
@@ -30,7 +31,9 @@ public class LimelightAlignCommand extends CommandBase {
     public void execute() {
         limelight.turnLEDOn();
         limelight.visionProcessor();
-        //Timer.delay(0.3); 
+        Timer.delay(0.3); 
+        SmartDashboard.putNumber("limelight y value: ", limelight.getVerticalOffset() + 20);
+        System.out.println("limelight y value: " + limelight.getVerticalOffset());
         System.out.println("////////Limelight Is On!////////");
     }
     @Override
@@ -45,33 +48,6 @@ public class LimelightAlignCommand extends CommandBase {
         if (tx > -1 * angle_tolerance && tx < angle_tolerance) {
         System.out.println("////////Exited Limelight////////");
             drivetrain.tankDrive(0, 0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             return true;
         } else {
 
@@ -117,7 +93,7 @@ public class LimelightAlignCommand extends CommandBase {
     }
     @Override
     public void end(boolean interrupted) {
-       Timer.delay(0.3);
+       //Timer.delay(0.3);
         limelight.turnLEDOff();
        limelight.driverCameraVision();
     }

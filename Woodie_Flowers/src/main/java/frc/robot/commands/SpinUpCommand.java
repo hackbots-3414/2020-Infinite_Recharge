@@ -1,6 +1,7 @@
 package frc.robot.commands;
 /*----------------------------------------------------------------------------*/
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -8,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.Shooter;
 
 public class SpinUpCommand extends CommandBase {
@@ -17,12 +19,15 @@ public class SpinUpCommand extends CommandBase {
     // SmartDashboard.getData("shooterVelocity"));
   }
   private final Shooter shooterSubsystem;
+  private final LimelightSubsystem limelight;
   double velocity;
 
-  public SpinUpCommand(final Shooter shooterSubsystem) {
+  public SpinUpCommand(final Shooter shooterSubsystem, LimelightSubsystem limelight) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.shooterSubsystem = shooterSubsystem;
+    this.limelight = limelight;
+
     addRequirements(shooterSubsystem);
   }
 
@@ -36,8 +41,12 @@ public class SpinUpCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   public void execute() {
     super.execute();
+    limelight.turnLEDOn();
+    limelight.visionProcessor();
+    Timer.delay(0.3);
     shooterSubsystem.shoot();
-  
+    limelight.turnLEDOff();
+    limelight.driverCameraVision();
 
     /*
      * shooterSubsystem.enable();
