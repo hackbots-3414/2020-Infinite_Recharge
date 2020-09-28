@@ -33,6 +33,7 @@ public class BeltDotEXE extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("++++++++++++ BeltDotEXE.execute()");
     boolean check = true;
    // SmartDashboard.putBoolean("Back", theBeltBois.irsback.get());
     //System.out.println("Front irs: "+ theBeltBois.irsfront.get());
@@ -41,10 +42,14 @@ public class BeltDotEXE extends CommandBase {
       if(!theBeltBois.irsback.get()){
       SmartDashboard.putBoolean("irsBack", theBeltBois.irsback.get());
       theBeltBois.beltMethod(0.35);
-      theBeltBois.setconveyorSensorback(true);
+     
     }
     else{
       theBeltBois.beltMethod(0.0);
+    }
+    if(!theBeltBois.irsback.get()){
+      System.out.println("::::::::::::::::::::: theBeltBois.irsback.get() Was False");
+      theBeltBois.setconveyorSensorback(true);
     }
     if(!theBeltBois.irsfront.get()){
       theBeltBois.setconveyorSensorfront(true);

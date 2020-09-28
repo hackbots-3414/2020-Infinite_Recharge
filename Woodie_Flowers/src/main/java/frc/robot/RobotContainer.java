@@ -94,6 +94,7 @@ public class RobotContainer {
   DriveDotEXE forward = new DriveDotEXE(200000, 0.5, 6, m_drivetrainSubsystem);
   private final StopCommand m_stop = new StopCommand(m_shooter, m_drivetrainSubsystem);
   BeltSubsyteem beltDriveSubsyteem = new BeltSubsyteem();
+  LimelightSubsystem limeLightSubsystem = new LimelightSubsystem();
   BeltDotEXE beltCommand = new BeltDotEXE(beltDriveSubsyteem);
   BeltShootCommand ejectBelt = new BeltShootCommand(beltDriveSubsyteem, -0.7);
   BeltShootCommand beltForward = new BeltShootCommand(beltDriveSubsyteem, 0.7); 
@@ -120,7 +121,7 @@ public class RobotContainer {
     CommandScheduler.getInstance().setDefaultCommand(m_drivetrainSubsystem, m_driveCommand);
     CommandScheduler.getInstance().setDefaultCommand(beltDriveSubsyteem, beltCommand);
     CommandScheduler.getInstance().setDefaultCommand(m_ledSubsystem,
-        new LEDDefaultCommand(m_ledSubsystem, beltDriveSubsyteem));
+        new LEDDefaultCommand(m_ledSubsystem, beltDriveSubsyteem, limeLightSubsystem));
     configureButtonBindings();
     m_limelightSubsystem.driverCameraVision();
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
