@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.XboxController;
  * Add your docs here.
  */
 public class OI {
-  private static XboxController pad = new XboxController(0);
+  // private static XboxController pad = new XboxController(0);
+  private static Joystick pad1 = new Joystick(0);
   private static XboxController pad2 = new XboxController(1);
   private static final int leftYAxis = 1;
   private static final int leftXAxis = 2;
@@ -31,8 +32,8 @@ public class OI {
   public static final int X_BTN_PULLY = 3;
 
 
-  public static XboxController getDrivePad() {
-    return pad;
+  public static Joystick getDrivePad() {
+    return pad1;
   }
 
   public static XboxController getOperatorPad() {

@@ -28,6 +28,10 @@ public class DrivetrainSubsystem extends PIDSubsystem {
    *
    * Creates a new DrivetrainSubsystem.
    */
+  private static final int RIGHT_X = 3;
+  private static final int LEFT_Y = 1;
+  private static final double LEFT_Y_TRIM = 0.6;
+  private static final double RIGHT_X_TRIM = 0.8;
   AHRS navX = new AHRS(SerialPort.Port.kMXP);
   CANSparkMax leftFront = new CANSparkMax(1, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
   CANSparkMax leftBack = new CANSparkMax(2, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -120,7 +124,11 @@ public class DrivetrainSubsystem extends PIDSubsystem {
   }
 
   public void drive() {
-    m_drivetrain.arcadeDrive(OI.getDrivePad().getY(Hand.kLeft), -OI.getDrivePad().getX(Hand.kRight));
+    // m_drivetrain.arcadeDrive(OI.getDrivePad().getY(Hand.kLeft), -OI.getDrivePad().getX(Hand.kRight));
+    double xAxis = OI.getDrivePad().getRawAxis(RIGHT_X)/RIGHT_X_TRIM;
+    double yAxis = OI.getDrivePad().getRawAxis(LEFT_Y)/LEFT_Y_TRIM;
+    m_drivetrain.arcadeDrive(yAxis, xAxis);
+    
   }
 
   public void drive(double speed, double rotation) {
